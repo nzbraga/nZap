@@ -1,7 +1,7 @@
 import os
 from tkinter import *
 
-from assets.func.interface.uteis.config_tela import config_page_tk
+from assets.interface.uteis.config_tela import config_page_tk
 
 def tela_mensagem():
     mensagem_raiz = config_page_tk(

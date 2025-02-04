@@ -2,13 +2,13 @@ import tkinter as tk
 
 
 from assets.func.login.uteis.alternar_senha import alternar_senha
-from assets.func.interface.uteis.config_tela import config_page_tk
+from assets.interface.uteis.config_tela import config_page_tk
 from assets.func.login.criar_usuario.criar_usuario import criar_usuario
-from assets.func.interface.uteis.campo_obrigatorio import campo_obrigatorio, campo
+from assets.interface.uteis.campo_obrigatorio import campo_obrigatorio, campo
 from assets.func.uteis.popUp import popUp
 
 def manusear_voltar(raiz):
-    from assets.func.interface.telas.tela_login.tela_login import tela_login
+    from assets.interface.telas.tela_login.tela_login import tela_login
     raiz.destroy()
     tela_login()
 

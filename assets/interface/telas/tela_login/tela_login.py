@@ -2,9 +2,9 @@ import tkinter as tk
 
 
 from assets.func.login.logar import logar
-from assets.func.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
+from assets.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
 from assets.func.login.uteis.alternar_senha import alternar_senha
-from assets.func.interface.uteis.config_tela import config_page_tk
+from assets.interface.uteis.config_tela import config_page_tk
 from assets.func.uteis.popUp import popUp
 
 def manusear_criar_usuario(raiz):   
