@@ -2,14 +2,23 @@ import tkinter as tk
 
 
 from assets.func.login.logar import logar
-from assets.func.login.uteis.mostrar_senha import mostrar_senha
+from assets.func.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
+from assets.func.login.uteis.alternar_senha import alternar_senha
 from assets.func.interface.uteis.config_tela import config_page_tk
+from assets.func.uteis.popUp import popUp
+
+def manusear_criar_usuario(raiz):   
+    raiz.destroy()
+    tela_criar_usuario()
+
+
+
 def tela_login():
     
     login_raiz = config_page_tk(
-        "Login", "300", "200", 'login_raiz')
+        "Login", "300", "280", 'login_raiz')
     
-    tk.Label(login_raiz, text="Usuario:").pack(pady=5)
+    tk.Label(login_raiz, text="Usuario:").pack(pady=(20,5))
     usuario_entrada = tk.Entry(login_raiz)
     usuario_entrada.pack(pady=5)
 
@@ -17,21 +26,35 @@ def tela_login():
     senha_entrada = tk.Entry(login_raiz, show="*")
     senha_entrada.pack(pady=5)
 
-    show_password_var = tk.BooleanVar()
-    show_password_cb = tk.Checkbutton(
+    mostrar_senha_var = tk.BooleanVar()
+    mostrar_senha_cb = tk.Checkbutton(
         login_raiz, text="Mostrar senha",
-        variable=show_password_var,
-        command=lambda: mostrar_senha(
-            show_password_var, senha_entrada
+        variable=mostrar_senha_var,
+        command=lambda: alternar_senha(
+            mostrar_senha_var, senha_entrada
             ))
-    show_password_cb.pack()
+    mostrar_senha_cb.pack()
+
+    quadro_botoes = tk.Frame(login_raiz)
+    quadro_botoes.pack(pady=10)
+
+    btn_criar = tk.Button(
+        quadro_botoes,
+        text="Criar",
+        command=lambda: manusear_criar_usuario(login_raiz)
+    )
+    btn_criar.pack(side="left", padx=10)
 
     btn_logar = tk.Button(
-        login_raiz, text="Entrar",
+        quadro_botoes, text="Entrar",
         command=lambda:
         logar(usuario_entrada.get(),
               senha_entrada.get()              
               ))
     btn_logar.pack(pady=10)
+
+    recuperar_senha_etiqueta = tk.Label(login_raiz, text="Esqueci a senha",fg="blue", cursor="hand2")
+    recuperar_senha_etiqueta.bind("<1>", lambda event: popUp('Esueci a senha'))
+    recuperar_senha_etiqueta.pack(pady=(5,10))
 
     login_raiz.mainloop()
