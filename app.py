@@ -1,4 +1,4 @@
-from assets.func.interface.telas.tela_login import tela_login
+from assets.func.interface.telas.tela_login.tela_login import tela_login
 def main():
     tela_login()
 

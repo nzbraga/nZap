@@ -26,7 +26,12 @@ def tela_login():
             ))
     show_password_cb.pack()
 
-    btn_logar = tk.Button(login_raiz, text="Entrar", command=lambda: logar(usuario_entrada.get(), senha_entrada.get()))
+    btn_logar = tk.Button(
+        login_raiz, text="Entrar",
+        command=lambda:
+        logar(usuario_entrada.get(),
+              senha_entrada.get()              
+              ))
     btn_logar.pack(pady=10)
 
     login_raiz.mainloop()
