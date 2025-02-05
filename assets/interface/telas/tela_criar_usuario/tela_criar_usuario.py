@@ -14,21 +14,58 @@ def manusear_voltar(raiz):
 
 
 def tela_criar_usuario():
-    
+
     criar_usuario_raiz = config_page_tk(
-        "Login", "300", "600", 'criar_usuario_raiz')
+        "Login", "350", "350", 'criar_usuario_raiz')    
+
+    campo_obrigatorio(criar_usuario_raiz, "campo_usuario", "Usuario:")
+    usuario = tk.Entry(criar_usuario_raiz)
+    usuario.pack()
+
+    quadro_emails = tk.Frame(criar_usuario_raiz)
+    quadro_emails.pack(pady=(10, 5))
     
+    quadro_email = tk.Frame(quadro_emails)
+    quadro_email.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_email, "campo_email", "Email:")   
+    email = tk.Entry(quadro_email)
+    email.pack()
+    
+    quadro_confirmar_email = tk.Frame(quadro_emails)
+    quadro_confirmar_email.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_confirmar_email , "campo_confirmar_email", "Confirmar Email:")   
+    confirmar_email = tk.Entry(quadro_confirmar_email)
+    confirmar_email.pack()
+    
+    quadro_telefones = tk.Frame(criar_usuario_raiz)
+    quadro_telefones.pack(pady=(10, 5))
+    
+    quadro_telefone = tk.Frame(quadro_telefones)
+    quadro_telefone.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_telefone , "campo_telefone", "Telefone:")   
+    telefone = tk.Entry(quadro_telefone)
+    telefone.pack()
+    
+    quadro_confirmar_telefone = tk.Frame(quadro_telefones)
+    quadro_confirmar_telefone.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_confirmar_telefone , "campo_confirmar_telefone", "Confirmar Telefone:")   
+    confirmar_telefone = tk.Entry(quadro_confirmar_telefone)
+    confirmar_telefone.pack()
 
-    usuario = campo_obrigatorio(criar_usuario_raiz, "campo_usuario", "Usuario:", criar_usuario_raiz)
+    quadro_senhas = tk.Frame(criar_usuario_raiz)
+    quadro_senhas.pack(pady=(10, 5))
 
-    email = campo_obrigatorio(criar_usuario_raiz, "campo_email", "Email:", criar_usuario_raiz)
-    confirmar_email = campo_obrigatorio(criar_usuario_raiz, "campo_email", "Confirmar email:", criar_usuario_raiz)
+    quadro_senha = tk.Frame(quadro_senhas)
+    quadro_senha.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_senha , "campo_senha", "Senha:")   
+    senha = tk.Entry(quadro_senha, show="*")
+    senha.pack()
 
-    telefone = campo(criar_usuario_raiz, "campo_telefone", "Telefone:", criar_usuario_raiz)
-    confirmar_telefone = campo(criar_usuario_raiz, "campo_telefone", "Confirmar telefone:", criar_usuario_raiz)
- 
-    senha = campo_obrigatorio(criar_usuario_raiz, "campo_senha", "Senha:", criar_usuario_raiz, True)
-    confirmar_senha =campo_obrigatorio(criar_usuario_raiz, "campo_senha", "Confirmar Senha:", criar_usuario_raiz, True)
+    quadro_confirmar_senha = tk.Frame(quadro_senhas)
+    quadro_confirmar_senha.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(quadro_confirmar_senha , "campo_confirmar_senha", "Confirmar Senha:")   
+    confirmar_senha = tk.Entry(quadro_confirmar_senha, show="*")
+    confirmar_senha.pack()
 
     mostrar_senha_var = tk.BooleanVar()
     mostrar_senha_cb = tk.Checkbutton(
