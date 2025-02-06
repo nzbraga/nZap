@@ -4,6 +4,7 @@ frequencias = [
     "Vencimento",
     "Diario",
     "Semanal",
+    "Quinzanal",
     "Mensal",
     "Anual"]
 
