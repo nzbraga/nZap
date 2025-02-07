@@ -7,6 +7,16 @@ from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 logado = True
 
 def mostrar_tela(frame):
+    """
+    Mostra a tela passada como par metro na janela principal.
+
+    Atualiza o tamanho da janela principal com base no tamanho da tela
+    passada como par metro, e a exibe na tela com tkraise().
+
+    :param frame: Frame da tela a ser exibida
+    :type frame: tkinter.Frame
+    """
+
     global logado
     raiz_principal.update_idletasks()
     raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
@@ -19,9 +29,7 @@ raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)
 raiz_principal.resizable(False, False)
 
-raiz_principal.minsize(400, 200)  # Largura mínima de 400px e altura mínima de 300px
-
-
+raiz_principal.minsize(400, 200)
 
 # Criar frames para cada "tela"
 frame1 = criar_tela_inicial(raiz_principal)
@@ -31,11 +39,9 @@ frame3 = tela_contatos(raiz_principal)
 for frame in (frame1, frame2, frame3):
     frame.grid(row=0, column=0, sticky="nsew")
 
-
 # Criar Menu
 menu_bar = Menu(raiz_principal)
 raiz_principal.config(menu=menu_bar)
-
 
 menu_bar.add_command(label="Conectar", command=lambda: mostrar_tela(frame1))
 menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame2))

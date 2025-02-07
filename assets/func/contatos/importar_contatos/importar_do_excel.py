@@ -2,22 +2,44 @@ import os
 import sys
 import json
 import pandas as pd
-
-sys.path.insert(0, 'C:/gitHub/nZap')
+import tkinter as tk
+from tkinter import filedialog
 
 from assets.func.uteis.popUp import popUp
 from assets.func.contatos.checar_duplicatas_excel_para_json.checar_duplicatas_excel_para_json import checar_duplicatas_excel_para_json
 
-def importar_excel(arquivo):
-    caminho_json = "./assets/arquivos/contatos/contatos.json"
+def selecionar_arquivo():
+    root = tk.Tk()
+    root.withdraw()  # Esconder a janela principal
+    caminho_arquivo = filedialog.askopenfilename(title="Selecione o arquivo Excel", filetypes=[("Arquivos Excel", "*.xlsx;*.xls")])
+    return caminho_arquivo
 
+def importar_excel():
+    
+    caminho_arquivo = selecionar_arquivo()
+    if not caminho_arquivo:
+        print("Nenhum arquivo selecionado.")
+        popUp("Nenhum arquivo selecionado.")
+        return
+    
+    # Definir o caminho correto para a pasta
+    caminho_pasta_contatos = os.path.join( "assets/arquivos/contatos")
+
+    # Criar a pasta se não existir
+    if not os.path.exists(caminho_pasta_contatos):
+        os.makedirs(caminho_pasta_contatos)
+
+    # Definir o caminho correto do JSON
+    caminho_json = os.path.join(caminho_pasta_contatos, "contatos.json")
+    
     # Carregar a planilha
-    info_excel = pd.read_excel(arquivo)
-    info_excel.columns = ["Nome", "Telefone", "Email", "Data"]
+    info_excel = pd.read_excel(caminho_arquivo)
+    info_excel.columns = ["nome", "telefone", "email", "data"]
 
     # Verificar contatos novos
     novos_contatos, contatos_existentes = checar_duplicatas_excel_para_json("Telefone", caminho_json, info_excel)
-
+    print(f'novos contatos: {novos_contatos}')
+    print(f'contatos existentes: {contatos_existentes}')
     if novos_contatos:
         # Adicionar novos contatos à lista
         contatos_existentes.extend(novos_contatos)
@@ -34,6 +56,8 @@ def importar_excel(arquivo):
     else:
         print("Nenhum novo contato foi adicionado. Todos os números já existem no sistema.")
         popUp("Nenhum novo contato foi adicionado. Todos os números já existem no sistema.")
+    print(f"Arquivo salvo em: {caminho_json}")
 
-# Teste
-importar_excel('contatos.xlsx')
+# Executar a função
+if __name__ == "__main__":
+    importar_excel()

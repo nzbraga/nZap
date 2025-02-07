@@ -1,5 +1,30 @@
+import os
+import sys
+import json
 import tkinter as tk
 from tkinter import ttk
+
+from assets.func.contatos.importar_contatos.importar_do_excel import importar_excel
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(script_dir, 'nZap'))
+
+# Caminho do arquivo JSON
+json_path = os.path.join("assets", "arquivos", "contatos", "contatos.json")
+
+# Garantir que o diretório existe
+os.makedirs(os.path.dirname(json_path), exist_ok=True)
+
+# Carregar ou criar o arquivo JSON
+def carregar_contatos():
+    if not os.path.exists(json_path):
+        with open(json_path, "w") as f:
+            json.dump([], f)  # Cria um arquivo JSON vazio
+    
+    with open(json_path, "r") as f:
+        return json.load(f)
+
+dados = carregar_contatos()
 
 def tela_contatos(raiz_principal):
     def toggle_check(item):
@@ -8,12 +33,10 @@ def tela_contatos(raiz_principal):
         tree.item(item, values=(new_value, *tree.item(item, "values")[1:]))
 
     def toggle_all():
-        # Verifica o estado atual do primeiro item para determinar ação
         items = tree.get_children()
         if not items:
             return
         
-        first_item = items[0]
         all_selected = all(tree.item(i, "values")[0] == "✔" for i in items)
         new_value = "" if all_selected else "✔"
         
@@ -25,7 +48,10 @@ def tela_contatos(raiz_principal):
     frame_importar_botoes.pack(pady=5)
 
     tk.Label(frame_importar_botoes, text="Importar contatos do excel: ", font=("Arial", 10)).pack(side=tk.LEFT, expand=True)
-    tk.Button(frame_importar_botoes, text="Importar", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(
+        frame_importar_botoes,
+        text="Importar", font=("Arial", 10),
+        command=lambda: importar_excel()).pack(side=tk.LEFT, expand=True, padx=5)
 
     frame_botoes = tk.Frame(frame_contato)
     frame_botoes.pack(pady=5)
@@ -52,50 +78,11 @@ def tela_contatos(raiz_principal):
     tree.column("Email", width=100)
     tree.column("Data", width=80, anchor="center")
 
-    dados = [
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
-        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
-        ("", "Carlos Lima", "11777777777", "carlos@email.com", "05/02/2024")
-    ]
-
     for item in dados:
-        tree.insert("", "end", values=item)
+        tree.insert("", "end", values=("", item.get("nome", ""), item.get("telefone", ""), item.get("email", ""), item.get("data", "")))
 
     tree.bind("<ButtonRelease-1>", lambda event: toggle_check(tree.focus()))
-    tree.heading("✔", text="✔", command=toggle_all)  # Adiciona o clique no cabeçalho para selecionar tudo
-
+    tree.heading("✔", text="✔", command=toggle_all)
     tree.pack(pady=10)
     
     return frame_contato
