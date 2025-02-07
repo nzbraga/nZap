@@ -4,7 +4,12 @@ from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 
+logado = True
+
 def mostrar_tela(frame):
+    global logado
+    raiz_principal.update_idletasks()
+    raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
     frame.tkraise()
 
 # Criar janela principal
@@ -12,8 +17,10 @@ raiz_principal = tk.Tk()
 raiz_principal.title("nZap -  Bem vindo!")
 raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)
+raiz_principal.resizable(False, False)
 
-raiz_principal.minsize(400, 300)  # Largura mínima de 400px e altura mínima de 300px
+raiz_principal.minsize(400, 200)  # Largura mínima de 400px e altura mínima de 300px
+
 
 
 # Criar frames para cada "tela"
@@ -35,7 +42,9 @@ menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame2))
 menu_bar.add_command(label="Contatos", command=lambda: mostrar_tela(frame3))
 
 # Mostrar frame inicial
-
-mostrar_tela(frame1)
+if logado:
+    mostrar_tela(frame2)
+else:
+    mostrar_tela(frame1)
 
 raiz_principal.mainloop()

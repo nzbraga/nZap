@@ -1,10 +1,101 @@
 import tkinter as tk
-
+from tkinter import ttk
 
 def tela_contatos(raiz_principal):
-   
-    frame_inicial = tk.Frame(raiz_principal, bg="white")
-    tk.Label(frame_inicial, text="Tela de Contatos", font=("Arial", 14)).pack(expand=True)
+    def toggle_check(item):
+        current_value = tree.item(item, "values")[0]
+        new_value = "✔" if current_value == "" else ""
+        tree.item(item, values=(new_value, *tree.item(item, "values")[1:]))
 
+    def toggle_all():
+        # Verifica o estado atual do primeiro item para determinar ação
+        items = tree.get_children()
+        if not items:
+            return
+        
+        first_item = items[0]
+        all_selected = all(tree.item(i, "values")[0] == "✔" for i in items)
+        new_value = "" if all_selected else "✔"
+        
+        for item in items:
+            tree.item(item, values=(new_value, *tree.item(item, "values")[1:]))
 
-    return frame_inicial
+    frame_contato = tk.Frame(raiz_principal)
+    frame_importar_botoes = tk.Frame(frame_contato)
+    frame_importar_botoes.pack(pady=5)
+
+    tk.Label(frame_importar_botoes, text="Importar contatos do excel: ", font=("Arial", 10)).pack(side=tk.LEFT, expand=True)
+    tk.Button(frame_importar_botoes, text="Importar", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+
+    frame_botoes = tk.Frame(frame_contato)
+    frame_botoes.pack(pady=5)
+
+    tk.Button(frame_botoes, text="Adicionar Contato", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(frame_botoes, text="Filtrar", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    
+    columns = ("✔", "Nome", "Telefone", "Email", "Data")
+    frame_tree = tk.Frame(frame_contato)
+    frame_tree.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+    
+    tree_scroll = tk.Scrollbar(frame_tree)
+    tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+    
+    tree = ttk.Treeview(frame_tree, columns=columns, show="headings", yscrollcommand=tree_scroll.set)
+    tree_scroll.config(command=tree.yview)
+
+    for col in columns:
+        tree.heading(col, text=col)
+    
+    tree.column("✔", width=30, anchor="center")
+    tree.column("Nome", width=100)
+    tree.column("Telefone", width=80)
+    tree.column("Email", width=100)
+    tree.column("Data", width=80, anchor="center")
+
+    dados = [
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "João Silva", "11999999999", "joao@email.com", "01/02/2024"),
+        ("", "Maria Souza", "11888888888", "maria@email.com", "03/02/2024"),
+        ("", "Carlos Lima", "11777777777", "carlos@email.com", "05/02/2024")
+    ]
+
+    for item in dados:
+        tree.insert("", "end", values=item)
+
+    tree.bind("<ButtonRelease-1>", lambda event: toggle_check(tree.focus()))
+    tree.heading("✔", text="✔", command=toggle_all)  # Adiciona o clique no cabeçalho para selecionar tudo
+
+    tree.pack(pady=10)
+    
+    return frame_contato
