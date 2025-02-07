@@ -11,8 +11,8 @@ from assets.func.uteis.popUp import popUp
 def tela_mensagem(raiz_principal):
     global combo_frequencia, combo_31_dias,combo_30_dias,combo_29_dias,combo_28_dias, combo_semanas, botao_agendar, combo_meses, botao_enviar
     
-    mensagem_raiz = tk.Frame(raiz_principal)
-    #mensagem_raiz = config_page_tk("Mensagem", "400", "400", raiz_principal)
+    mensagem_raiz = tk.Frame(raiz_principal) 
+    
 
     def atualizar_meses(event):
         
@@ -31,6 +31,8 @@ def tela_mensagem(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
         elif selecao == "Fevereiro":
             if ano_bissexto():
             
@@ -43,8 +45,12 @@ def tela_mensagem(raiz_principal):
                 combo_31_dias.pack_forget()                
                 combo_30_dias.pack_forget()               
                 combo_28_dias.pack_forget()
+
+                raiz_principal.update_idletasks()
+                raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
             else:
             
+                quadro_dias.pack(pady=5)
                 combo_28_dias.pack(pady=5)
                 botao_agendar.pack(pady=10)
 
@@ -54,9 +60,13 @@ def tela_mensagem(raiz_principal):
                 combo_31_dias.pack_forget()
                 combo_30_dias.pack_forget()
                 combo_29_dias.pack_forget()
+                
+                raiz_principal.update_idletasks()
+                raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
 
         elif selecao in ["Abril", "Junho", "Setembro", "Novembro"]:
         
+            quadro_dias.pack(pady=5)
             combo_30_dias.pack(pady=5)
             botao_agendar.pack(pady=10)
 
@@ -66,7 +76,10 @@ def tela_mensagem(raiz_principal):
             combo_31_dias.pack_forget()
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-      
+
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+    
     def atualizar_frequencia(event):
         mensagem_raiz.update_idletasks()
         selecao = combo_frequencia.get()
@@ -86,6 +99,9 @@ def tela_mensagem(raiz_principal):
             combo_28_dias.pack_forget()
 
             botao_enviar.pack_forget()
+
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
         
         elif selecao == "Semanal" or selecao == "Quinzanal":
             quadro_semanas.pack(pady=5)
@@ -104,6 +120,9 @@ def tela_mensagem(raiz_principal):
 
             botao_enviar.pack_forget()  
 
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+
         elif selecao == "Anual":
             quadro_meses.pack(pady=5)
             combo_meses.pack(pady=5)  
@@ -118,6 +137,10 @@ def tela_mensagem(raiz_principal):
             combo_28_dias.pack_forget()
 
             botao_enviar.pack_forget()  
+
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+
 
         elif selecao in ["Aniversario", "Vencimento", "Diario"]:
             botao_agendar.pack(pady=10) 
@@ -134,6 +157,9 @@ def tela_mensagem(raiz_principal):
             combo_30_dias.pack_forget()
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
+
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
 
         elif selecao ==  "Unica":
             botao_agendar.pack_forget()
@@ -156,7 +182,11 @@ def tela_mensagem(raiz_principal):
             combo_30_dias.pack_forget()
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-    
+
+            raiz_principal.update_idletasks()
+            raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+
+        
     tk.Label(mensagem_raiz, text="Mensagem").pack(pady=5)
     entrada_mensagem = tk.Text(mensagem_raiz, width=40, height=5)
     entrada_mensagem.pack(pady=5)

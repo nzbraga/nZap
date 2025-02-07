@@ -13,7 +13,8 @@ raiz_principal.title("nZap -  Bem vindo!")
 raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)
 
-raiz_principal.geometry("400x300")
+raiz_principal.minsize(400, 300)  # Largura mínima de 400px e altura mínima de 300px
+
 
 # Criar frames para cada "tela"
 frame1 = criar_tela_inicial(raiz_principal)
