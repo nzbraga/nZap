@@ -1,33 +1,40 @@
 import tkinter as tk
 from tkinter import Menu
-from assets.interface.telas.tela_principal.tela1 import criar_tela1
-from assets.interface.telas.tela_principal.tela2 import criar_tela2
-from assets.interface.telas.tela_principal.tela3 import criar_tela3 
+from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
+from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
+from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
+
 def mostrar_tela(frame):
     frame.tkraise()
 
 # Criar janela principal
-root = tk.Tk()
-root.title("Janela com Menu de Abas")
-root.geometry("400x300")
+raiz_principal = tk.Tk()
+raiz_principal.title("nZap -  Bem vindo!")
+raiz_principal.grid_rowconfigure(0, weight=1)
+raiz_principal.grid_columnconfigure(0, weight=1)
+
+raiz_principal.geometry("400x300")
 
 # Criar frames para cada "tela"
-frame1 = criar_tela1(root)
-frame2 = criar_tela2(root)
-frame3 = criar_tela3(root)
+frame1 = criar_tela_inicial(raiz_principal)
+frame2 = tela_mensagem(raiz_principal)
+frame3 = tela_contatos(raiz_principal)
 
 for frame in (frame1, frame2, frame3):
-    frame.place(x=0, y=0, relwidth=1, relheight=1)
+    frame.grid(row=0, column=0, sticky="nsew")
+
 
 # Criar Menu
-menu_bar = Menu(root)
-root.config(menu=menu_bar)
+menu_bar = Menu(raiz_principal)
+raiz_principal.config(menu=menu_bar)
 
-menu_bar.add_command(label="Menu 1", command=lambda: mostrar_tela(frame1))
-menu_bar.add_command(label="Menu 2", command=lambda: mostrar_tela(frame2))
-menu_bar.add_command(label="Menu 3", command=lambda: mostrar_tela(frame3))
+
+menu_bar.add_command(label="Conectar", command=lambda: mostrar_tela(frame1))
+menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame2))
+menu_bar.add_command(label="Contatos", command=lambda: mostrar_tela(frame3))
 
 # Mostrar frame inicial
+
 mostrar_tela(frame1)
 
-root.mainloop()
+raiz_principal.mainloop()

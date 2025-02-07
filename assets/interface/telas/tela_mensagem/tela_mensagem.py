@@ -8,19 +8,16 @@ from assets.interface.telas.tela_mensagem.uteis.ano_bissexto import ano_bissexto
 
 from assets.func.uteis.popUp import popUp
 
-def tela_mensagem():
+def tela_mensagem(raiz_principal):
     global combo_frequencia, combo_31_dias,combo_30_dias,combo_29_dias,combo_28_dias, combo_semanas, botao_agendar, combo_meses, botao_enviar
-
-
-    mensagem_raiz = config_page_tk("Mensagem", "400", "400", 'mensagem_raiz')
+    
+    mensagem_raiz = tk.Frame(raiz_principal)
+    #mensagem_raiz = config_page_tk("Mensagem", "400", "400", raiz_principal)
 
     def atualizar_meses(event):
         
         mensagem_raiz.update_idletasks()
         selecao = combo_meses.get()
-    
-
-        quadro_dias.pack(pady=5)
 
         if selecao in ["Janeiro", "Março", "Maio", "Julho", "Agosto", "Outubro", "Dezembro"]:
             quadro_dias.pack(pady=5)
@@ -29,8 +26,6 @@ def tela_mensagem():
 
             quadro_semanas.pack_forget()
             combo_semanas.pack_forget()
-
-      
 
             combo_30_dias.pack_forget()
             combo_29_dias.pack_forget()
@@ -44,8 +39,6 @@ def tela_mensagem():
 
                 quadro_semanas.pack_forget()
                 combo_semanas.pack_forget()
-                
-            
 
                 combo_31_dias.pack_forget()                
                 combo_30_dias.pack_forget()               
@@ -57,8 +50,6 @@ def tela_mensagem():
 
                 quadro_semanas.pack_forget()
                 combo_semanas.pack_forget()
-                
-            
 
                 combo_31_dias.pack_forget()
                 combo_30_dias.pack_forget()
@@ -71,7 +62,6 @@ def tela_mensagem():
 
             quadro_semanas.pack_forget()
             combo_semanas.pack_forget()
-            
 
             combo_31_dias.pack_forget()
             combo_29_dias.pack_forget()
@@ -102,7 +92,6 @@ def tela_mensagem():
             combo_semanas.pack(pady=5)
 
             botao_agendar.pack(pady=10)
-
             
             quadro_meses.pack_forget()
             combo_meses.pack_forget()
@@ -127,7 +116,6 @@ def tela_mensagem():
             combo_30_dias.pack_forget()            
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-        
 
             botao_enviar.pack_forget()  
 
@@ -222,13 +210,18 @@ def tela_mensagem():
     botao_agendar = tk.Button(
         frame_botoes,
         text="Agendar",
-        command=lambda: popUp(f"Agendado: {entrada_mensagem.get('1.0', tk.END)}"))
+        command=lambda: popUp(
+            f"Agendado: {entrada_mensagem.get('1.0', tk.END)}"
+            ))
     botao_agendar.pack_forget()
 
     botao_enviar = tk.Button(
         frame_botoes,
         text="Enviar",
-        command=lambda: popUp(f"Enviado: {entrada_mensagem.get('1.0', tk.END)}"))
+        command=lambda: popUp(
+            f"Enviado: {entrada_mensagem.get('1.0', tk.END)}"
+            ))
     botao_enviar.pack_forget()
     
-    mensagem_raiz.mainloop()
+
+    return mensagem_raiz
