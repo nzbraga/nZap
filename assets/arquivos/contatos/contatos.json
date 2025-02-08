@@ -1,1 +1,26 @@
-[{}]
+[
+    {
+        "NOME": "BOB1",
+        "TELEFONE": "21997633265",
+        "EMAIL": "nz@nz.com",
+        "DATA": "03-02",
+        "STATUS": true,
+        "ENVIAR": true
+    },
+    {
+        "NOME": "BOB2",
+        "TELEFONE": "2137074557",
+        "EMAIL": "nz2@nz2.com",
+        "DATA": "03-03",
+        "STATUS": true,
+        "ENVIAR": true
+    },
+    {
+        "NOME": "BOB3",
+        "TELEFONE": "2121212121",
+        "EMAIL": "nz21@21.com",
+        "DATA": "03-05",
+        "STATUS": true,
+        "ENVIAR": true
+    }
+]
