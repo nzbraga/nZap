@@ -12,6 +12,20 @@ def manusear_voltar(raiz):
     raiz.destroy()
     tela_login()
 
+def manusear_criar_usuario(
+        raiz,
+        usuario,
+        senha, confirmar_senha,
+        email, confirmar_email,
+        telefone, confirmar_telefone
+        ):
+    criado = criar_usuario( usuario, senha, confirmar_senha, email, confirmar_email, telefone, confirmar_telefone)
+    if criado:
+        from assets.interface.telas.tela_login.tela_login import tela_login
+        raiz.destroy()
+        tela_login()
+    
+
 
 def tela_criar_usuario():
 
@@ -85,11 +99,11 @@ def tela_criar_usuario():
         quadro_botoes,
         text="Salvar",
         command=lambda:
-        criar_usuario(
-            usuario,
-            senha, confirmar_senha,
-            email, confirmar_email,
-            telefone, confirmar_telefone
+        manusear_criar_usuario(criar_usuario_raiz,
+            usuario.get(),
+            senha.get(), confirmar_senha.get(),
+            email.get(), confirmar_email.get(),
+            telefone.get(), confirmar_telefone.get()
 
         ))
     btn_cancelar.pack(side="left", padx=10) 

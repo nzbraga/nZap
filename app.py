@@ -1,4 +1,4 @@
-from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
+#from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
 from assets.interface.telas.tela_login.tela_login import tela_login
 
 def main():
