@@ -4,7 +4,10 @@ from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 
-logado = True
+from assets.arquivos.sessao.sessao import usuario_id
+
+logado = False
+
 
 def mostrar_tela(frame):
     """

@@ -8,6 +8,9 @@ from tkinter import filedialog
 from assets.func.uteis.popUp import popUp
 from assets.func.contatos.checar_duplicatas_excel_para_json.checar_duplicatas_excel_para_json import checar_duplicatas_excel_para_json
 
+from assets.arquivos.sessao.sessao import usuario_id
+
+
 def selecionar_arquivo():
     root = tk.Tk()
     root.withdraw()  # Esconder a janela principal
@@ -25,7 +28,7 @@ def importar_excel():
     if not os.path.exists(caminho_pasta_contatos):
         os.makedirs(caminho_pasta_contatos)
     
-    caminho_json = os.path.join(caminho_pasta_contatos, "contatos.json")
+    caminho_json = os.path.join(caminho_pasta_contatos, f"{usuario_id}.json")
     
     info_excel = pd.read_excel(caminho_arquivo)
     info_excel.columns = ["NOME", "TELEFONE", "EMAIL", "DATA"]

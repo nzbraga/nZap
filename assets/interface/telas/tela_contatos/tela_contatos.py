@@ -5,11 +5,13 @@ import tkinter as tk
 from tkinter import ttk
 from assets.func.contatos.importar_contatos.importar_do_excel import importar_excel
 
+from assets.arquivos.sessao.sessao import usuario_id
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(script_dir, 'nZap'))
 
 # Caminho do arquivo JSON
-json_path = os.path.join("assets", "arquivos", "contatos", "contatos.json")
+json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
 
 # Garantir que o diretório existe
 os.makedirs(os.path.dirname(json_path), exist_ok=True)
@@ -29,8 +31,9 @@ def atualizar_lista():
     dados = carregar_contatos()
     tree.delete(*tree.get_children())  # Limpa a árvore
     for item in dados:
-        enviar_status = "✔" if item.get("ENVIAR", False) else ""
-        tree.insert("", "end", values=(enviar_status, item.get("NOME", ""), item.get("TELEFONE", ""), item.get("EMAIL", ""), item.get("DATA", "")))
+        if item.get("STATUS", True):  # Apenas contatos ativos
+            enviar_status = "✔" if item.get("ENVIAR", False) else ""
+            tree.insert("", "end", values=(enviar_status, item.get("NOME", ""), item.get("TELEFONE", ""), item.get("EMAIL", ""), item.get("DATA", "")))
 
 # Atualizar o JSON ao alterar a checkbox
 def atualizar_enviar(telefone, status):
@@ -41,7 +44,7 @@ def atualizar_enviar(telefone, status):
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(contatos, f, ensure_ascii=False, indent=4)
 
-# Excluir contato
+# Excluir contato (marcar STATUS como False)
 def excluir_contato():
     selecionados = tree.selection()
     if not selecionados:
