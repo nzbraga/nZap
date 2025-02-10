@@ -4,8 +4,9 @@ from assets.func.login.logar import logar
 from assets.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
 from assets.func.login.uteis.alternar_senha import alternar_senha
 from assets.interface.uteis.config_tela import config_page_tk
+from assets.func.login.checar_logado.checar_logado import checar_logado
+
 from assets.func.uteis.popUp import popUp
-from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
 
 
 
@@ -14,10 +15,23 @@ def manusear_criar_usuario(raiz):
     tela_criar_usuario()
 
 def manusear_login(raiz, usuario, senha):
-    logado = logar(usuario, senha)
+       
+        logado = logar(usuario, senha)
 
-    if logado:
+        if not logado:
+            
+            return
+
+        else:
+            raiz.destroy()
+            from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
+            mostrar_tela()
+        
+def checar_login(raiz):
+    usuario_id = checar_logado()
+    if usuario_id:
         raiz.destroy()
+        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
         mostrar_tela()
 
 
@@ -26,6 +40,8 @@ def tela_login():
     login_raiz = config_page_tk(
         "Login", "300", "280", 'login_raiz')
     
+    checar_login(login_raiz) 
+
     tk.Label(login_raiz, text="Usuario:").pack(pady=(20,5))
     usuario_entrada = tk.Entry(login_raiz)
     usuario_entrada.pack(pady=5)
