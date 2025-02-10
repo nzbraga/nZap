@@ -7,9 +7,9 @@ from tkinter import filedialog
 
 from assets.func.uteis.popUp import popUp
 from assets.func.contatos.checar_duplicatas_excel_para_json.checar_duplicatas_excel_para_json import checar_duplicatas_excel_para_json
+from assets.func.sessao.sessao import sessao_id
 
-from assets.arquivos.sessao.sessao import usuario_id
-
+usuario_id = sessao_id()
 
 def selecionar_arquivo():
     root = tk.Tk()

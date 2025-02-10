@@ -1,5 +1,5 @@
-#from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
-from assets.interface.telas.tela_login.tela_login import tela_login
+from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
+
 
 def main():
 
@@ -7,8 +7,7 @@ def main():
     Inicializa o programa, chamando a fun o 'mostrar_tela' que 
     renderiza a tela principal do aplicativo.
     """
-    tela_login()
-    #mostrar_tela()
+    mostrar_tela()
 
 if __name__ == "__main__":
     main()

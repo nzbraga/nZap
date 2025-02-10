@@ -1,16 +1,24 @@
 import tkinter as tk
 
-
 from assets.func.login.logar import logar
 from assets.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
 from assets.func.login.uteis.alternar_senha import alternar_senha
 from assets.interface.uteis.config_tela import config_page_tk
 from assets.func.uteis.popUp import popUp
+from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
+
+
 
 def manusear_criar_usuario(raiz):   
     raiz.destroy()
     tela_criar_usuario()
 
+def manusear_login(raiz, usuario, senha):
+    logado = logar(usuario, senha)
+
+    if logado:
+        raiz.destroy()
+        mostrar_tela()
 
 
 def tela_login():
@@ -48,7 +56,7 @@ def tela_login():
     btn_logar = tk.Button(
         quadro_botoes, text="Entrar",
         command=lambda:
-        logar(usuario_entrada.get(),
+        manusear_login( login_raiz, usuario_entrada.get(),
               senha_entrada.get()              
               ))
     btn_logar.pack(pady=10)

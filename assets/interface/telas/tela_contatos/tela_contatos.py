@@ -4,8 +4,9 @@ import json
 import tkinter as tk
 from tkinter import ttk
 from assets.func.contatos.importar_contatos.importar_do_excel import importar_excel
+from assets.func.sessao.sessao import sessao_id
 
-from assets.arquivos.sessao.sessao import usuario_id
+usuario_id = sessao_id()
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(script_dir, 'nZap'))

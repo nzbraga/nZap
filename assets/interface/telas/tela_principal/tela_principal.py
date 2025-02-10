@@ -4,9 +4,6 @@ from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 
-from assets.arquivos.sessao.sessao import usuario_id
-
-logado = False
 
 
 def mostrar_tela(frame):
@@ -20,7 +17,6 @@ def mostrar_tela(frame):
     :type frame: tkinter.Frame
     """
 
-    global logado
     raiz_principal.update_idletasks()
     raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
     frame.tkraise()
@@ -51,9 +47,7 @@ menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame2))
 menu_bar.add_command(label="Contatos", command=lambda: mostrar_tela(frame3))
 
 # Mostrar frame inicial
-if logado:
-    mostrar_tela(frame2)
-else:
-    mostrar_tela(frame1)
+
+mostrar_tela(frame1)
 
 raiz_principal.mainloop()
