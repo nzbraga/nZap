@@ -37,6 +37,7 @@ def criar_tela_inicial(raiz_principal):
     usuario = sessao_nome().upper()
 
     frame_inicial = tk.Frame(raiz_principal, bg="white")
+    
     tk.Label(frame_inicial, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)
 
     tk.Label(frame_inicial, text="Clique em deslogar para encerrar sua sessão", font=("Arial", 10)).pack(pady=0)
@@ -56,9 +57,11 @@ def criar_tela_inicial(raiz_principal):
                                   command=lambda: simula_logar(status_label, botao_conectar, botao_desconectar, info_label))
 
     if logado:
-        botao_desconectar.pack(pady=5)
+        botao_desconectar.pack(pady=(5,50))
     else:
-        botao_conectar.pack(pady=5)
+        botao_conectar.pack(pady=(5,50))
 
+    raiz_principal.update_idletasks()  # Garante que o layout seja atualizado
+    raiz_principal.geometry("") 
 
     return frame_inicial

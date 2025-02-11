@@ -1,0 +1,34 @@
+[
+    {
+        "NOME": "BOB1",
+        "TELEFONE": "21997633265",
+        "EMAIL": "nz@nz.com",
+        "DATA": "03-02",
+        "STATUS": true,
+        "ENVIAR": true
+    },
+    {
+        "NOME": "CLOVIS",
+        "TELEFONE": "2137074557",
+        "EMAIL": "NZ2@NZ2.COM",
+        "DATA": "03-03",
+        "STATUS": true,
+        "ENVIAR": false
+    },
+    {
+        "NOME": "BOB3",
+        "TELEFONE": "2121212121",
+        "EMAIL": "nz21@21.com",
+        "DATA": "03-05",
+        "STATUS": true,
+        "ENVIAR": true
+    },
+    {
+        "NOME": "CLOVIS2",
+        "TELEFONE": "2345678",
+        "EMAIL": "gg@gg.com",
+        "DATA": "05-30",
+        "ENVIAR": false,
+        "STATUS": true
+    }
+]

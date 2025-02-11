@@ -8,18 +8,22 @@ from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 
 def mostrar_tela(frame):
     """
-    Mostra a tela passada como par metro na janela principal.
+    Mostra a tela passada como parâmetro na janela principal.
 
-    Atualiza o tamanho da janela principal com base no tamanho da tela
-    passada como par metro, e a exibe na tela com tkraise().
+    Atualiza o tamanho da janela principal com base no tamanho do frame
+    passado como parâmetro e a exibe na tela com tkraise().
 
     :param frame: Frame da tela a ser exibida
     :type frame: tkinter.Frame
     """
 
-    raiz_principal.update_idletasks()
-    raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+    frame.update_idletasks()  # Atualiza as dimensões do frame
+    largura = frame.winfo_reqwidth()
+    altura = frame.winfo_reqheight()
+    
+    raiz_principal.geometry(f"{largura}x{altura}")  # Define a nova geometria da janela
     frame.tkraise()
+
 
 # Criar janela principal
 raiz_principal = tk.Tk()

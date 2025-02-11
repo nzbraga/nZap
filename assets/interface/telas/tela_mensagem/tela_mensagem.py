@@ -219,12 +219,21 @@ def tela_mensagem(raiz_principal):
             botao_agendar.pack(pady=10)
         raiz_principal.update_idletasks()
         raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+# Criando um frame para os checkbuttons
+    frame_checkbuttons = tk.Frame(mensagem_raiz)
+    frame_checkbuttons.pack(pady=(15,5))
 
+    # Adicionando os Checkbuttons dentro do frame
+    check_enviar_excel = tk.Checkbutton(frame_checkbuttons, text="Enviar pelo Excel")
+    check_enviar_excel.pack(side="left", padx=5)
 
+    check_enviar_agenda = tk.Checkbutton(frame_checkbuttons, text="Enviar pela Agenda")
+    check_enviar_agenda.pack(side="left", padx=5)
+
+    # Adicionando o label 'Mensagem' abaixo dos checkbuttons
     tk.Label(mensagem_raiz, text="Mensagem").pack(pady=5)
     entrada_mensagem = tk.Text(mensagem_raiz, width=40, height=10)
     entrada_mensagem.pack(pady=5)
-    
 
     frame_frequencia = tk.Frame(mensagem_raiz)
     frame_frequencia.pack(pady=5)
