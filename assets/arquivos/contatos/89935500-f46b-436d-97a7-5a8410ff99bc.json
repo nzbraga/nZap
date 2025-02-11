@@ -5,7 +5,7 @@
         "EMAIL": "nz@nz.com",
         "DATA": "03-02",
         "STATUS": true,
-        "ENVIAR": true
+        "ENVIAR": false
     },
     {
         "NOME": "BOB2",
@@ -13,7 +13,7 @@
         "EMAIL": "nz2@nz2.com",
         "DATA": "03-03",
         "STATUS": true,
-        "ENVIAR": true
+        "ENVIAR": false
     },
     {
         "NOME": "BOB3",
@@ -21,6 +21,6 @@
         "EMAIL": "nz21@21.com",
         "DATA": "03-05",
         "STATUS": true,
-        "ENVIAR": true
+        "ENVIAR": false
     }
 ]

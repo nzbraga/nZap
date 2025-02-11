@@ -65,20 +65,25 @@ def tela_login():
     btn_criar = tk.Button(
         quadro_botoes,
         text="Criar",
+        font=("Arial Black",10),
+        fg='blue',
         command=lambda: manusear_criar_usuario(login_raiz)
     )
     btn_criar.pack(side="left", padx=10)
 
     btn_logar = tk.Button(
-        quadro_botoes, text="Entrar",
+        quadro_botoes,
+        text="Entrar",
+        font=("Arial Black",10),
+        fg='green',
         command=lambda:
         manusear_login( login_raiz, usuario_entrada.get(),
               senha_entrada.get()              
               ))
     btn_logar.pack(pady=10)
 
-    recuperar_senha_etiqueta = tk.Label(login_raiz, text="Esqueci a senha",fg="blue", cursor="hand2")
-    recuperar_senha_etiqueta.bind("<1>", lambda event: popUp('Esueci a senha'))
+    recuperar_senha_etiqueta = tk.Button(login_raiz, text="Esqueci a senha", fg="blue",compound=tk.LEFT)
+    recuperar_senha_etiqueta.config(command=lambda: popUp('Esueci a senha'))
     recuperar_senha_etiqueta.pack(pady=(5,10))
 
     login_raiz.mainloop()

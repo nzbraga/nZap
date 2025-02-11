@@ -52,7 +52,7 @@ def criar_tela_inicial(raiz_principal):
 
     botao_conectar = tk.Button(frame_inicial, text="Conectar", font=("Arial", 14), bg='green', 
                                command=lambda: simula_logar(status_label, botao_conectar, botao_desconectar, info_label))
-    botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 12), bg='orange', 
+    botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 10), bg='orange', 
                                   command=lambda: simula_logar(status_label, botao_conectar, botao_desconectar, info_label))
 
     if logado:
