@@ -72,7 +72,7 @@ def excluir_contato():
     atualizar_lista()
 
 def tela_contatos(raiz_principal):
-    def toggle_check(event):
+    def alternar_check(event):
         item = tree.identify_row(event.y)  # Identifica a linha clicada
         col = tree.identify_column(event.x)  # Identifica a coluna clicada
         
@@ -83,13 +83,13 @@ def tela_contatos(raiz_principal):
             tree.item(item, values=(new_value, *valores[1:]))
             atualizar_enviar(telefone, new_value == "✔")
     
-    def toggle_all():
+    def alternar_tudo():
         items = tree.get_children()
         if not items:
             return
         
-        all_selected = all(tree.item(i, "values")[0] == "✔" for i in items)
-        new_value = "" if all_selected else "✔"
+        tudo_selected = all(tree.item(i, "values")[0] == "✔" for i in items)
+        new_value = "" if tudo_selected else "✔"
         
         for item in items:
             valores = tree.item(item, "values")
@@ -97,9 +97,11 @@ def tela_contatos(raiz_principal):
             tree.item(item, values=(new_value, *valores[1:]))
             atualizar_enviar(telefone, new_value == "✔")
     
-    def deselect_all(event):
+    def desmarcar_tudo(event):
         if tree.identify_row(event.y) == "":  # Se clicar fora de uma linha, desmarca seleção
             tree.selection_remove(tree.selection())
+
+
     
     frame_contato = tk.Frame(raiz_principal)
     frame_importar_botoes = tk.Frame(frame_contato, bg="#d0f0c0", padx=50, pady=5, borderwidth=1, relief="groove")
@@ -109,8 +111,10 @@ def tela_contatos(raiz_principal):
     
     tk.Button(
         frame_importar_botoes,
-        text="Importar", font=("Arial", 10),
-        command=lambda: [importar_excel(), atualizar_lista()]
+        text="Importar",
+        font=("Arial", 10),
+        command=lambda:
+        [importar_excel(), atualizar_lista()]
     ).pack(side=tk.LEFT, expand=True, padx=5)
     
     tk.Button(
@@ -122,28 +126,9 @@ def tela_contatos(raiz_principal):
     frame_botoes = tk.Frame(frame_contato)
     frame_botoes.pack(pady=5)
     
-    tk.Button(
-        frame_botoes,
-        text="Adicionar Contato",
-        font=("Arial", 10)
-        ).pack(side=tk.LEFT, expand=True, padx=5)
-    
-    tk.Button(
-        frame_botoes,
-        text="Editar",
-        font=("Arial", 10)
-        ).pack(side=tk.LEFT, expand=True, padx=5)
-    
-    tk.Button(
-        frame_botoes,
-        text="Filtrar",
-        font=("Arial", 10)
-        ).pack(side=tk.LEFT, expand=True, padx=5)
-    
-    tk.Button(
-        frame_botoes,
-        text="Excluir",
-        font=("Arial", 10), command=excluir_contato).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(frame_botoes, text="Adicionar Contato", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(frame_botoes, text="Filtrar", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(frame_botoes, text="Excluir", font=("Arial", 10), command=excluir_contato).pack(side=tk.LEFT, expand=True, padx=5)
     
     columns = ("✔", "NOME", "TELEFONE", "EMAIL", "DATA")
     frame_tree = tk.Frame(frame_contato)
@@ -168,12 +153,11 @@ def tela_contatos(raiz_principal):
 
     atualizar_lista()
     
-    tree.bind("<ButtonRelease-1>", toggle_check)
-    tree.bind("<Button-1>", deselect_all, add="+")  # Desmarca seleção ao clicar fora
-    tree.heading("✔", text="✔", command=toggle_all)  # Adiciona toggle_all no cabeçalho da checkbox
+    tree.bind("<ButtonRelease-1>", alternar_check)
+    tree.bind("<Button-1>", desmarcar_tudo, add="+")  # Desmarca seleção ao clicar fora
+    tree.heading("✔", text="✔", command=alternar_tudo)  # Adiciona alternar_tudo no cabeçalho da checkbox
     tree.pack(pady=10)
     
     atualizar_lista()
     tree.pack(pady=10)
     return frame_contato
-

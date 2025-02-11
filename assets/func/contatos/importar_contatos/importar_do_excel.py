@@ -49,8 +49,8 @@ def importar_excel():
         json.dump(contatos_sem_duplicatas, f, ensure_ascii=False, indent=4)
     
     print(f"{len(novos_contatos)} novos contatos adicionados!")
-    popUp(f"{len(novos_contatos)} novos contatos adicionados!")
     print(f"Arquivo salvo em: {caminho_json}")
+    popUp(f"{len(novos_contatos)} novos contatos adicionados!")
 
 if __name__ == "__main__":
     importar_excel()
