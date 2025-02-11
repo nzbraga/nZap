@@ -16,7 +16,7 @@ json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
 
 # Garantir que o diretório existe
 os.makedirs(os.path.dirname(json_path), exist_ok=True)
-
+ordem_atual = {"NOME": True, "TELEFONE": True, "EMAIL": True, "DATA": True}  # Estado da ordenação
 # Carregar ou criar o arquivo JSON
 def carregar_contatos():
     if not os.path.exists(json_path):
@@ -27,12 +27,17 @@ def carregar_contatos():
         return json.load(f)
 
 # Atualizar lista de contatos no Treeview
-def atualizar_lista():
+def atualizar_lista(ordem=None):
     global dados
     dados = carregar_contatos()
-    tree.delete(*tree.get_children())  # Limpa a árvore
+    if ordem:
+        chave, crescente = ordem
+        dados.sort(key=lambda x: x.get(chave, ""), reverse=not crescente)
+        ordem_atual[chave] = not crescente
+    
+    tree.delete(*tree.get_children())
     for item in dados:
-        if item.get("STATUS", True):  # Apenas contatos ativos
+        if item.get("STATUS", True):
             enviar_status = "✔" if item.get("ENVIAR", False) else ""
             tree.insert("", "end", values=(enviar_status, item.get("NOME", ""), item.get("TELEFONE", ""), item.get("EMAIL", ""), item.get("DATA", "")))
 
@@ -44,6 +49,9 @@ def atualizar_enviar(telefone, status):
             contato["ENVIAR"] = status
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(contatos, f, ensure_ascii=False, indent=4)
+
+def ordenar_por(coluna):
+    atualizar_lista(ordem=(coluna, ordem_atual[coluna]))
 
 # Excluir contato (marcar STATUS como False)
 def excluir_contato():
@@ -114,9 +122,28 @@ def tela_contatos(raiz_principal):
     frame_botoes = tk.Frame(frame_contato)
     frame_botoes.pack(pady=5)
     
-    tk.Button(frame_botoes, text="Adicionar Contato", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
-    tk.Button(frame_botoes, text="Filtrar", font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
-    tk.Button(frame_botoes, text="Excluir", font=("Arial", 10), command=excluir_contato).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Button(
+        frame_botoes,
+        text="Adicionar Contato",
+        font=("Arial", 10)
+        ).pack(side=tk.LEFT, expand=True, padx=5)
+    
+    tk.Button(
+        frame_botoes,
+        text="Editar",
+        font=("Arial", 10)
+        ).pack(side=tk.LEFT, expand=True, padx=5)
+    
+    tk.Button(
+        frame_botoes,
+        text="Filtrar",
+        font=("Arial", 10)
+        ).pack(side=tk.LEFT, expand=True, padx=5)
+    
+    tk.Button(
+        frame_botoes,
+        text="Excluir",
+        font=("Arial", 10), command=excluir_contato).pack(side=tk.LEFT, expand=True, padx=5)
     
     columns = ("✔", "NOME", "TELEFONE", "EMAIL", "DATA")
     frame_tree = tk.Frame(frame_contato)
@@ -130,8 +157,9 @@ def tela_contatos(raiz_principal):
     tree_scroll.config(command=tree.yview)
 
     for col in columns:
-        tree.heading(col, text=col)
-    
+        tree.heading(col, text=col, command=lambda c=col: ordenar_por(c))
+        tree.column(col, width=100, anchor="center")
+
     tree.column("✔", width=30, anchor="center")
     tree.column("NOME", width=100)
     tree.column("TELEFONE", width=80)
@@ -145,4 +173,7 @@ def tela_contatos(raiz_principal):
     tree.heading("✔", text="✔", command=toggle_all)  # Adiciona toggle_all no cabeçalho da checkbox
     tree.pack(pady=10)
     
+    atualizar_lista()
+    tree.pack(pady=10)
     return frame_contato
+
