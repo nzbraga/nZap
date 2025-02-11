@@ -12,8 +12,8 @@
         "TELEFONE": "2137074557",
         "EMAIL": "nz2@nz2.com",
         "DATA": "03-03",
-        "STATUS": true,
-        "ENVIAR": true
+        "STATUS": false,
+        "ENVIAR": false
     },
     {
         "NOME": "BOB3",

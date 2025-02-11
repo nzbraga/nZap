@@ -28,8 +28,9 @@ def importar_excel():
     if not os.path.exists(caminho_pasta_contatos):
         os.makedirs(caminho_pasta_contatos)
     
+   
     caminho_json = os.path.join(caminho_pasta_contatos, f"{usuario_id}.json")
-    
+  
     info_excel = pd.read_excel(caminho_arquivo)
     info_excel.columns = ["NOME", "TELEFONE", "EMAIL", "DATA"]
     

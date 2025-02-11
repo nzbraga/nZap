@@ -28,7 +28,7 @@ raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)
 raiz_principal.resizable(False, False)
 
-raiz_principal.minsize(500, 200)
+raiz_principal.minsize(500, 250)
 
 # Criar frames para cada "tela"
 frame1 = criar_tela_inicial(raiz_principal)

@@ -12,6 +12,8 @@ def autenticar_login(raw_usuario, senha):
         data = []
     
     for user in data:
+        if user["status"] == False:
+            return False
         if user["usuario"] == usuario and user["senha"] == senha:
             # Criando sessão com ID e nome do usuário autenticado
             sessao = {"id": user["id"], "nome": user["usuario"]}
