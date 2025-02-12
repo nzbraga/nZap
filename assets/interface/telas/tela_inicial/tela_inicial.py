@@ -1,8 +1,13 @@
 import os
+import threading
+from threading import Thread
 import tkinter as tk
 from assets.func.sessao.sessao import sessao_nome
+from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp
 
 logado = False  # Estado de conexão
+
+nome_usuario = sessao_nome().upper()
 
 def manusear_deslogar(raiz):
     raiz.destroy()
@@ -52,7 +57,8 @@ def criar_tela_inicial(raiz_principal):
     info_label.pack(pady=5)
 
     botao_conectar = tk.Button(frame_inicial, text="Conectar", font=("Arial", 14), bg='green', 
-                               command=lambda: simula_logar(status_label, botao_conectar, botao_desconectar, info_label))
+                               command=lambda:
+                               start_whatsapp(nome_usuario))
     botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 10), bg='orange', 
                                   command=lambda: simula_logar(status_label, botao_conectar, botao_desconectar, info_label))
 
