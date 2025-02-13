@@ -32,14 +32,18 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
 
 def criar_tela_inicial(raiz_principal):
     usuario = sessao_nome().upper()
-    frame_inicial = tk.Frame(raiz_principal, bg="white")
+    frame_inicial = tk.Frame(raiz_principal)
     
     tk.Label(frame_inicial, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)
 
     # 🔥 Criar os widgets ANTES de chamá-los
     status_label = tk.Label(frame_inicial, font=("Arial", 14))
-    status_label.pack(pady=(20, 5))
+    status_label.pack(pady=(10, 5))
 
+    tk.Label(frame_inicial, text="Clique em deslogar\npara encerrar sua sessão", font=("Arial", 10)).pack(pady=0)
+    tk.Button(frame_inicial, text="Deslogar", font=("Arial", 10), bg='red', 
+              command=lambda: manusear_deslogar(raiz_principal)).pack(pady=(10,5))
+    
     info_label = tk.Label(frame_inicial, font=("Arial", 14))
     info_label.pack(pady=5)
 
@@ -57,8 +61,5 @@ def criar_tela_inicial(raiz_principal):
     raiz_principal.update_idletasks()  
     raiz_principal.geometry("")  
 
-    tk.Label(frame_inicial, text="Clique em deslogar\npara encerrar sua sessão", font=("Arial", 10)).pack(pady=0)
-    tk.Button(frame_inicial, text="Deslogar", font=("Arial", 10), bg='red', 
-              command=lambda: manusear_deslogar(raiz_principal)).pack(pady=(10,5))
 
     return frame_inicial
