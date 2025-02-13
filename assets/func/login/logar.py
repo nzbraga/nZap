@@ -5,9 +5,9 @@ def logar(usuario, senha):
     if not usuario or not senha:
         popUp("Usuario ou Senha nao informado")
     
-    loged = autenticar_login(usuario, senha)
+    usuario_logado = autenticar_login(usuario, senha)
 
-    if loged:
+    if usuario_logado:
         return True
     else:
         popUp('Usuario ou Senha incorretos')

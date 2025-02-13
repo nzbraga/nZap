@@ -5,7 +5,7 @@
         "EMAIL": "nz@nz.com",
         "DATA": "03-02",
         "STATUS": true,
-        "ENVIAR": true
+        "ENVIAR": false
     },
     {
         "NOME": "CLOVIS",
@@ -21,7 +21,7 @@
         "EMAIL": "nz21@21.com",
         "DATA": "03-05",
         "STATUS": true,
-        "ENVIAR": true
+        "ENVIAR": false
     },
     {
         "NOME": "CLOVIS2",

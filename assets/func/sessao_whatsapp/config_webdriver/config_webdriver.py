@@ -9,15 +9,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from assets.func.sessao_whatsapp.uteis.definir_pasta import definir_pasta
 
 driver = None
-
+navegador_aberto = False
 
 def config_webdriver(headless, client):
-   
-    global driver
-    
-    if driver:
-        driver.quit()
+    global driver, navegador_aberto
 
+    if driver is not None:
+        driver.quit()
+    
     options = webdriver.ChromeOptions()
     options.page_load_strategy = 'eager'
     if headless:
@@ -29,23 +28,47 @@ def config_webdriver(headless, client):
 
     driver = webdriver.Chrome(options=options)
     driver.get("https://web.whatsapp.com")
+    if driver is not None:
+        navegador_aberto = True
 
-    time.sleep(5)
-
-def check_login():
-   
-    if WebDriverWait(driver, 120).until(
-        EC.presence_of_element_located((By.XPATH, '//div[@data-ref]//canvas'))
-    ):
-        return False
     
-    elif WebDriverWait(driver, 120).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="side"]'))
-    ):
-        return True
 
+def check_login(existe_login=False):
+    global driver
+    if existe_login:
+        try:
+        # Aguarda até que o elemento <canvas> com o atributo 'aria-label' correto esteja presente
+            qr_code = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
+            )
+            print("Elemento encontrado:", qr_code)
+            return False
+        except:
+            logado = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
+            )
+            if logado:
+                return True
+            else:
+                print("erro ao checar login")
+    else:
+        try:
+            logado = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
+            )
+            if logado:
+                return True
+            else:
+                print("erro ao checar login")
+        except:
+            qr_code = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
+            )
+            print("Elemento encontrado:", qr_code)
+            return False
 
 def send_message(number, message):
+    global driver
     
     # Busca pelo contato ou número
     search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
