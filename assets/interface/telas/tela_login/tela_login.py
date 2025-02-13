@@ -34,7 +34,6 @@ def checar_login(raiz):
         from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
         mostrar_tela()
 
-
 def tela_login():
     
     login_raiz = config_page_tk(

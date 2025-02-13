@@ -223,12 +223,22 @@ def tela_mensagem(raiz_principal):
     frame_checkbuttons = tk.Frame(mensagem_raiz)
     frame_checkbuttons.pack(pady=(15,5))
 
-    # Adicionando os Checkbuttons dentro do frame
-    check_enviar_excel = tk.Checkbutton(frame_checkbuttons, text="Enviar pelo Excel")
-    check_enviar_excel.pack(side="left", padx=5)
+    def alternar_envio(var1, var2):
+        if var1.get():
+            var2.set(False)
+        elif var2.get():
+            var1.set(False)
 
-    check_enviar_agenda = tk.Checkbutton(frame_checkbuttons, text="Enviar pela Agenda")
-    check_enviar_agenda.pack(side="left", padx=5)
+    # Adicionando os Checkbuttons dentro do frame
+    enviar_excel = tk.BooleanVar()
+    check_excel = tk.Checkbutton(frame_checkbuttons, text="Enviar Excel", variable=enviar_excel, 
+        command=lambda: alternar_envio(enviar_excel, enviar_agenda))
+    check_excel.pack(side=tk.LEFT)
+
+    enviar_agenda = tk.BooleanVar()
+    check_agenda = tk.Checkbutton(frame_checkbuttons, text="Enviar Agenda", variable=enviar_agenda, 
+        command=lambda: alternar_envio(enviar_agenda, enviar_excel))
+    check_agenda.pack()
 
     # Adicionando o label 'Mensagem' abaixo dos checkbuttons
     tk.Label(mensagem_raiz, text="Mensagem").pack(pady=5)
@@ -237,7 +247,6 @@ def tela_mensagem(raiz_principal):
 
     frame_frequencia = tk.Frame(mensagem_raiz)
     frame_frequencia.pack(pady=5)
-
 
     quadro_frequencia = tk.Label(mensagem_raiz, text="Frequência")
     quadro_frequencia.pack(pady=5)
@@ -256,7 +265,6 @@ def tela_mensagem(raiz_principal):
     combo_semanas = ttk.Combobox(mensagem_raiz, values=opcoes_semanas)
     combo_semanas.bind("<<ComboboxSelected>>", atualizar_semanas)
     combo_semanas.pack_forget()
-    
     
     quadro_dias = tk.Label(mensagem_raiz, text="Dia")
     quadro_dias.pack_forget()
@@ -282,12 +290,12 @@ def tela_mensagem(raiz_principal):
     quadro_ajuda = tk.Label(frame_botoes, text="Escolha uma frequencia para enviar a mensagem")
     quadro_ajuda.pack(pady=5)
 
-
     botao_agendar = tk.Button(
         frame_botoes,
         text="Agendar",
         command=lambda: popUp(
             f"Agendado: {entrada_mensagem.get('1.0', tk.END)}"
+            # criar agendamento
             ))
     botao_agendar.pack_forget()
 
@@ -296,6 +304,7 @@ def tela_mensagem(raiz_principal):
         text="Enviar",
         command=lambda: popUp(
             f"Enviado: {entrada_mensagem.get('1.0', tk.END)}"
+            # enviar msg direto
             ))
     botao_enviar.pack_forget()
     

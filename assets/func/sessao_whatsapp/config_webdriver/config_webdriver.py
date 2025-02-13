@@ -67,19 +67,19 @@ def check_login(existe_login=False):
             print("Elemento encontrado:", qr_code)
             return False
 
-def send_message(number, message):
+def enviar_mensagem(numero, mensagem):
     global driver
     
     # Busca pelo contato ou número
     search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
     search_box.click()
     search_box.clear()
-    search_box.send_keys(number + Keys.ENTER)
+    search_box.send_keys(numero + Keys.ENTER)
     time.sleep(2)  # Aguarda a tela do contato carregar
 
-    # Digita e envia a message
+    # Digita e envia a mensagem
     msg_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]')
     msg_box.click()
-    msg_box.send_keys(message + Keys.ENTER)
+    msg_box.send_keys(mensagem + Keys.ENTER)
     #print(f"Mensagem enviada para {name}")
     time.sleep(5)
