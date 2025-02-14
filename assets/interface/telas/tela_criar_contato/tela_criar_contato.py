@@ -86,3 +86,4 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     tk.Button(janela, text="Salvar", command=salvar_e_atualizar).pack(pady=20)
     
     janela.mainloop()
+

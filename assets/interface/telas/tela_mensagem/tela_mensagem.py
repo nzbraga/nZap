@@ -4,6 +4,7 @@ from tkinter import ttk
 
 from assets.interface.telas.tela_mensagem.uteis.opcoes_frequencia import *
 from assets.interface.telas.tela_mensagem.uteis.ano_bissexto import ano_bissexto
+from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 
 from assets.func.uteis.popUp import popUp
 
@@ -219,7 +220,8 @@ def tela_mensagem(raiz_principal):
             botao_agendar.pack(pady=10)
         raiz_principal.update_idletasks()
         raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
-# Criando um frame para os checkbuttons
+    
+    # Criando um frame para os checkbuttons
     frame_checkbuttons = tk.Frame(mensagem_raiz)
     frame_checkbuttons.pack(pady=(15,5))
 
@@ -228,6 +230,13 @@ def tela_mensagem(raiz_principal):
             var2.set(False)
         elif var2.get():
             var1.set(False)
+
+    def definir_origem(excel, agenda):
+        if excel:
+            return "excel"
+        elif agenda:
+            return "agenda"
+        
 
     # Adicionando os Checkbuttons dentro do frame
     enviar_excel = tk.BooleanVar()
@@ -302,10 +311,11 @@ def tela_mensagem(raiz_principal):
     botao_enviar = tk.Button(
         frame_botoes,
         text="Enviar",
-        command=lambda: popUp(
-            f"Enviado: {entrada_mensagem.get('1.0', tk.END)}"
-            # enviar msg direto
-            ))
+        command=lambda: montar_msg( 
+            definir_origem(enviar_excel.get(), enviar_agenda.get()),
+            #frequencia
+            entrada_mensagem.get('1.0', tk.END)            
+        ))
     botao_enviar.pack_forget()
     
 

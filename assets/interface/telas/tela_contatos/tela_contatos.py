@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from assets.func.contatos.importar_contatos.importar_do_excel import importar_excel
 from assets.interface.telas.tela_criar_contato.tela_criar_contato import tela_criar_contatos
-from assets.interface.telas.tela_filtrar_contatos.tela_filtrar_contatos import tela_filtro
+
 
 from assets.func.sessao.sessao import sessao_id
 
@@ -92,7 +92,47 @@ def editar_contato():
     
     tela_criar_contatos(atualizar_lista, contato)
 
+
+
 def tela_contatos(raiz_principal):
+    def filtrar_contatos(event=None):
+        termo = entrada_filtro.get().strip().lower()  # Captura o texto digitado e converte para minúsculas
+        contatos = carregar_contatos()
+        
+        # Desmarcar todos os "ENVIAR"
+        for contato in contatos:
+            contato["ENVIAR"] = False
+        
+        # Atualiza o JSON com os contatos desmarcados
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(contatos, f, ensure_ascii=False, indent=4)
+
+        # Filtra os contatos
+        filtrados = [
+            contato for contato in contatos 
+            if contato.get("STATUS", True) and (
+                termo in contato.get("NOME", "").lower() or 
+                termo in contato.get("TELEFONE", "").lower() or 
+                termo in contato.get("EMAIL", "").lower()
+            )
+        ]
+
+        # Atualiza a exibição na interface
+        tree.delete(*tree.get_children())
+        for item in filtrados:
+            tree.insert("", "end", values=(
+                "",  # Checkbox sempre vazia após filtro
+                item.get("NOME", ""), 
+                item.get("TELEFONE", ""), 
+                item.get("EMAIL", ""), 
+                item.get("DATA", "")
+            ))
+
+    # Adicionar a função ao campo de entrada para filtrar em tempo real
+    def limpar_filtro():
+        entrada_filtro.delete(0, tk.END)  # Apaga o texto digitado
+        atualizar_lista() 
+
     def desmarcar_enviar_todos():
         items = tree.get_children()
         for item in items:
@@ -148,6 +188,8 @@ def tela_contatos(raiz_principal):
     
     tela_botoes = tk.Frame(tela_contato)
     tela_botoes.pack(pady=5)
+    tela_filtro = tk.Frame(tela_contato)
+    tela_filtro.pack(pady=5)
     
     tk.Button(
         tela_botoes,
@@ -159,10 +201,15 @@ def tela_contatos(raiz_principal):
         text="Editar",
         command=lambda:editar_contato(),
         font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
+    tk.Label(tela_filtro, text="Filtrar: ", font=("Arial", 10)).pack(side=tk.LEFT, expand=True)
+    entrada_filtro = tk.Entry(tela_filtro, font=("Arial", 10))
+    entrada_filtro.pack(side=tk.LEFT, expand=True, padx=5)
+    entrada_filtro.bind("<KeyRelease>", filtrar_contatos)
+   
     tk.Button(
-        tela_botoes,
-        text="Filtrar",
-        command=lambda: tela_filtro(tree, atualizar_lista, desmarcar_enviar_todos),
+        tela_filtro,
+        text="Limpar",
+        command=lambda: limpar_filtro(),
         font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
     tk.Button(
         tela_botoes,

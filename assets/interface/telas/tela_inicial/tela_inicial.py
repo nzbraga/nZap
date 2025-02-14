@@ -5,18 +5,6 @@ from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp, 
 
 id_usuario = sessao_id()
 
-def manusear_deslogar(raiz):
-    raiz.destroy()
-    caminho_arquivo = 'assets/arquivos/sessao/.sessao.json'
-    if os.path.exists(caminho_arquivo):
-        os.remove(caminho_arquivo)
-        print("Arquivo apagado com sucesso.")
-    else:
-        print("Arquivo não encontrado.")
-    
-    from assets.interface.telas.tela_login.tela_login import tela_login
-    tela_login()
-
 def atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar):
     """ Atualiza os elementos da interface com base no estado da API """
     if whatsapp_api.api_logada:
@@ -26,7 +14,7 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
         botao_desconectar.pack(pady=5)
     else:
         status_label.config(text="WhatsApp Desconectado!", fg="red")
-        info_label.config(text="Conecte ao WhatsApp\npara enviar e agendar mensagens futuras.")
+        info_label.config(text="Conecte ao WhatsApp\npara enviar e agendar mensagens.")
         botao_desconectar.pack_forget()
         botao_conectar.pack(pady=5)
 
@@ -40,10 +28,6 @@ def criar_tela_inicial(raiz_principal):
     status_label = tk.Label(frame_inicial, font=("Arial", 14))
     status_label.pack(pady=(10, 5))
 
-    tk.Label(frame_inicial, text="Clique em deslogar\npara encerrar sua sessão", font=("Arial", 10)).pack(pady=0)
-    tk.Button(frame_inicial, text="Deslogar", font=("Arial", 10), bg='red', 
-              command=lambda: manusear_deslogar(raiz_principal)).pack(pady=(10,5))
-    
     info_label = tk.Label(frame_inicial, font=("Arial", 14))
     info_label.pack(pady=5)
 
