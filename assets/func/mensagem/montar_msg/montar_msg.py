@@ -4,4 +4,4 @@ def montar_msg(origem, mensagem):
     # monta mensegem e envia
     if origem == "agenda":
 
-        enviar_mensagem(numero, mensagem)
+        
