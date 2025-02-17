@@ -32,18 +32,18 @@ def importar_excel():
     caminho_json = os.path.join(caminho_pasta_contatos, f"{usuario_id}.json")
   
     info_excel = pd.read_excel(caminho_arquivo)
-    info_excel.columns = ["NOME", "TELEFONE", "EMAIL", "DATA"]
+    info_excel.columns = ["nome", "telefone", "EMAIL", "aniversario"]
     
     # Converter nomes para maiúsculas
-    info_excel["NOME"] = info_excel["NOME"].str.upper()
+    info_excel["nome"] = info_excel["nome"].str.upper()
     
-    novos_contatos, contatos_existentes = checar_duplicatas_excel_para_json("TELEFONE", caminho_json, info_excel)
+    novos_contatos, contatos_existentes = checar_duplicatas_excel_para_json("telefone", caminho_json, info_excel)
     
     for contato in novos_contatos:
-        contato["STATUS"] = True  # Define como novo contato
-        contato["ENVIAR"] = True  # Define como novo contato
+        contato["status"] = True  # Define como novo contato
+        contato["enviar"] = True  # Define como novo contato
     
-    contatos_sem_duplicatas = list({contato["TELEFONE"]: contato for contato in contatos_existentes + novos_contatos}.values())
+    contatos_sem_duplicatas = list({contato["telefone"]: contato for contato in contatos_existentes + novos_contatos}.values())
     
     with open(caminho_json, "w", encoding="utf-8") as f:
         json.dump(contatos_sem_duplicatas, f, ensure_ascii=False, indent=4)

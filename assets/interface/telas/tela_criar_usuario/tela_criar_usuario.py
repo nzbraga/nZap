@@ -36,49 +36,49 @@ def tela_criar_usuario():
     usuario = tk.Entry(criar_usuario_raiz)
     usuario.pack()
 
-    quadro_emails = tk.Frame(criar_usuario_raiz)
-    quadro_emails.pack(pady=(10, 5))
+    frame_emails = tk.Frame(criar_usuario_raiz)
+    frame_emails.pack(pady=(10, 5))
     
-    quadro_email = tk.Frame(quadro_emails)
-    quadro_email.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_email, "campo_email", "Email:")   
-    email = tk.Entry(quadro_email)
+    frame_email = tk.Frame(frame_emails)
+    frame_email.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_email, "campo_email", "Email:")   
+    email = tk.Entry(frame_email)
     email.pack()
     
-    quadro_confirmar_email = tk.Frame(quadro_emails)
-    quadro_confirmar_email.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_confirmar_email , "campo_confirmar_email", "Confirmar Email:")   
-    confirmar_email = tk.Entry(quadro_confirmar_email)
+    frame_confirmar_email = tk.Frame(frame_emails)
+    frame_confirmar_email.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_confirmar_email , "campo_confirmar_email", "Confirmar Email:")   
+    confirmar_email = tk.Entry(frame_confirmar_email)
     confirmar_email.pack()
     
-    quadro_telefones = tk.Frame(criar_usuario_raiz)
-    quadro_telefones.pack(pady=(10, 5))
+    frame_telefones = tk.Frame(criar_usuario_raiz)
+    frame_telefones.pack(pady=(10, 5))
     
-    quadro_telefone = tk.Frame(quadro_telefones)
-    quadro_telefone.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_telefone , "campo_telefone", "Telefone:")   
-    telefone = tk.Entry(quadro_telefone)
+    frame_telefone = tk.Frame(frame_telefones)
+    frame_telefone.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_telefone , "campo_telefone", "telefone:")   
+    telefone = tk.Entry(frame_telefone)
     telefone.pack()
     
-    quadro_confirmar_telefone = tk.Frame(quadro_telefones)
-    quadro_confirmar_telefone.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_confirmar_telefone , "campo_confirmar_telefone", "Confirmar Telefone:")   
-    confirmar_telefone = tk.Entry(quadro_confirmar_telefone)
+    frame_confirmar_telefone = tk.Frame(frame_telefones)
+    frame_confirmar_telefone.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_confirmar_telefone , "campo_confirmar_telefone", "Confirmar telefone:")   
+    confirmar_telefone = tk.Entry(frame_confirmar_telefone)
     confirmar_telefone.pack()
 
-    quadro_senhas = tk.Frame(criar_usuario_raiz)
-    quadro_senhas.pack(pady=(10, 5))
+    frame_senhas = tk.Frame(criar_usuario_raiz)
+    frame_senhas.pack(pady=(10, 5))
 
-    quadro_senha = tk.Frame(quadro_senhas)
-    quadro_senha.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_senha , "campo_senha", "Senha:")   
-    senha = tk.Entry(quadro_senha, show="*")
+    frame_senha = tk.Frame(frame_senhas)
+    frame_senha.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_senha , "campo_senha", "Senha:")   
+    senha = tk.Entry(frame_senha, show="*")
     senha.pack()
 
-    quadro_confirmar_senha = tk.Frame(quadro_senhas)
-    quadro_confirmar_senha.pack(side=tk.LEFT, padx=5)
-    campo_obrigatorio(quadro_confirmar_senha , "campo_confirmar_senha", "Confirmar Senha:")   
-    confirmar_senha = tk.Entry(quadro_confirmar_senha, show="*")
+    frame_confirmar_senha = tk.Frame(frame_senhas)
+    frame_confirmar_senha.pack(side=tk.LEFT, padx=5)
+    campo_obrigatorio(frame_confirmar_senha , "campo_confirmar_senha", "Confirmar Senha:")   
+    confirmar_senha = tk.Entry(frame_confirmar_senha, show="*")
     confirmar_senha.pack()
 
     mostrar_senha_var = tk.BooleanVar()
@@ -92,11 +92,11 @@ def tela_criar_usuario():
         ))
     mostrar_senha_cb.pack()
     
-    quadro_botoes = tk.Frame(criar_usuario_raiz)
-    quadro_botoes.pack(pady=10)
+    frame_botoes = tk.Frame(criar_usuario_raiz)
+    frame_botoes.pack(pady=10)
 
     btn_cancelar = tk.Button(
-        quadro_botoes,
+        frame_botoes,
         text="Salvar",
         command=lambda:
         manusear_criar_usuario(criar_usuario_raiz,
@@ -109,7 +109,7 @@ def tela_criar_usuario():
     btn_cancelar.pack(side="left", padx=10) 
 
     btn_voltar = tk.Button(
-        quadro_botoes, text="Voltar",
+        frame_botoes, text="Voltar",
         command=lambda:
         manusear_voltar(
             criar_usuario_raiz

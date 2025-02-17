@@ -28,7 +28,7 @@ def tratar_entradas_criar_usuario(
         return
 
     if telefone != confirmar_telefone:
-        popUp("Telefones diferentes.")
+        popUp("telefones diferentes.")
         return
         
     try:

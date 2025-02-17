@@ -38,8 +38,8 @@ raiz_principal.minsize(500, 250)
 # Criar frames para cada "tela"
 frame0 = criar_tela_perfil(raiz_principal)
 frame1 = criar_tela_inicial(raiz_principal)
-frame2 = tela_mensagem(raiz_principal)
-frame3 = tela_contatos(raiz_principal)
+frame2 = tela_contatos(raiz_principal)
+frame3 = tela_mensagem(raiz_principal)
 
 for frame in (frame0,frame1, frame2, frame3):
     frame.grid(row=0, column=0, sticky="nsew")
@@ -50,8 +50,8 @@ raiz_principal.config(menu=menu_bar)
 
 menu_bar.add_command(label="Pefil", command=lambda: mostrar_tela(frame0))
 menu_bar.add_command(label="Conectar", command=lambda: mostrar_tela(frame1))
-menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame2))
-menu_bar.add_command(label="Contatos", command=lambda: mostrar_tela(frame3))
+menu_bar.add_command(label="Contatos", command=lambda: mostrar_tela(frame2))
+menu_bar.add_command(label="Mensagem", command=lambda: mostrar_tela(frame3))
 
 # Mostrar frame inicial
 

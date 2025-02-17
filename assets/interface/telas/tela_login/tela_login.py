@@ -58,11 +58,11 @@ def tela_login():
             ))
     mostrar_senha_cb.pack()
 
-    quadro_botoes = tk.Frame(login_raiz)
-    quadro_botoes.pack(pady=10)
+    frame_botoes = tk.Frame(login_raiz)
+    frame_botoes.pack(pady=10)
 
     btn_criar = tk.Button(
-        quadro_botoes,
+        frame_botoes,
         text="Criar",
         font=("Arial Black",10),
         fg='blue',
@@ -71,7 +71,7 @@ def tela_login():
     btn_criar.pack(side="left", padx=10)
 
     btn_logar = tk.Button(
-        quadro_botoes,
+        frame_botoes,
         text="Entrar",
         font=("Arial Black",10),
         fg='green',

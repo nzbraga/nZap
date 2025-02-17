@@ -18,7 +18,7 @@ def selecionar_arquivo():
         print("Nenhum arquivo selecionado")
         #popUp("Nenhum arquivo selecionado")
         return False
-
+    
 
 def info_planilha(index_pagina):
     global arquivo_selecionado
@@ -51,7 +51,7 @@ def listar_paginas():
         nomes_paginas = planilha.sheetnames      
         planilha.close()
         
-        print(f'Nomes das paginas: {nomes_paginas}')
+        #print(f'nomes das paginas: {nomes_paginas}')
         return nomes_paginas
     
     except FileNotFoundError:

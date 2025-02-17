@@ -28,6 +28,7 @@ def config_webdriver(headless, client):
 
     driver = webdriver.Chrome(options=options)
     driver.get("https://web.whatsapp.com")
+
     if driver is not None:
         navegador_aberto = True
 
@@ -67,8 +68,10 @@ def check_login(existe_login=False):
             print("Elemento encontrado:", qr_code)
             return False
 
-def enviar_mensagem(numero, mensagem):
+def enviar_mensagem(bruto_numero, mensagem):
     global driver
+
+    numero = f'+55{bruto_numero}@c.us'
     
     # Busca pelo contato ou número
     search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')

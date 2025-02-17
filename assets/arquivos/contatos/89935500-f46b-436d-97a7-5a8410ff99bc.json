@@ -1,34 +1,42 @@
 [
     {
-        "NOME": "BOB1",
-        "TELEFONE": "21997633265",
+        "nome": "BOB1",
+        "telefone": "21997633265",
         "EMAIL": "nz@nz.com",
-        "DATA": "03-02",
-        "STATUS": true,
-        "ENVIAR": false
+        "aniversario": "03-02",
+        "status": true,
+        "enviar": false
     },
     {
-        "NOME": "CLOVIS",
-        "TELEFONE": "2137074557",
+        "nome": "CLOVIS",
+        "telefone": "2137074557",
         "EMAIL": "NZ2@NZ2.COM",
-        "DATA": "03-03",
-        "STATUS": true,
-        "ENVIAR": false
+        "aniversario": "03-03",
+        "status": true,
+        "enviar": false
     },
     {
-        "NOME": "BOB3",
-        "TELEFONE": "2121212121",
+        "nome": "BOB3",
+        "telefone": "2121212121",
         "EMAIL": "nz21@21.com",
-        "DATA": "03-05",
-        "STATUS": true,
-        "ENVIAR": false
+        "aniversario": "03-05",
+        "status": true,
+        "enviar": false
     },
     {
-        "NOME": "CLOVIS2",
-        "TELEFONE": "2345678",
+        "nome": "CLOVIS2",
+        "telefone": "2345678",
         "EMAIL": "gg@gg.com",
-        "DATA": "05-30",
-        "ENVIAR": false,
-        "STATUS": true
+        "aniversario": "05-30",
+        "enviar": true,
+        "status": true
+    },
+    {
+        "nome": "HOMER",
+        "telefone": "21 997633265",
+        "EMAIL": "bb@bb.com",
+        "aniversario": "28/11",
+        "enviar": false,
+        "status": true
     }
 ]

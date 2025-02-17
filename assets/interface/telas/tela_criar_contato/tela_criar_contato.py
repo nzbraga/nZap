@@ -9,7 +9,7 @@ json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
 
 def salvar_contato(nome, telefone, email, data, telefone_original=None, atualizar_lista_callback=None):
     if not nome or not telefone:
-        messagebox.showerror("Erro", "Nome e telefone são obrigatórios!")
+        messagebox.showerror("Erro", "nome e telefone são obrigatórios!")
         return
     
     if not os.path.exists(json_path):
@@ -21,20 +21,20 @@ def salvar_contato(nome, telefone, email, data, telefone_original=None, atualiza
     
     if telefone_original:
         for contato in contatos:
-            if contato["TELEFONE"] == telefone_original:
-                contato["NOME"] = nome
-                contato["TELEFONE"] = telefone
+            if contato["telefone"] == telefone_original:
+                contato["nome"] = nome
+                contato["telefone"] = telefone
                 contato["EMAIL"] = email
-                contato["DATA"] = data
+                contato["aniversario"] = data
                 break
     else:
         novo_contato = {
-            "NOME": nome,
-            "TELEFONE": telefone,
+            "nome": nome,
+            "telefone": telefone,
             "EMAIL": email,
-            "DATA": data,
-            "ENVIAR": False,
-            "STATUS": True
+            "aniversario": data,
+            "enviar": False,
+            "status": True
         }
         contatos.append(novo_contato)
     
@@ -50,11 +50,11 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     janela.title("Criar/Editar Contato")
     janela.geometry("300x300")
     
-    tk.Label(janela, text="Nome:").pack(pady=5)
+    tk.Label(janela, text="nome:").pack(pady=5)
     entry_nome = tk.Entry(janela)
     entry_nome.pack(pady=5)
     
-    tk.Label(janela, text="Telefone:").pack(pady=5)
+    tk.Label(janela, text="telefone:").pack(pady=5)
     entry_telefone = tk.Entry(janela)
     entry_telefone.pack(pady=5)
     
@@ -67,10 +67,10 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     entry_data.pack(pady=5)
     
     if contato:
-        entry_nome.insert(0, contato["NOME"])
-        entry_telefone.insert(0, contato["TELEFONE"])
+        entry_nome.insert(0, contato["nome"])
+        entry_telefone.insert(0, contato["telefone"])
         entry_email.insert(0, contato["EMAIL"])
-        entry_data.insert(0, contato["DATA"])
+        entry_data.insert(0, contato["aniversario"])
     
     def salvar_e_atualizar():
         salvar_contato(
@@ -78,7 +78,7 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
             entry_telefone.get(), 
             entry_email.get(), 
             entry_data.get(),
-            contato["TELEFONE"] if contato else None,
+            contato["telefone"] if contato else None,
             atualizar_lista_callback
         )
         janela.destroy()

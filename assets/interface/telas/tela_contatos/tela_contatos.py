@@ -19,7 +19,7 @@ json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
 
 # Garantir que o diretório existe
 os.makedirs(os.path.dirname(json_path), exist_ok=True)
-ordem_atual = {"NOME": True, "TELEFONE": True, "EMAIL": True, "DATA": True}  # Estado da ordenação
+ordem_atual = {"nome": True, "telefone": True, "EMAIL": True, "aniversario": True}  # Estado da ordenação
 # Carregar ou criar o arquivo JSON
 def carregar_contatos():
     if not os.path.exists(json_path):
@@ -40,23 +40,23 @@ def atualizar_lista(ordem=None):
     
     tree.delete(*tree.get_children())
     for item in dados:
-        if item.get("STATUS", True):
-            enviar_status = "✔" if item.get("ENVIAR", False) else ""
-            tree.insert("", "end", values=(enviar_status, item.get("NOME", ""), item.get("TELEFONE", ""), item.get("EMAIL", ""), item.get("DATA", "")))
+        if item.get("status", True):
+            enviar_status = "✔" if item.get("enviar", False) else ""
+            tree.insert("", "end", values=(enviar_status, item.get("nome", ""), item.get("telefone", ""), item.get("EMAIL", ""), item.get("aniversario", "")))
 
 # Atualizar o JSON ao alterar a checkbox
 def atualizar_enviar(telefone, status):
     contatos = carregar_contatos()
     for contato in contatos:
-        if contato["TELEFONE"] == telefone:
-            contato["ENVIAR"] = status
+        if contato["telefone"] == telefone:
+            contato["enviar"] = status
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(contatos, f, ensure_ascii=False, indent=4)
 
 def ordenar_por(coluna):
     atualizar_lista(ordem=(coluna, ordem_atual[coluna]))
 
-# Excluir contato (marcar STATUS como False)
+# Excluir contato (marcar status como False)
 def excluir_contato():
     selecionados = tree.selection()
     if not selecionados:
@@ -66,9 +66,9 @@ def excluir_contato():
     telefones_selecionados = [tree.item(item, "values")[2] for item in selecionados]
     
     for contato in contatos:
-        if contato["TELEFONE"] in telefones_selecionados:
-            contato["STATUS"] = False
-            contato["ENVIAR"] = False
+        if contato["telefone"] in telefones_selecionados:
+            contato["status"] = False
+            contato["enviar"] = False
     
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(contatos, f, ensure_ascii=False, indent=4)
@@ -84,10 +84,10 @@ def editar_contato():
     valores = tree.item(item, "values")
 
     contato = {
-        "NOME": valores[1],
-        "TELEFONE": valores[2],
+        "nome": valores[1],
+        "telefone": valores[2],
         "EMAIL": valores[3],
-        "DATA": valores[4]
+        "aniversario": valores[4]
     }
     
     tela_criar_contatos(atualizar_lista, contato)
@@ -99,9 +99,9 @@ def tela_contatos(raiz_principal):
         termo = entrada_filtro.get().strip().lower()  # Captura o texto digitado e converte para minúsculas
         contatos = carregar_contatos()
         
-        # Desmarcar todos os "ENVIAR"
+        # Desmarcar todos os "enviar"
         for contato in contatos:
-            contato["ENVIAR"] = False
+            contato["enviar"] = False
         
         # Atualiza o JSON com os contatos desmarcados
         with open(json_path, "w", encoding="utf-8") as f:
@@ -110,10 +110,11 @@ def tela_contatos(raiz_principal):
         # Filtra os contatos
         filtrados = [
             contato for contato in contatos 
-            if contato.get("STATUS", True) and (
-                termo in contato.get("NOME", "").lower() or 
-                termo in contato.get("TELEFONE", "").lower() or 
-                termo in contato.get("EMAIL", "").lower()
+            if contato.get("status", True) and (
+                termo in contato.get("nome", "").lower() or 
+                termo in contato.get("telefone", "").lower() or 
+                termo in contato.get("EMAIL", "").lower() or
+                termo in contato.get("aniversario", "").lower() 
             )
         ]
 
@@ -122,17 +123,17 @@ def tela_contatos(raiz_principal):
         for item in filtrados:
             tree.insert("", "end", values=(
                 "",  # Checkbox sempre vazia após filtro
-                item.get("NOME", ""), 
-                item.get("TELEFONE", ""), 
+                item.get("nome", ""), 
+                item.get("telefone", ""), 
                 item.get("EMAIL", ""), 
-                item.get("DATA", "")
+                item.get("aniversario", "")
             ))
 
     # Adicionar a função ao campo de entrada para filtrar em tempo real
     def limpar_filtro():
         entrada_filtro.delete(0, tk.END)  # Apaga o texto digitado
         atualizar_lista() 
-
+    """
     def desmarcar_enviar_todos():
         items = tree.get_children()
         for item in items:
@@ -141,6 +142,7 @@ def tela_contatos(raiz_principal):
             # Marcar como False em todos os itens
             tree.item(item, values=("", *valores[1:]))  # Remover o "✔"
             atualizar_enviar(telefone, False)
+    """
     def alternar_check(event):
         item = tree.identify_row(event.y)  # Identifica a linha clicada
         col = tree.identify_column(event.x)  # Identifica a coluna clicada
@@ -222,7 +224,7 @@ def tela_contatos(raiz_principal):
         command=atualizar_lista
     ).pack(side=tk.LEFT, expand=True, padx=5)
     
-    columns = ("✔", "NOME", "TELEFONE", "EMAIL", "DATA")
+    columns = ("✔", "nome", "telefone", "EMAIL", "aniversario")
     tela_tree = tk.Frame(tela_contato)
     tela_tree.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
     
@@ -238,10 +240,10 @@ def tela_contatos(raiz_principal):
         tree.column(col, width=100, anchor="center")
 
     tree.column("✔", width=30, anchor="center")
-    tree.column("NOME", width=100)
-    tree.column("TELEFONE", width=80)
+    tree.column("nome", width=100)
+    tree.column("telefone", width=80)
     tree.column("EMAIL", width=100)
-    tree.column("DATA", width=80, anchor="center")
+    tree.column("aniversario", width=80, anchor="center")
     
     tree.bind("<ButtonRelease-1>", alternar_check)
     tree.bind("<Button-1>", desmarcar_tudo, add="+")  # Desmarca seleção ao clicar fora
