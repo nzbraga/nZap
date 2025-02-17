@@ -4,21 +4,27 @@ import tkinter as tk
 from tkinter import messagebox
 from assets.func.sessao.sessao import sessao_id
 
+# Obtém o ID do usuário e define o caminho do arquivo JSON
 usuario_id = sessao_id()
-json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
+script_dir = os.path.dirname(os.path.abspath(__file__))  # Garante que estamos no diretório correto
+json_path = os.path.join(script_dir, f"{usuario_id}.json")
 
+# Função para salvar ou editar um contato
 def salvar_contato(nome, telefone, email, data, telefone_original=None, atualizar_lista_callback=None):
     if not nome or not telefone:
-        messagebox.showerror("Erro", "nome e telefone são obrigatórios!")
+        messagebox.showerror("Erro", "Nome e telefone são obrigatórios!")
         return
     
+    # Garante que o arquivo JSON existe ou cria um vazio
     if not os.path.exists(json_path):
+        os.makedirs(os.path.dirname(json_path), exist_ok=True)  # Cria os diretórios se não existirem
         with open(json_path, "w") as f:
             json.dump([], f)
     
     with open(json_path, "r") as f:
         contatos = json.load(f)
     
+    # Se telefone_original for passado, edita o contato
     if telefone_original:
         for contato in contatos:
             if contato["telefone"] == telefone_original:
@@ -28,6 +34,7 @@ def salvar_contato(nome, telefone, email, data, telefone_original=None, atualiza
                 contato["aniversario"] = data
                 break
     else:
+        # Adiciona um novo contato
         novo_contato = {
             "nome": nome,
             "telefone": telefone,
@@ -38,6 +45,7 @@ def salvar_contato(nome, telefone, email, data, telefone_original=None, atualiza
         }
         contatos.append(novo_contato)
     
+    # Atualiza o arquivo JSON com as modificações
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(contatos, f, ensure_ascii=False, indent=4)
     
@@ -45,16 +53,17 @@ def salvar_contato(nome, telefone, email, data, telefone_original=None, atualiza
     if atualizar_lista_callback:
         atualizar_lista_callback()
 
+# Função para criar ou editar contatos na interface gráfica
 def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     janela = tk.Toplevel()
     janela.title("Criar/Editar Contato")
     janela.geometry("300x300")
     
-    tk.Label(janela, text="nome:").pack(pady=5)
+    tk.Label(janela, text="Nome:").pack(pady=5)
     entry_nome = tk.Entry(janela)
     entry_nome.pack(pady=5)
     
-    tk.Label(janela, text="telefone:").pack(pady=5)
+    tk.Label(janela, text="Telefone:").pack(pady=5)
     entry_telefone = tk.Entry(janela)
     entry_telefone.pack(pady=5)
     
@@ -66,12 +75,14 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     entry_data = tk.Entry(janela)
     entry_data.pack(pady=5)
     
+    # Se um contato for passado, preenche os campos com os dados existentes
     if contato:
         entry_nome.insert(0, contato["nome"])
         entry_telefone.insert(0, contato["telefone"])
         entry_email.insert(0, contato["EMAIL"])
         entry_data.insert(0, contato["aniversario"])
     
+    # Função para salvar e atualizar a lista de contatos
     def salvar_e_atualizar():
         salvar_contato(
             entry_nome.get().upper(), 
@@ -86,4 +97,3 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
     tk.Button(janela, text="Salvar", command=salvar_e_atualizar).pack(pady=20)
     
     janela.mainloop()
-

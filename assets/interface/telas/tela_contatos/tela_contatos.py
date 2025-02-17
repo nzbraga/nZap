@@ -5,21 +5,24 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from assets.func.contatos.importar_contatos.importar_do_excel import importar_excel
 from assets.interface.telas.tela_criar_contato.tela_criar_contato import tela_criar_contatos
-
-
 from assets.func.sessao.sessao import sessao_id
 
 usuario_id = sessao_id()
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(script_dir, 'nZap'))
-
 # Caminho do arquivo JSON
-json_path = os.path.join("assets", "arquivos", "contatos", f"{usuario_id}.json")
+if hasattr(sys, '_MEIPASS'):  # Verifica se está empacotado com PyInstaller
+    # No modo onefile, os arquivos são extraídos para um diretório temporário
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+json_path = os.path.join(base_path, f"{usuario_id}.json")
 
 # Garantir que o diretório existe
 os.makedirs(os.path.dirname(json_path), exist_ok=True)
+
 ordem_atual = {"nome": True, "telefone": True, "EMAIL": True, "aniversario": True}  # Estado da ordenação
+
 # Carregar ou criar o arquivo JSON
 def carregar_contatos():
     if not os.path.exists(json_path):
@@ -74,6 +77,7 @@ def excluir_contato():
         json.dump(contatos, f, ensure_ascii=False, indent=4)
     
     atualizar_lista()
+
 def editar_contato():
     selecionados = tree.selection()
     if not selecionados:
@@ -91,8 +95,6 @@ def editar_contato():
     }
     
     tela_criar_contatos(atualizar_lista, contato)
-
-
 
 def tela_contatos(raiz_principal):
     def filtrar_contatos(event=None):
@@ -129,20 +131,10 @@ def tela_contatos(raiz_principal):
                 item.get("aniversario", "")
             ))
 
-    # Adicionar a função ao campo de entrada para filtrar em tempo real
     def limpar_filtro():
         entrada_filtro.delete(0, tk.END)  # Apaga o texto digitado
         atualizar_lista() 
-    """
-    def desmarcar_enviar_todos():
-        items = tree.get_children()
-        for item in items:
-            valores = tree.item(item, "values")
-            telefone = valores[2]
-            # Marcar como False em todos os itens
-            tree.item(item, values=("", *valores[1:]))  # Remover o "✔"
-            atualizar_enviar(telefone, False)
-    """
+
     def alternar_check(event):
         item = tree.identify_row(event.y)  # Identifica a linha clicada
         col = tree.identify_column(event.x)  # Identifica a coluna clicada
@@ -182,12 +174,9 @@ def tela_contatos(raiz_principal):
         tela_importar_botoes,
         text="Importar",
         font=("Arial", 10),
-        command=lambda:
-        [importar_excel(), atualizar_lista()]
+        command=lambda: [importar_excel(), atualizar_lista()]
     ).pack(side=tk.LEFT, expand=True, padx=5)
-    
-    
-    
+
     tela_botoes = tk.Frame(tela_contato)
     tela_botoes.pack(pady=5)
     tela_filtro = tk.Frame(tela_contato)
@@ -196,12 +185,12 @@ def tela_contatos(raiz_principal):
     tk.Button(
         tela_botoes,
         text="Adicionar Contato",
-        command=lambda: tela_criar_contatos(atualizar_lista) ,
+        command=lambda: tela_criar_contatos(atualizar_lista),
         font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
     tk.Button(
         tela_botoes,
         text="Editar",
-        command=lambda:editar_contato(),
+        command=lambda: editar_contato(),
         font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
     tk.Label(tela_filtro, text="Filtrar: ", font=("Arial", 10)).pack(side=tk.LEFT, expand=True)
     entrada_filtro = tk.Entry(tela_filtro, font=("Arial", 10))
@@ -217,7 +206,7 @@ def tela_contatos(raiz_principal):
         tela_botoes,
         text="Excluir",
         command=excluir_contato,
-        font=("Arial", 10), ).pack(side=tk.LEFT, expand=True, padx=5)
+        font=("Arial", 10)).pack(side=tk.LEFT, expand=True, padx=5)
     tk.Button(
         tela_botoes,
         text="⟳", font=("Arial", 10),

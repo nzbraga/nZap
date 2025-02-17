@@ -28,6 +28,7 @@ def mostrar_tela(frame):
 
 # Criar janela principal
 raiz_principal = tk.Tk()
+raiz_principal.iconbitmap("logo_nzap.ico")
 raiz_principal.title("nZap -  Bem vindo!")
 raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)

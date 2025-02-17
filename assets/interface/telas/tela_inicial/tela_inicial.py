@@ -19,7 +19,7 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
         botao_conectar.pack(pady=5)
 
 def criar_tela_inicial(raiz_principal):
-    usuario = sessao_nome().upper()
+    usuario = sessao_nome()
     frame_inicial = tk.Frame(raiz_principal)
     
     tk.Label(frame_inicial, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)

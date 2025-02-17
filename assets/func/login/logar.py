@@ -1,11 +1,13 @@
 from assets.func.uteis.popUp import popUp
 from assets.func.login.autenticar_login.autenticar_login import autenticar_login
 
+
 def logar(usuario, senha):
-    if not usuario or not senha:
-        popUp("Usuario ou Senha nao informado")
+    #if not usuario or not senha:
+        #popUp("Usuario ou Senha nao informado")
     
     usuario_logado = autenticar_login(usuario, senha)
+    print(f'Usuario logado: {usuario_logado}')
 
     if usuario_logado:
         return True

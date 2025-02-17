@@ -1,7 +1,13 @@
 import json
+from pathlib import Path
 from assets.func.uteis.popUp import popUp
 
-ARQUIVO_USUARIOS = "./assets/arquivos/usuarios/.usuarios.json"
+# Define a pasta base para armazenar os arquivos do programa
+base_dir = Path.home() / "nZap"
+base_dir.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
+
+# Define o caminho do arquivo de usuários
+ARQUIVO_USUARIOS = base_dir / "usuarios.json"
 
 def tratar_entradas_criar_usuario(
         usuario,
@@ -17,34 +23,32 @@ def tratar_entradas_criar_usuario(
         confirmar_email    
     ]):
         popUp("Campos obrigatórios não preenchidos.")
-        return  # Adicionado return para evitar continuar o código
+        return False  # Retorna False para indicar erro
 
     if senha != confirmar_senha:
         popUp("Senhas diferentes.") 
-        return
+        return False
     
     if email != confirmar_email:
         popUp("Emails diferentes.")
-        return
+        return False
 
     if telefone != confirmar_telefone:
-        popUp("telefones diferentes.")
-        return
+        popUp("Telefones diferentes.")
+        return False
         
     try:
-        with open(ARQUIVO_USUARIOS, "r") as f:
-            conteudo = f.read().strip()
-            if not conteudo:  # Se o arquivo estiver vazio
-                usuarios = []
-            else:
-                usuarios = json.loads(conteudo)
+        if ARQUIVO_USUARIOS.exists():
+            conteudo = ARQUIVO_USUARIOS.read_text(encoding="utf-8").strip()
+            usuarios = json.loads(conteudo) if conteudo else []
+        else:
+            usuarios = []
     except (FileNotFoundError, json.JSONDecodeError):
         usuarios = []  # Se der erro, assume uma lista vazia
-
 
     # Verifica se o usuário já existe
     if any(u["email"] == email for u in usuarios):
         popUp(f"Usuário com email: {email} já existe.")
-        return
+        return False
     
     return True
