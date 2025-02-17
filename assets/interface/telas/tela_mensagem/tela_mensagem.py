@@ -5,14 +5,22 @@ from tkinter import ttk
 from assets.interface.telas.tela_mensagem.uteis.opcoes_frequencia import *
 from assets.interface.telas.tela_mensagem.uteis.ano_bissexto import ano_bissexto
 from assets.func.mensagem.montar_msg.montar_msg import montar_msg
+from assets.func.mensagem.definir_origem.definir_origem import definir_origem
+from assets.func.planilha.info_planilha.info_planilha import listar_paginas
 
 from assets.func.uteis.popUp import popUp
 
+lista_paginas = []
 def tela_mensagem(raiz_principal):
-    global combo_frequencia, combo_31_dias,combo_30_dias,combo_29_dias,combo_28_dias, combo_semanas, botao_agendar, combo_meses, botao_enviar
+    global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias, botao_agendar,  botao_enviar, lista_paginas
     
     mensagem_raiz = tk.Frame(raiz_principal) 
+    frame_checkbuttons = tk.Frame(mensagem_raiz)
+    frame_checkbuttons.pack(pady=(15,5))
     
+    frame_escolher_pagina = tk.Frame(mensagem_raiz)
+    frame_escolher_pagina.pack(pady=5)
+
     def atualizar_frequencia(event):
         mensagem_raiz.update_idletasks()
         selecao = combo_frequencia.get()
@@ -210,7 +218,7 @@ def tela_mensagem(raiz_principal):
             botao_agendar.pack(pady=10)
         raiz_principal.update_idletasks()
         raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")   
-
+    
     def atualizar_dias(event):
         mensagem_raiz.update_idletasks()
         selecao = combo_31_dias.get() or combo_28_dias.get() or combo_29_dias.get() or combo_30_dias.get() 
@@ -218,36 +226,45 @@ def tela_mensagem(raiz_principal):
         if selecao:
             quadro_ajuda.pack_forget()
             botao_agendar.pack(pady=10)
+        
         raiz_principal.update_idletasks()
         raiz_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
-    
-    # Criando um frame para os checkbuttons
-    frame_checkbuttons = tk.Frame(mensagem_raiz)
-    frame_checkbuttons.pack(pady=(15,5))
 
-    def alternar_envio(var1, var2):
-        if var1.get():
-            var2.set(False)
-        elif var2.get():
-            var1.set(False)
+    def alternar_envio():
+        global lista_paginas  # Torna a lista global para ser acessada dentro da função
+        lista_paginas = listar_paginas()  # Preenche a lista com as páginas da planilha
 
-    def definir_origem(excel, agenda):
-        if excel:
-            return "excel"
-        elif agenda:
-            return "agenda"
-        
+        if enviar_excel.get():  # Se a opção Excel estiver marcada
+            enviar_agenda.set(False)  # Desmarca a opção de agenda
+            escolher_pagina_planilha['values'] = lista_paginas  # Atualiza os valores no combobox
+            escolher_pagina_planilha.pack(pady=5)  # Exibe o combobox
+            mensagem_origem.pack_forget()  # Esconde a mensagem de origem
+        else:  # Se a opção Excel não estiver marcada
+            mensagem_origem.pack(pady=5)  # Exibe a mensagem de origem
+            escolher_pagina_planilha.pack_forget()  # Esconde o combobox
 
-    # Adicionando os Checkbuttons dentro do frame
+    def alternar_agenda():
+        if enviar_agenda.get():
+            enviar_excel.set(False)
+            escolher_pagina_planilha.pack_forget()
+        mensagem_origem.pack(pady=5)
+            
+    mensagem_origem = tk.Label(frame_escolher_pagina, text="Lembre-se de escolher para quais contato da agenda deseja enviar a mensagem\nna opçao Excel, todos os contatos da lista serão enviados")
+    mensagem_origem.pack(pady=5)
+
+    escolher_pagina_planilha = ttk.Combobox(frame_escolher_pagina, values=lambda:listar_paginas(), width=30)
+    escolher_pagina_planilha.pack_forget()
+
+    # Criando as variáveis dos Checkbuttons
     enviar_excel = tk.BooleanVar()
-    check_excel = tk.Checkbutton(frame_checkbuttons, text="Enviar Excel", variable=enviar_excel, 
-        command=lambda: alternar_envio(enviar_excel, enviar_agenda))
+    check_excel = tk.Checkbutton(frame_checkbuttons, text="Enviar Excel", variable=enviar_excel, command=alternar_envio)
     check_excel.pack(side=tk.LEFT)
 
     enviar_agenda = tk.BooleanVar()
-    check_agenda = tk.Checkbutton(frame_checkbuttons, text="Enviar Agenda", variable=enviar_agenda, 
-        command=lambda: alternar_envio(enviar_agenda, enviar_excel))
-    check_agenda.pack()
+    check_agenda = tk.Checkbutton(frame_checkbuttons, text="Enviar Agenda", variable=enviar_agenda, command=alternar_agenda)
+    check_agenda.pack(side=tk.LEFT)
+
+
 
     # Adicionando o label 'Mensagem' abaixo dos checkbuttons
     tk.Label(mensagem_raiz, text="Mensagem").pack(pady=5)
@@ -312,7 +329,7 @@ def tela_mensagem(raiz_principal):
         frame_botoes,
         text="Enviar",
         command=lambda: montar_msg( 
-            definir_origem(enviar_excel.get(), enviar_agenda.get()),
+            definir_origem(enviar_excel.get(),escolher_pagina_planilha.get(), enviar_agenda.get()),
             #frequencia
             entrada_mensagem.get('1.0', tk.END)            
         ))
