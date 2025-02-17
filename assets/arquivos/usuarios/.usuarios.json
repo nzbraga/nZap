@@ -1,26 +1,11 @@
 [
     {
         "id": "89935500-f46b-436d-97a7-5a8410ff99bc",
-        "usuario": "A",
+        "usuario": "SESSAO DE TESTE",
         "senha": "d",
         "email": "b",
         "telefone": "c",
         "status": true
-    },
-    {
-        "id": "2eb40e8b-48f4-47cf-ab3f-ced81fbb6277",
-        "usuario": "A",
-        "senha": "d",
-        "email": "ba",
-        "telefone": "c",
-        "status": true
-    },
-    {
-        "id": "5f502a13-0368-48ab-8415-3fde8f0aa31d",
-        "usuario": "B",
-        "senha": "e",
-        "email": "c",
-        "telefone": "d",
-        "status": true
     }
+    
 ]

@@ -5,7 +5,7 @@
         "EMAIL": "nz@nz.com",
         "aniversario": "03-02",
         "status": true,
-        "enviar": false
+        "enviar": true
     },
     {
         "nome": "CLOVIS",
@@ -13,30 +13,14 @@
         "EMAIL": "NZ2@NZ2.COM",
         "aniversario": "03-03",
         "status": true,
-        "enviar": false
-    },
-    {
-        "nome": "BOB3",
-        "telefone": "2121212121",
-        "EMAIL": "nz21@21.com",
-        "aniversario": "03-05",
-        "status": true,
-        "enviar": false
-    },
-    {
-        "nome": "CLOVIS2",
-        "telefone": "2345678",
-        "EMAIL": "gg@gg.com",
-        "aniversario": "05-30",
-        "enviar": true,
-        "status": true
+        "enviar": true
     },
     {
         "nome": "HOMER",
         "telefone": "21 997633265",
         "EMAIL": "bb@bb.com",
         "aniversario": "28/11",
-        "enviar": false,
+        "enviar": true,
         "status": true
     }
 ]

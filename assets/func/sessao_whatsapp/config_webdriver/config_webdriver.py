@@ -37,14 +37,7 @@ def config_webdriver(headless, client):
 def check_login(existe_login=False):
     global driver
     if existe_login:
-        try:
-        # Aguarda até que o elemento <canvas> com o atributo 'aria-label' correto esteja presente
-            qr_code = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
-            )
-            print("Elemento encontrado:", qr_code)
-            return False
-        except:
+        try:       
             logado = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
             )
@@ -52,32 +45,39 @@ def check_login(existe_login=False):
                 return True
             else:
                 print("erro ao checar login")
+        except:
+            qr_code = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
+            )
+            print("Elemento encontrado:", qr_code)
+            return False
     else:
         try:
+             # Aguarda até que o elemento <canvas> com o atributo 'aria-label' correto esteja presente
+            qr_code = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
+            )
+            #print("Elemento encontrado:", qr_code)
+            return False
+        except:
             logado = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
+            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))            
             )
             if logado:
                 return True
             else:
                 print("erro ao checar login")
-        except:
-            qr_code = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
-            )
-            print("Elemento encontrado:", qr_code)
-            return False
 
-def enviar_mensagem(bruto_numero, mensagem):
+def enviar_mensagem(numero, mensagem):
     global driver
 
-    numero = f'+55{bruto_numero}@c.us'
+    
     
     # Busca pelo contato ou número
     search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
     search_box.click()
     search_box.clear()
-    search_box.send_keys(numero + Keys.ENTER)
+    search_box.send_keys(str(numero) + Keys.ENTER)
     time.sleep(2)  # Aguarda a tela do contato carregar
 
     # Digita e envia a mensagem
