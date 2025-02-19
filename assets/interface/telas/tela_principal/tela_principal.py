@@ -8,15 +8,6 @@ from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 
 
 def mostrar_tela(frame):
-    """
-    Mostra a tela passada como parâmetro na janela principal.
-
-    Atualiza o tamanho da janela principal com base no tamanho do frame
-    passado como parâmetro e a exibe na tela com tkraise().
-
-    :param frame: Frame da tela a ser exibida
-    :type frame: tkinter.Frame
-    """
 
     frame.update_idletasks()  # Atualiza as dimensões do frame
     largura = frame.winfo_reqwidth()

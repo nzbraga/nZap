@@ -1,14 +1,19 @@
 import os
 import tkinter as tk
+from pathlib import Path
+
 from assets.func.sessao.sessao import sessao_id, sessao_nome
 
 id_usuario = sessao_id()
 
 def manusear_deslogar(raiz):
     raiz.destroy()
-    caminho_arquivo = 'assets/arquivos/sessao/.sessao.json'
-    if os.path.exists(caminho_arquivo):
-        os.remove(caminho_arquivo)
+    #script_dir = os.path.dirname(os.path.abspath(__file__))  # Garante que estamos no diretório correto
+    base_dir = Path.home() / "nZap"
+    sessao_dir = base_dir / "sessao" / ".sessao.json"
+    
+    if os.path.exists(sessao_dir):
+        os.remove(sessao_dir)
         print("Arquivo apagado com sucesso.")
     else:
         print("Arquivo não encontrado.")
@@ -17,7 +22,7 @@ def manusear_deslogar(raiz):
     tela_login()
 
 def criar_tela_perfil(raiz_principal):
-    usuario = sessao_nome().upper()
+    usuario = sessao_nome()
     frame_perfil = tk.Frame(raiz_principal)
     
     tk.Label(frame_perfil, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)
@@ -35,6 +40,5 @@ def criar_tela_perfil(raiz_principal):
 
     raiz_principal.update_idletasks()  
     raiz_principal.geometry("")  
-
 
     return frame_perfil

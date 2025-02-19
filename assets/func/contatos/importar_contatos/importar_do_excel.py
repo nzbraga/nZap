@@ -1,9 +1,9 @@
-import os
 import sys
 import json
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog
+from pathlib import Path
 
 from assets.func.uteis.popUp import popUp
 from assets.func.contatos.checar_duplicatas_excel_para_json.checar_duplicatas_excel_para_json import checar_duplicatas_excel_para_json
@@ -23,31 +23,36 @@ def importar_excel():
         print("Nenhum arquivo selecionado.")
         popUp("Nenhum arquivo selecionado.")
         return
-    
-    caminho_pasta_contatos = os.path.join("assets/arquivos/contatos")
-    if not os.path.exists(caminho_pasta_contatos):
-        os.makedirs(caminho_pasta_contatos)
-    
-   
-    caminho_json = os.path.join(caminho_pasta_contatos, f"{usuario_id}.json")
-  
+
+    # Define a pasta de contatos dentro da pasta do usuário
+    caminho_pasta_contatos = Path.home() / "nZap" / "contatos"
+    caminho_pasta_contatos.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
+
+    # Define o caminho completo do JSON
+    caminho_json = caminho_pasta_contatos / f".{usuario_id}.json"
+
+    # Carrega os contatos do Excel
     info_excel = pd.read_excel(caminho_arquivo)
-    info_excel.columns = ["nome", "telefone", "EMAIL", "aniversario"]
-    
+    info_excel.columns = ["nome", "telefone", "email", "aniversario"]
+
     # Converter nomes para maiúsculas
     info_excel["nome"] = info_excel["nome"].str.upper()
-    
+
+    # Verifica duplicatas
     novos_contatos, contatos_existentes = checar_duplicatas_excel_para_json("telefone", caminho_json, info_excel)
-    
+
+    # Adiciona status aos novos contatos
     for contato in novos_contatos:
-        contato["status"] = True  # Define como novo contato
-        contato["enviar"] = True  # Define como novo contato
-    
+        contato["status"] = True
+        contato["enviar"] = True
+
+    # Remove duplicatas, mantendo os mais recentes
     contatos_sem_duplicatas = list({contato["telefone"]: contato for contato in contatos_existentes + novos_contatos}.values())
-    
-    with open(caminho_json, "w", encoding="utf-8") as f:
+
+    # Salva o JSON
+    with caminho_json.open("w", encoding="utf-8") as f:
         json.dump(contatos_sem_duplicatas, f, ensure_ascii=False, indent=4)
-    
+
     print(f"{len(novos_contatos)} novos contatos adicionados!")
     print(f"Arquivo salvo em: {caminho_json}")
     popUp(f"{len(novos_contatos)} novos contatos adicionados!")
