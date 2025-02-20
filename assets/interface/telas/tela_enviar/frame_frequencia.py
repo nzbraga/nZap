@@ -2,11 +2,11 @@ import os
 import tkinter as tk
 from tkinter import ttk
 
-from assets.interface.telas.tela_mensagem.uteis.opcoes_frequencia import *
-from assets.interface.telas.tela_mensagem.uteis.ano_bissexto import ano_bissexto
+from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
+from assets.interface.telas.tela_enviar.uteis.ano_bissexto import ano_bissexto
 from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 from assets.func.mensagem.definir_origem.definir_origem import definir_origem
-from assets.interface.telas.tela_mensagem.tela_mensagem import *
+from assets.interface.telas.tela_enviar.tela_enviar import *
 
 from assets.func.uteis.popUp import popUp
 

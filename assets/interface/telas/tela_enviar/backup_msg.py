@@ -2,8 +2,8 @@ import os
 import tkinter as tk
 from tkinter import ttk
 
-from assets.interface.telas.tela_mensagem.uteis.opcoes_frequencia import *
-from assets.interface.telas.tela_mensagem.uteis.ano_bissexto import ano_bissexto
+from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
+from assets.interface.telas.tela_enviar.uteis.ano_bissexto import ano_bissexto
 from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 from assets.func.mensagem.definir_origem.definir_origem import definir_origem
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo
@@ -12,7 +12,7 @@ from assets.func.uteis.popUp import popUp
 
 lista_paginas = []
 
-def tela_mensagem(raiz_principal):
+def tela_enviar(raiz_principal):
     global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias, botao_agendar,  botao_enviar, lista_paginas
     
     mensagem_raiz = tk.Frame(raiz_principal) 
