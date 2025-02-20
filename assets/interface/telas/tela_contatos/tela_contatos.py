@@ -18,8 +18,6 @@ base_path.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
 # Define o caminho completo do JSON
 caminho_json = base_path / "contatos" / f".{usuario_id}.json"
 
-
-
 # Garantir que o diretório existe
 os.makedirs(os.path.dirname(caminho_json), exist_ok=True)
 
@@ -99,6 +97,7 @@ def editar_contato():
     tela_criar_contatos(atualizar_lista, contato)
 
 def tela_contatos(raiz_principal):
+    global tree
     def filtrar_contatos(event=None):
         termo = entrada_filtro.get().strip().lower()  # Captura o texto digitado e converte para minúsculas
         contatos = carregar_contatos()
@@ -222,7 +221,7 @@ def tela_contatos(raiz_principal):
     tree_scroll = tk.Scrollbar(tela_tree)
     tree_scroll.pack(side=tk.RIGHT, fill=tk.Y)
     
-    global tree
+    
     tree = ttk.Treeview(tela_tree, columns=columns, show="headings", yscrollcommand=tree_scroll.set)
     tree_scroll.config(command=tree.yview)
 

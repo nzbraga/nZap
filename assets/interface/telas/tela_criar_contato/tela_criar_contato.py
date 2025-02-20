@@ -44,8 +44,8 @@ def salvar_contato(nome, telefone, email, data, telefone_original=None, atualiza
             "telefone": telefone,
             "email": email,
             "aniversario": data,
-            "enviar": False,
-            "status": True
+            "status": True,
+            "enviar": False
         }
         contatos.append(novo_contato)
     

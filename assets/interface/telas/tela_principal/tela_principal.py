@@ -22,7 +22,7 @@ raiz_principal = tk.Tk()
 raiz_principal.title("nZap -  Bem vindo!")
 raiz_principal.grid_rowconfigure(0, weight=1)
 raiz_principal.grid_columnconfigure(0, weight=1)
-raiz_principal.resizable(False, False)
+#raiz_principal.resizable(False, False)
 
 raiz_principal.minsize(500, 250)
 
