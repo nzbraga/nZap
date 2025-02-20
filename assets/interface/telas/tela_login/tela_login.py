@@ -23,16 +23,14 @@ def manusear_login(raiz, usuario, senha):
             return
 
         else:
-            raiz.destroy()
-            from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
-            mostrar_tela()
+            checar_login(raiz)
         
 def checar_login(raiz):
     usuario_id = checar_logado()
     if usuario_id:
         raiz.destroy()
-        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela
-        mostrar_tela()
+        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame1
+        mostrar_tela(frame1)
 
 def tela_login():
     

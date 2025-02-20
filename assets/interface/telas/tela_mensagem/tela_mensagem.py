@@ -1,13 +1,9 @@
-import os
 import tkinter as tk
 from tkinter import ttk
 
 from assets.interface.telas.tela_mensagem.uteis.opcoes_frequencia import *
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo
 from assets.interface.telas.tela_mensagem.frame_frequencia import tela_frequencia
-
-
-from assets.func.uteis.popUp import popUp
 
 lista_paginas = []
 
@@ -43,7 +39,6 @@ def tela_mensagem(raiz_principal):
             escolher_pagina_planilha.pack_forget()
             botao_abrir_excel.pack_forget()
     
-
     escolher_pagina_planilha = ttk.Combobox(frame_escolher_pagina, width=30)
     escolher_pagina_planilha.pack_forget()
 

@@ -18,7 +18,7 @@ class WhatsAppAPI:
     def api_logada(self, novo_valor):
         if self._api_logada != novo_valor:
             self._api_logada = novo_valor
-            print(f"API mudou para: {'Conectado' if novo_valor else 'Desconectado'}")
+            ##print(f"API mudou para: {'Conectado' if novo_valor else 'Desconectado'}")
             if self.atualizar_interface_callback:
                 self.atualizar_interface_callback()  # Atualiza a UI
 
@@ -28,10 +28,10 @@ usuario_id = sessao_id()
 def start_whatsapp(client):
     """ Inicia o WhatsApp e exibe um pop-up de carregamento. """
     
-    popUp_janela = popUp_bar("Iniciando login no WhatsApp...")
 
     def login_whatsapp():
         global existe_login
+        popUp_janela = popUp_bar("Iniciando login no WhatsApp...")
 
         caminho = f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{usuario_id}"
         existe_login = os.path.isdir(caminho)
@@ -46,41 +46,48 @@ def start_whatsapp(client):
             # se nao estiver logado abre a janela visivel
             if not whatsapp_api.api_logada:
                 
+                
                 config_webdriver(False, client)
                 whatsapp_api.api_logada = check_login(False)
+                
                 # quando estiver logado fecha a janela e abre janela invisivel
                 if whatsapp_api.api_logada:
+                    
                     config_webdriver(True, client)
                     whatsapp_api.api_logada = check_login(True)
+                    
                     # confira janela aberta e finaliza
                     if whatsapp_api.api_logada:
-                        print("DEVERIA FECHAR!!!!!!!!!!!!!!!!!!")
-                        popUp_janela.after(100, popUp_janela.destroy)  # ✅ Fecha corretamente a UI
+                        
+                        
+                        popUp_janela.after(100, popUp_janela.destroy)  
                         popUp("WhatsApp iniciado")                
                         return True
                     else:
-                        print("DEVERIA FECHAR!!!!!!!!!!!!!!!!!!")
-                        popUp_janela.after(100, popUp_janela.destroy)  # ✅ Fecha corretamente a UI
+                        
+                        
+                        popUp_janela.after(100, popUp_janela.destroy)  
                         popUp("Erro ao logar WhatsApp")                
                         return False
         # se nao tiver a pasta de login cria e abre a janela visivel para ler qr code
-            print("DEVERIA FECHAR!!!!!!!!!!!!!!!!!!")
-            popUp_janela.after(100, popUp_janela.destroy)  # ✅ Fecha corretamente a UI
+
+            popUp_janela.after(100, popUp_janela.destroy)  
         else:
             config_webdriver(False, client)
-            print("DEVERIA FECHAR!!!!!!!!!!!!!!!!!!")
-            popUp_janela.after(100, popUp_janela.destroy)  # ✅ Fecha corretamente a UI
+           
+            popUp_janela.after(100, popUp_janela.destroy)  
             popUp('Após conectar o WhatsApp, pressione OK')
-            whatsapp_api.api_logada = check_login(False)
+            popUp_janela = popUp_bar("Iniciando login no WhatsApp...")
+            whatsapp_api.api_logada = check_login(True)
+            
+            config_webdriver(True, client)
 
             if whatsapp_api.api_logada:
-                config_webdriver(True, client)
-                whatsapp_api.api_logada = check_login(True)
+                popUp_janela.after(100, popUp_janela.destroy)
+                popUp("WhatsApp iniciado")
+                return True
+            popUp_janela.after(100, popUp_janela.destroy)  
 
-                if whatsapp_api.api_logada:
-                    print("DEVERIA FECHAR!!!!!!!!!!!!!!!!!!")
-                    popUp_janela.after(100, popUp_janela.destroy)  # ✅ Fecha corretamente a UI
-                    popUp("WhatsApp iniciado")
-                    return True
-
+        
+        
     threading.Thread(target=login_whatsapp, daemon=True).start()
