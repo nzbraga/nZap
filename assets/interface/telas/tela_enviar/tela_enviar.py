@@ -1,9 +1,11 @@
+import json
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk
 
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo, arquivo_selecionado
-from assets.func.mensagem.listar_mensagens.listar_mensagens import listar_mensagens, obter_mensagem
+from assets.func.mensagem.listar_mensagens.listar_mensagens import listar_mensagens
 
 
 from assets.interface.telas.tela_enviar.frame_frequencia import tela_frequencia
@@ -14,6 +16,23 @@ from assets.func.sessao.sessao import sessao_id
 usuario_id = sessao_id()
 lista_paginas = []
 lista_mensagens = []
+
+def obter_mensagem(usuario_id: str, indice: str):
+    global entrada_mensagem
+    base_path = Path.home() / "nZap"
+    caminho_json = base_path / "mensagens" / f".{usuario_id}.json"
+    
+    if not caminho_json.exists():
+        print("Arquivo JSON não encontrado.")
+        return None
+    
+    with open(caminho_json, "r", encoding="utf-8") as arquivo:
+        try:
+            dados = json.load(arquivo)
+            entrada_mensagem = dados.get(indice, "Índice não encontrado.")
+        except json.JSONDecodeError:
+            print("Erro ao ler o arquivo JSON.")
+            return None
 
 
 
@@ -28,13 +47,13 @@ def tela_enviar(raiz_principal):
     frame_escolher_pagina.pack(pady=5)
     def alternar_excel():
         global lista_paginas, arquivo_selecionado  # Torna a lista global para ser acessada dentro da função
+        enviar_agenda.set(False) 
 
         if not arquivo_selecionado:
             selecionar_arquivo()
 
         if enviar_excel.get():  # Se a opção Excel estiver marcada
-            enviar_agenda.set(False)  
-            botao_abrir_agenda.pack_forget()
+            escolher_pagina_planilha.pack(side=tk.LEFT)
             botao_abrir_excel.pack(side=tk.LEFT)
             lista_paginas = listar_paginas()
 
@@ -47,23 +66,17 @@ def tela_enviar(raiz_principal):
             
     def alternar_agenda():
         global lista_paginas  # Torna a lista global para ser acessada dentro da função
+        enviar_excel.set(False)
 
         if enviar_agenda.get():  # Se a opção agenda estiver marcada
-            enviar_excel.set(False)
-            botao_abrir_excel.pack_forget() 
-            botao_abrir_agenda.pack(side=tk.LEFT) 
-            lista_paginas = listar_mensagens(usuario_id)
+            escolher_pagina_planilha.pack_forget()
+            botao_abrir_excel.pack_forget()
 
-            if lista_paginas:  # Só atualiza se a lista não for vazia
-                escolher_pagina_planilha['values'] = lista_paginas
-                escolher_pagina_planilha.current(0)
-            else:
-                print("Nenhuma planilha foi selecionada ou erro ao carregar páginas.")
             
 
     escolher_pagina_planilha = ttk.Combobox(frame_escolher_pagina, width=30)
-    escolher_pagina_planilha.pack(side=tk.LEFT)
-    
+    escolher_pagina_planilha.pack_forget()
+
     botao_abrir_excel = tk.Button(
         frame_escolher_pagina,
         text="Abrir",
@@ -102,6 +115,17 @@ def tela_enviar(raiz_principal):
                        
             )
     botao_salvar_mensagem.pack(padx=5)
+
+    escolher_mensagem = ttk.Combobox(mensagem_raiz,values=listar_mensagens(usuario_id), width=30)
+    escolher_mensagem.pack(pady=5)
+
+    botao_salvar_mensagem = tk.Button(
+        mensagem_raiz,
+        text="Escolher Mensagem",
+        command=lambda: obter_mensagem(usuario_id,escolher_mensagem.get()))                       
+    botao_salvar_mensagem.pack(padx=5)
+    
+
 
     frame_frequencia = tela_frequencia(mensagem_raiz)
     frame_frequencia.pack(pady=5)  # Adiciona o frame ao layout
