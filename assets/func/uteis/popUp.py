@@ -8,8 +8,8 @@ def popUp(message):
     popUp.attributes("-topmost", True)
         
     # Definir o tamanho da janela
-    largura_janela = 300
-    altura_janela = 80
+    largura_janela = 400
+    altura_janela = 100
 
     # Obter o tamanho da tela
     largura_tela = 1920

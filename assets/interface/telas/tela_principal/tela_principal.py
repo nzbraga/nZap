@@ -6,8 +6,6 @@ from assets.interface.telas.tela_enviar.tela_enviar import tela_enviar
 from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 
-
-
 def mostrar_tela(frame):
 
     frame.update_idletasks()  # Atualiza as dimensões do frame

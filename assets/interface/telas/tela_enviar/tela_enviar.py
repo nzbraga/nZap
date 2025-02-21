@@ -89,10 +89,11 @@ def tela_enviar(raiz_principal):
     frame_destinatario = tk.Frame(frame_escolher_pagina)
     frame_destinatario.pack_forget()
 
-    tk.Label(frame_destinatario, text="escolher campo com contato\ndo usuario(padrão 'contato')").pack(pady=5)
+    tk.Label(frame_destinatario, text="Escolher campo\ncom contato do usuario").pack(pady=5)
 
-    entrada_mensagem = tk.Text(frame_destinatario, width=15, height=1)
-    entrada_mensagem.pack(pady=5)
+    entrada_destinatario = tk.Text(frame_destinatario, width=15, height=1)
+    entrada_destinatario.insert('1.0' , 'contato')
+    entrada_destinatario.pack(pady=5)
 
     
     enviar_excel = tk.BooleanVar()
@@ -134,13 +135,14 @@ def tela_enviar(raiz_principal):
 
     botao_enviar = tk.Button(
     mensagem_raiz,
-    text="enviar",
+    text="Enviar",
     command=lambda: montar_msg( 
         definir_origem(
             enviar_excel.get(),
             escolher_pagina_planilha.current(),
             enviar_agenda.get()),
-            entrada_mensagem.get('1.0', tk.END)            
+            entrada_mensagem.get('1.0', tk.END),
+            entrada_destinatario.get('1.0', tk.END).strip()            
     ))
     botao_enviar.pack(pady=5)
 

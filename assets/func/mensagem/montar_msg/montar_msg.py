@@ -14,8 +14,8 @@ def substituir_variaveis(mensagem, contato):
     def substituir(match):
         chave = match.group(1)
         if chave not in contato:
-            popUp(f"Erro: chave '{chave}' não encontrada para o contato {contato.get('nome', 'Desconhecido')}.")
-            raise ValueError(f"Erro: chave '{chave}' não encontrada para o contato {contato.get('nome', 'Desconhecido')}.")
+            raise popUp(f"Erro: chave '{chave}' não encontrada para o contato {contato.get('nome', 'Desconhecido')}.")
+            #raise ValueError(f"Erro: chave '{chave}' não encontrada para o contato {contato.get('nome', 'Desconhecido')}.")
         return contato[chave]
     
     try:
@@ -25,7 +25,7 @@ def substituir_variaveis(mensagem, contato):
 
 limitador = 0
 
-def montar_msg(contatos, mensagem, destinatario='contato', limite=5):
+def montar_msg(contatos, mensagem, destinatario= 'contato', limite=5):
     global limitador
     if not contatos:
         popUp("Nenhum contato selecionado.")
@@ -34,17 +34,21 @@ def montar_msg(contatos, mensagem, destinatario='contato', limite=5):
     if not mensagem or not mensagem.strip():
         popUp("Mensagem vazia.")
         return
-
+  
       
     for contato in contatos:
         mensagem_personalizada = substituir_variaveis(mensagem, contato)
+           
         if mensagem_personalizada is None:
             popUp(f"Erro ao processar mensagem para {contato.get('nome', 'Desconhecido')}.")
             return  # Interrompe a execução se houver erro
-
+        
+        if not contato.get(destinatario):  # Verifica se a chave não existe ou está vazia
+            popUp(f"Contato não encontrado.\nConfirme se o campo '{destinatario}' existe no arquivo Excel.")
+        
         mensagem_completa = f"{mensagem_personalizada}"
-        print(f"contato: {contato['contato']}\nmensagem: {mensagem_completa}")
-        enviar_mensagem(contato["contato"], mensagem_completa)
+        print(f"contato: {contato[destinatario]}\nmensagem: {mensagem_completa}")
+        enviar_mensagem(contato[destinatario], mensagem_completa)
         print('pausa de 3s')
         time.sleep(3)
         
@@ -54,3 +58,5 @@ def montar_msg(contatos, mensagem, destinatario='contato', limite=5):
             if not resposta:
                 print("Usuário optou por parar o envio.")
                 return
+            
+    popUp("Mensagens enviadas com sucesso.")  
