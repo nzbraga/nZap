@@ -12,8 +12,9 @@ base_dir = Path.home() / "nZap" / "contatos"
 base_dir.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
 
 def definir_origem(excel, pagina_excel, agenda):
-    print(f'excel{excel}\npagina_excel{pagina_excel}\nagenda{agenda}')
+    print(f'excel: {excel}\npagina_excel: {pagina_excel}\nagenda: {agenda}')
     global dados_contatos
+    
     if excel:
         try:
             sheet = info_planilha(pagina_excel)
@@ -24,34 +25,26 @@ def definir_origem(excel, pagina_excel, agenda):
             return []
 
         try:
-            header = [cell.value for cell in sheet[1]]  # Captura os nomes das colunas
+            # Captura os nomes das colunas
+            header = [cell.value for cell in sheet[1]]  
             dados_contatos = []
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                row_dict = dict(zip(header, row))  # Transforma a linha em um dicionário
-
+                row_dict = dict(zip(header, row))
+                
                 if row_dict.get("nome") is None or row_dict["nome"] == "":
                     break
 
-                raw_numero = row_dict.get("telefone")  # Altere conforme o nome real da coluna
-                raw_nome = row_dict.get("nome")
-                aniversario = row_dict.get("aniversario")
-
-                dados_contatos.append({
-                    "nome": raw_nome,
-                    "telefone": raw_numero,
-                    "aniversario": aniversario
-                })
-
+                dados_contatos.append(row_dict)
         except Exception:
-            popUp("Nenhuma planilha selecionada")
+            popUp("Erro ao processar os dados da planilha")
             return []
 
-        return dados_contatos  # Retorna a lista de dicionários, não mais json.dumps()
+        return dados_contatos
 
     elif agenda:
         caminho_agenda = base_dir / f".{usuario_id}.json"
-        print(f'caminho agenda{caminho_agenda}')
+        print(f'caminho agenda: {caminho_agenda}')
         try:
             with caminho_agenda.open("r", encoding="utf-8") as f:
                 contatos = json.load(f)

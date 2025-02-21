@@ -1,4 +1,7 @@
 import re
+from tkinter import messagebox
+import time
+
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
 from assets.func.mensagem.saudacao.saudacao import definir_saudacao
@@ -17,11 +20,13 @@ def substituir_variaveis(mensagem, contato):
     
     try:
         return re.sub(r"@(\w+)", substituir, mensagem)
-    except ValueError as e:
-        print(e)
+    except ValueError:
         return None  # Retorna None para indicar erro
 
-def montar_msg(contatos, mensagem):
+limitador = 0
+
+def montar_msg(contatos, mensagem, destinatario='contato', limite=5):
+    global limitador
     if not contatos:
         popUp("Nenhum contato selecionado.")
         return
@@ -30,6 +35,7 @@ def montar_msg(contatos, mensagem):
         popUp("Mensagem vazia.")
         return
 
+      
     for contato in contatos:
         mensagem_personalizada = substituir_variaveis(mensagem, contato)
         if mensagem_personalizada is None:
@@ -37,5 +43,14 @@ def montar_msg(contatos, mensagem):
             return  # Interrompe a execução se houver erro
 
         mensagem_completa = f"{mensagem_personalizada}"
-        print(f"contato: {contato['telefone']}\nmensagem: {mensagem_completa}")
-        # enviar_mensagem(contato["telefone"], mensagem_completa)
+        print(f"contato: {contato['contato']}\nmensagem: {mensagem_completa}")
+        enviar_mensagem(contato["contato"], mensagem_completa)
+        print('pausa de 3s')
+        time.sleep(3)
+        
+        limitador += 1
+        if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação
+            resposta = messagebox.askyesno("Confirmação", f"{limite} mensagens enviadas, deseja continuar?")
+            if not resposta:
+                print("Usuário optou por parar o envio.")
+                return
