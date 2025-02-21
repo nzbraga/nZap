@@ -4,21 +4,19 @@ from tkinter import ttk
 
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.interface.telas.tela_enviar.uteis.ano_bissexto import ano_bissexto
-from assets.func.mensagem.montar_msg.montar_msg import montar_msg
-from assets.func.mensagem.definir_origem.definir_origem import definir_origem
-from assets.interface.telas.tela_enviar.tela_enviar import *
-
-from assets.func.uteis.popUp import popUp
 
 lista_paginas = []
 
-def tela_frequencia(raiz_principal):
-    global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias, botao_agendar, botao_enviar, lista_paginas
+def tela_frequencia():
+    global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias,lista_paginas
+        
+    raiz_frequancia = tk.Tk()
+    raiz_frequancia.title("Frequência de Envio")
+    raiz_frequancia.geometry("400x400")
     
-    janela_principal = raiz_principal.winfo_toplevel()
-    janela_principal.geometry(f"{janela_principal.winfo_reqwidth()}x{janela_principal.winfo_reqheight()}")
-    
-    frame_frequencia = tk.Frame(raiz_principal)  # Criando o frame principal
+    frame_frequencia = tk.Frame(raiz_frequancia)  # Criando o frame principal
+    frame_frequencia.pack(pady=20)
+
 
     def atualizar_frequencia(event):
         frame_frequencia.update_idletasks()
@@ -41,12 +39,12 @@ def tela_frequencia(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-            botao_enviar.pack_forget()
+    
             botao_agendar.pack_forget()
            
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
         
         elif selecao == "Semanal" or selecao == "Quinzanal":
             frame_semanas.pack(pady=5)
@@ -62,13 +60,13 @@ def tela_frequencia(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-            botao_enviar.pack_forget()
+    
             botao_agendar.pack_forget()
 
            
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
 
         elif selecao == "Anual":
             frame_meses.pack(pady=5)
@@ -84,17 +82,17 @@ def tela_frequencia(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-            botao_enviar.pack_forget()
+    
             botao_agendar.pack_forget()
 
             
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
 
         elif selecao in ["Aniversario", "Vencimento", "Diario"]:
             botao_agendar.pack(pady=10) 
-            botao_enviar.pack_forget()
+    
 
             frame_meses.pack_forget()
             combo_meses.pack_forget()
@@ -110,8 +108,8 @@ def tela_frequencia(raiz_principal):
 
             frame_ajuda.pack_forget()
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
             
         elif selecao ==  "Unica":
             botao_agendar.pack_forget()
@@ -137,9 +135,9 @@ def tela_frequencia(raiz_principal):
 
             frame_ajuda.pack_forget()
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
-           
+        
+        
+          
     def atualizar_meses(event):
         
         frame_frequencia.update_idletasks()
@@ -158,8 +156,8 @@ def tela_frequencia(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
 
         elif selecao == "Fevereiro":
             if ano_bissexto():
@@ -174,8 +172,8 @@ def tela_frequencia(raiz_principal):
                 combo_30_dias.pack_forget()               
                 combo_28_dias.pack_forget()
 
-                janela_principal.update_idletasks()
-                janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+            
+            
             else:
             
                 frame_dias.pack(pady=5)
@@ -189,8 +187,8 @@ def tela_frequencia(raiz_principal):
                 combo_30_dias.pack_forget()
                 combo_29_dias.pack_forget()
                 
-                janela_principal.update_idletasks()
-                janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+            
+            
 
         elif selecao in ["Abril", "Junho", "Setembro", "Novembro"]:
         
@@ -205,8 +203,8 @@ def tela_frequencia(raiz_principal):
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-            janela_principal.update_idletasks()
-            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        
 
     def atualizar_semanas(event):
         frame_frequencia.update_idletasks()
@@ -215,8 +213,8 @@ def tela_frequencia(raiz_principal):
         if selecao:
             frame_ajuda.pack_forget()
             botao_agendar.pack(pady=10)
-        janela_principal.update_idletasks()
-        janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")   
+    
+    
     
     def atualizar_dias(event):
         frame_frequencia.update_idletasks()
@@ -226,8 +224,8 @@ def tela_frequencia(raiz_principal):
             frame_ajuda.pack_forget()
             botao_agendar.pack(pady=10)
         
-        janela_principal.update_idletasks()
-        janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+    
+    
 
 
     label_frequencia = tk.Label(frame_frequencia, text="Frequência")
@@ -272,28 +270,12 @@ def tela_frequencia(raiz_principal):
     frame_ajuda = tk.Label(frame_botoes, text="Escolha uma frequencia para enviar a mensagem")
     frame_ajuda.pack(pady=5)
 
-    
     botao_agendar = tk.Button(
-        frame_botoes,
-        text="Agendar",
-        command=lambda: popUp(
-            f"Agendado: {entrada_mensagem.get('1.0', tk.END)}"
-            # criar agendamento
-            ))
+    frame_frequencia,
+    text="Salvar",
+    command=lambda:
+        print('Salvar agendamento')
+    )
     botao_agendar.pack_forget()
-
-    botao_enviar = tk.Button(
-        frame_botoes,
-        text="enviar",
-        command=lambda: montar_msg( 
-            definir_origem(
-                enviar_excel.get(),
-                escolher_pagina_planilha.current(),
-                enviar_agenda.get()),
-                entrada_mensagem.get('1.0', tk.END)            
-        ))
-    botao_enviar.pack_forget()
-    
-    
 
     return frame_frequencia

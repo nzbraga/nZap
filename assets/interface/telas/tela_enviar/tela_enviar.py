@@ -6,11 +6,13 @@ from tkinter import ttk
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo, arquivo_selecionado
 from assets.func.mensagem.listar_mensagens.listar_mensagens import listar_mensagens
-from assets.interface.telas.tela_enviar.uteis.obter_mensagem import obter_mensagem
 from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 from assets.func.mensagem.definir_origem.definir_origem import definir_origem
+from assets.func.mensagem.agendamento.agendamento import agendar_mensagem
 
-#from assets.interface.telas.tela_enviar.frame_frequencia import tela_frequencia
+from assets.interface.telas.tela_enviar.frame_frequencia import tela_frequencia
+
+from assets.interface.telas.tela_enviar.uteis.obter_mensagem import obter_mensagem
 from assets.interface.telas.tela_enviar.uteis.salvar_mensagem import salvar_mensagem
 from assets.func.sessao.sessao import sessao_id
 
@@ -33,11 +35,11 @@ def tela_enviar(raiz_principal):
     janela_principal = raiz_principal.winfo_toplevel()
     janela_principal.geometry(f"{janela_principal.winfo_reqwidth()}x{janela_principal.winfo_reqheight()}")
     
-    mensagem_raiz = tk.Frame(raiz_principal) 
-    frame_checkbuttons = tk.Frame(mensagem_raiz)
+    enviar_raiz = tk.Frame(raiz_principal) 
+    frame_checkbuttons = tk.Frame(enviar_raiz)
     frame_checkbuttons.pack(pady=(15,5))
     
-    frame_escolher_pagina = tk.Frame(mensagem_raiz)
+    frame_escolher_pagina = tk.Frame(enviar_raiz)
     frame_escolher_pagina.pack(pady=5)
     
     def alternar_excel():
@@ -104,9 +106,9 @@ def tela_enviar(raiz_principal):
     check_agenda = tk.Checkbutton(frame_checkbuttons, text="enviar Agenda", variable=enviar_agenda, command=alternar_agenda)
     check_agenda.pack(side=tk.LEFT)
 
-    tk.Label(mensagem_raiz, text="Mensagem:").pack(pady=5)
+    tk.Label(enviar_raiz, text="Mensagem:").pack(pady=5)
     
-    frame_escolher_mensagem = tk.Frame(mensagem_raiz)
+    frame_escolher_mensagem = tk.Frame(enviar_raiz)
     frame_escolher_mensagem.pack(pady=5)
 
     escolher_mensagem = ttk.Combobox(frame_escolher_mensagem, values=listar_mensagens(usuario_id), width=30)
@@ -122,33 +124,33 @@ def tela_enviar(raiz_principal):
         )
     )
     botao_escolher_mensagem.pack(padx=5)
-    entrada_mensagem = tk.Text(mensagem_raiz, width=40, height=10)
+
+    entrada_mensagem = tk.Text(enviar_raiz, width=40, height=10)
     entrada_mensagem.pack(pady=5)
 
-    botao_salvar_mensagem = tk.Button(
-        mensagem_raiz,
-        text="Salvar Mensagem",
-        command=salvar_e_atualizar_mensagem
-    )
-    botao_salvar_mensagem.pack(padx=5)
+    frame_botao = tk.Frame(enviar_raiz)
+    frame_botao.pack(pady=15)
 
+    botao_agendar = tk.Button(
+    frame_botao,
+    text="Agendar",
+    command=lambda: 
+        tela_frequencia()
+        )
+    botao_agendar.pack(side=tk.LEFT)
 
     botao_enviar = tk.Button(
-    mensagem_raiz,
-    text="Enviar",
-    command=lambda: montar_msg( 
-        definir_origem(
-            enviar_excel.get(),
-            escolher_pagina_planilha.current(),
-            enviar_agenda.get()),
-            entrada_mensagem.get('1.0', tk.END),
-            entrada_destinatario.get('1.0', tk.END).strip()            
-    ))
-    botao_enviar.pack(pady=5)
-
-    """
-    frame_frequencia = tela_frequencia(mensagem_raiz)
-    frame_frequencia.pack(pady=5)
-    """
+        frame_botao,
+        text="Enviar",
+        command=lambda: montar_msg( 
+            definir_origem(
+                enviar_excel.get(),
+                escolher_pagina_planilha.current(),
+                enviar_agenda.get()
+                ),
+                entrada_mensagem.get('1.0', tk.END)            
+        ))
+    botao_enviar.pack(padx=15)
     
-    return mensagem_raiz
+    
+    return enviar_raiz
