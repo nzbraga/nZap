@@ -96,7 +96,7 @@ def tela_criar_contatos(atualizar_lista_callback=None, contato=None):
             contato["telefone"] if contato else None,
             atualizar_lista_callback
         )
-        janela.destroy()
+        janela.withdraw()
     
     tk.Button(janela, text="Salvar", command=salvar_e_atualizar).pack(pady=20)
     

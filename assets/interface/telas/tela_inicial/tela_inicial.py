@@ -1,7 +1,10 @@
-import os
 import tkinter as tk
 from assets.func.sessao.sessao import sessao_id, sessao_nome
 from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp, whatsapp_api
+
+from assets.func.uteis.popUp import popUp
+
+
 
 id_usuario = sessao_id()
 
@@ -34,7 +37,7 @@ def criar_tela_inicial(raiz_principal):
     botao_conectar = tk.Button(frame_inicial, text="Conectar", font=("Arial", 14), bg='green', 
                                command=lambda: start_whatsapp(id_usuario))
     botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 10), bg='orange', 
-                                  command=lambda: setattr(whatsapp_api, 'api_logada', not whatsapp_api.api_logada))
+                                  command=lambda: [(setattr(whatsapp_api, 'api_logada', not whatsapp_api.api_logada)),popUp('Encere a sessão pelo seu Telefone!')])
 
     # 🔥 Atualiza a interface uma vez ao iniciar
     atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar)

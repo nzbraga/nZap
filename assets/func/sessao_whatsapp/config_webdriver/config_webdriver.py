@@ -1,6 +1,4 @@
-import os
 import time
-import signal
 from pathlib import Path
 
 from selenium import webdriver
@@ -10,75 +8,36 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from assets.func.sessao_whatsapp.uteis.definir_pasta import definir_pasta
-
 from assets.func.uteis.popUp import popUp
 
-
 driver = None
-navegador_aberto = False
 
 base_dir = Path.home() / "nZap"
-base_dir.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
+base_dir.mkdir(parents=True, exist_ok=True) 
 
 sucesso_arquivo = base_dir / "sucesso.txt"
 erro_arquivo = base_dir / "erro.txt"
-import os
-import signal
-import time
-
-def reiniciar_pagina_especifica():
-    try:
-        driver.get("https://web.whatsapp.com")  # Recarrega a página Web WhatsApp
-        print("Página Web WhatsApp recarregada com sucesso!")
-    except Exception as e:
-        print(f"Erro ao tentar recarregar a página: {e}")
 
 
 def config_webdriver(headless, client):
-    global driver, navegador_aberto
-
-    if driver is not None and driver.service.is_connectable():
-        print("O navegador já está aberto!")
-        return  # Impede a criação de uma nova instância
+    global driver
 
     if driver is not None:
         driver.quit()
-
+    
     options = webdriver.ChromeOptions()
     options.page_load_strategy = 'eager'
-
     if headless:
-        options.add_argument("--headless")
-        options.add_argument("--remote-debugging-port=9222")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--headless=new")  # Usa um modo mais estavel do headless
+    options.add_argument("--disable-gpu")  # Corrige problemas graficos em headless
+    options.add_argument("--no-sandbox")  # Evita problemas de permissões
+    options.add_argument("--disable-dev-shm-usage")  # Evita uso excessivo de memória compartilhada
     options.add_argument(f"user-data-dir={definir_pasta(client)}")
 
-    try:
-        driver = webdriver.Chrome(options=options)
-        driver.get("https://web.whatsapp.com")
-        if driver is not None:
-            navegador_aberto = True
-    except Exception as e:
-        print(f"Erro ao iniciar o WebDriver: {e}")
-        print("Tentando fechar o Chrome e reiniciar o WebDriver...")
-        
-        # Fechar qualquer instância do Chrome
-        reiniciar_pagina_especifica()
+    driver = webdriver.Chrome(options=options)
+    driver.get("https://web.whatsapp.com")
 
-        # Aguardar um pouco antes de tentar iniciar novamente
-        time.sleep(3)
-
-        # Tentar reiniciar o WebDriver
-        try:
-            driver = webdriver.Chrome(options=options)
-            driver.get("https://web.whatsapp.com")
-            if driver is not None:
-                navegador_aberto = True
-        except Exception as e:
-            print(f"Falha ao reiniciar o WebDriver: {e}")
-
+    
 
 def check_login(existe_login=False):
     global driver

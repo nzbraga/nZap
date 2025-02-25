@@ -27,7 +27,7 @@ def autenticar_login(raw_usuario, senha):
             return False
         
         if user.get("usuario") == usuario and user.get("senha") == senha:
-            # Criando sessão com ID e nome do usuário autenticado
+            sessao_dir.mkdir(parents=True, exist_ok=True)
             sessao = {"id": user.get("id", "desconhecido"), "nome": user.get("usuario", "desconhecido")}
             with ARQUIVO_SESSAO.open("w", encoding="utf-8") as f:
                 print(f'arquivo criado na pasta{ARQUIVO_SESSAO} com sucesso.')

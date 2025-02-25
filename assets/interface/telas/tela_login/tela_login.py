@@ -1,5 +1,5 @@
 import tkinter as tk
-import threading
+import time
 
 from assets.func.login.logar import logar
 from assets.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
@@ -13,7 +13,7 @@ from assets.func.uteis.popUp import popUp, popUp_bar
 
 
 def manusear_criar_usuario(raiz):   
-    raiz.destroy()
+    raiz.withdraw()
     tela_criar_usuario()
 
 def manusear_login(raiz, usuario, senha):
@@ -30,10 +30,11 @@ def manusear_login(raiz, usuario, senha):
 def checar_login(raiz):
     usuario_id = checar_logado()
     if usuario_id:
-        start_whatsapp(usuario_id)          
-        raiz.destroy()
-        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame1
-        mostrar_tela(frame1)
+        start_whatsapp(usuario_id)  
+        time.sleep(2)        
+        raiz.withdraw()
+        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame0
+        mostrar_tela(frame0)
 
 def tela_login():
     

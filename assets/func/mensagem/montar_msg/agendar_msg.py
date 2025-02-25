@@ -5,7 +5,6 @@ from tkinter import messagebox
 
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
-from assets.func.mensagem.saudacao.saudacao import definir_saudacao
 
 
 def formatar_valor(contato, chave):

@@ -9,7 +9,7 @@ from assets.func.uteis.popUp import popUp
 
 def manusear_voltar(raiz):
     from assets.interface.telas.tela_login.tela_login import tela_login
-    raiz.destroy()
+    raiz.withdraw()
     tela_login()
 
 def manusear_criar_usuario(
@@ -22,7 +22,7 @@ def manusear_criar_usuario(
     criado = criar_usuario( usuario, senha, confirmar_senha, email, confirmar_email, telefone, confirmar_telefone)
     if criado:
         from assets.interface.telas.tela_login.tela_login import tela_login
-        raiz.destroy()
+        raiz.withdraw()
         tela_login()
     
 

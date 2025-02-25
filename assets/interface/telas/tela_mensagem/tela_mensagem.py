@@ -48,7 +48,7 @@ def tela_mensagem(raiz_principal):
                 mensagens[titulo] = mensagem
                 salvar_mensagens(caminho_json, mensagens)
                 atualizar_lista()
-                janela_nova.destroy()
+                janela_nova.withdraw()
         
         janela_nova = tk.Toplevel(raiz_principal)
         janela_nova.title("Nova Mensagem")
@@ -106,7 +106,7 @@ def tela_mensagem(raiz_principal):
                 mensagens[novo_titulo] = nova_mensagem
                 salvar_mensagens(caminho_json, mensagens)
                 atualizar_lista()
-                janela_edicao.destroy()
+                janela_edicao.withdraw()
 
         janela_edicao = tk.Toplevel(raiz_principal)
         janela_edicao.title("Editar Mensagem")

@@ -25,11 +25,12 @@ whatsapp_api = WhatsAppAPI()
 
 def start_whatsapp(client):
     """ Inicia o WhatsApp e exibe um pop-up de carregamento. """    
-
+    #print(f'cliente: {client}')
     def login_whatsapp():
         global existe_login        
 
         caminho = f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{client}"
+        #print(f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{client}")
         existe_login = os.path.isdir(caminho)
         
         # verifica se a pasta de login existe
@@ -42,8 +43,11 @@ def start_whatsapp(client):
             if not whatsapp_api.api_logada:                
                 
                 config_webdriver(False, client)
-                whatsapp_api.api_logada = check_login(False)
-                
+                popUp('Após conectar o WhatsApp, pressione OK')         
+                       
+                config_webdriver(True, client)        
+                whatsapp_api.api_logada = check_login(True)            
+                    
                 # quando estiver logado fecha a janela e abre janela invisivel
                 if whatsapp_api.api_logada:
                     

@@ -7,7 +7,7 @@ from assets.func.sessao.sessao import sessao_id, sessao_nome
 id_usuario = sessao_id()
 
 def manusear_deslogar(raiz):
-    raiz.destroy()
+    raiz.withdraw()
     #script_dir = os.path.dirname(os.path.abspath(__file__))  # Garante que estamos no diretório correto
     base_dir = Path.home() / "nZap"
     sessao_dir = base_dir / "sessao" / ".sessao.json"
