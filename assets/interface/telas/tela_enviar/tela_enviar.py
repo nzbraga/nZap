@@ -139,8 +139,15 @@ def tela_enviar(raiz_principal):
     botao_agendar = tk.Button(
     frame_botao,
     text="Agendar",
-    command=lambda: 
-        tela_frequencia()
+    command=lambda: tela_frequencia(
+            definir_origem(
+                enviar_excel.get(),
+                escolher_pagina_planilha.current(),
+                enviar_agenda.get()
+                ),
+                entrada_mensagem.get('1.0', tk.END)
+
+    )
         )
     botao_agendar.pack(side=tk.LEFT)
 

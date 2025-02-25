@@ -30,7 +30,7 @@ def manusear_login(raiz, usuario, senha):
 def checar_login(raiz):
     usuario_id = checar_logado()
     if usuario_id:
-        #start_whatsapp(usuario_id)          
+        start_whatsapp(usuario_id)          
         raiz.destroy()
         from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame1
         mostrar_tela(frame1)

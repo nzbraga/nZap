@@ -5,9 +5,12 @@ from tkinter import ttk
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.interface.telas.tela_enviar.uteis.ano_bissexto import ano_bissexto
 
-lista_paginas = []
+from assets.func.mensagem.montar_msg.agendar_msg import agendar_msg
 
-def tela_frequencia():
+lista_paginas = []
+frequencia_envio = None
+
+def tela_frequencia(origem, mensagem):
     global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias,lista_paginas
         
     raiz_frequancia = tk.Tk()
@@ -19,11 +22,13 @@ def tela_frequencia():
 
 
     def atualizar_frequencia(event):
+        global frequencia_envio
         frame_frequencia.update_idletasks()
         selecao = combo_frequencia.get()
         
         
         if selecao in ["Mensal"]:
+            frequencia_envio = selecao
 
             frame_dias.pack(pady=5)
             combo_31_dias.pack(pady=5)
@@ -46,7 +51,8 @@ def tela_frequencia():
         
         
         
-        elif selecao == "Semanal" or selecao == "Quinzanal":
+        elif selecao in ["Semanal", "Quinzanal"]:
+            frequencia_envio = selecao
             frame_semanas.pack(pady=5)
             combo_semanas.pack(pady=5)
             frame_ajuda.pack(pady=5)
@@ -69,6 +75,7 @@ def tela_frequencia():
         
 
         elif selecao == "Anual":
+            frequencia_envio = selecao
             frame_meses.pack(pady=5)
             combo_meses.pack(pady=5)  
             frame_ajuda.pack(pady=5)
@@ -91,6 +98,7 @@ def tela_frequencia():
         
 
         elif selecao in ["Aniversario", "Vencimento", "Diario"]:
+            frequencia_envio = selecao
             botao_agendar.pack(pady=10) 
     
 
@@ -108,12 +116,10 @@ def tela_frequencia():
 
             frame_ajuda.pack_forget()
 
-        
-        
             
         elif selecao ==  "Unica":
+            frequencia_envio = selecao
             botao_agendar.pack_forget()
-            botao_enviar.pack(pady=10)
 
             frame_dias.pack_forget()
             combo_31_dias.pack_forget()
@@ -134,9 +140,6 @@ def tela_frequencia():
             combo_28_dias.pack_forget()
 
             frame_ajuda.pack_forget()
-
-        
-        
           
     def atualizar_meses(event):
         
@@ -203,9 +206,6 @@ def tela_frequencia():
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
 
-        
-        
-
     def atualizar_semanas(event):
         frame_frequencia.update_idletasks()
         selecao = combo_semanas.get()
@@ -213,9 +213,7 @@ def tela_frequencia():
         if selecao:
             frame_ajuda.pack_forget()
             botao_agendar.pack(pady=10)
-    
-    
-    
+      
     def atualizar_dias(event):
         frame_frequencia.update_idletasks()
         selecao = combo_31_dias.get() or combo_28_dias.get() or combo_29_dias.get() or combo_30_dias.get() 
@@ -224,10 +222,7 @@ def tela_frequencia():
             frame_ajuda.pack_forget()
             botao_agendar.pack(pady=10)
         
-    
-    
-
-
+  
     label_frequencia = tk.Label(frame_frequencia, text="Frequência")
     label_frequencia.pack(pady=5)
     combo_frequencia = ttk.Combobox(frame_frequencia, values=opcoes_frequencia)
@@ -272,9 +267,9 @@ def tela_frequencia():
 
     botao_agendar = tk.Button(
     frame_frequencia,
-    text="Salvar",
-    command=lambda:
-        print('Salvar agendamento')
+    text="Agendar",
+    command=lambda: agendar_msg(origem, mensagem, frequencia_envio)
+        
     )
     botao_agendar.pack_forget()
 

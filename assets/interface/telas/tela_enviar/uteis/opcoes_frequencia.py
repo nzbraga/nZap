@@ -1,4 +1,8 @@
 frequencias = [
+    "Aniversario",
+  ]
+"""
+frequencias = [
     "Unica",
     "Aniversario",
     "Vencimento",
@@ -7,7 +11,7 @@ frequencias = [
     "Quinzanal",
     "Mensal",
     "Anual"]
-
+"""
 semanas = [
     "Segunda",
     "Terca",

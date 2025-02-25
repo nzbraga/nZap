@@ -61,13 +61,11 @@ def start_whatsapp(client):
                         return False
         # se nao tiver a pasta de login cria e abre a janela visivel para ler qr code            
         else:
-            config_webdriver(False, client)           
-            
-            popUp('Após conectar o WhatsApp, pressione OK')
-            
-            whatsapp_api.api_logada = check_login(True)
-            
-            config_webdriver(True, client)
+            config_webdriver(False, client) 
+            popUp('Após conectar o WhatsApp, pressione OK')         
+                       
+            config_webdriver(True, client)        
+            whatsapp_api.api_logada = check_login(True)            
 
             if whatsapp_api.api_logada:
                 

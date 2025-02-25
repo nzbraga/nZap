@@ -7,13 +7,14 @@ from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 #from assets.interface.telas.tela_contatos.tela_contatos import tela_contatos
 
 def mostrar_tela(frame):
-
-    frame.update_idletasks()  # Atualiza as dimensões do frame
-    largura = frame.winfo_reqwidth()
-    altura = frame.winfo_reqheight()
-    
-    raiz_principal.geometry(f"{largura}x{altura}")  # Define a nova geometria da janela
-    frame.tkraise()
+    if raiz_principal.winfo_exists():  # Verifica se a janela principal ainda existe
+        frame.update_idletasks()
+        largura = frame.winfo_reqwidth()
+        altura = frame.winfo_reqheight()
+        raiz_principal.geometry(f"{largura}x{altura}")
+        frame.tkraise()
+    else:
+        print("Tentativa de acessar uma janela destruída.")
 
 
 # Criar janela principal
