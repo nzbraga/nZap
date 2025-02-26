@@ -5,10 +5,10 @@ from assets.func.login.logar import logar
 from assets.interface.telas.tela_criar_usuario.tela_criar_usuario import tela_criar_usuario
 from assets.func.login.uteis.alternar_senha import alternar_senha
 from assets.interface.uteis.config_tela import config_page_tk
-from assets.func.login.checar_logado.checar_logado import checar_logado
+from assets.func.sessao.sessao import sessao_id
 from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp
 
-from assets.func.uteis.popUp import popUp, popUp_bar
+from assets.func.uteis.popUp import popUp
 
 
 
@@ -16,23 +16,17 @@ def manusear_criar_usuario(raiz):
     raiz.withdraw()
     tela_criar_usuario()
 
-def manusear_login(raiz, usuario, senha):
-       
+def manusear_login(raiz, usuario, senha):       
         logado = logar(usuario, senha)
-
-        if not logado:
-            
+        if not logado:            
             return
-
         else:
             checar_login(raiz)
         
-def checar_login(raiz):
-    usuario_id = checar_logado()
-    if usuario_id:
-        start_whatsapp(usuario_id)  
-        time.sleep(2)        
-        raiz.withdraw()
+def checar_login(raiz): 
+    if sessao_id():   
+        start_whatsapp(sessao_id())       
+        raiz.destroy()
         from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame0
         mostrar_tela(frame0)
 

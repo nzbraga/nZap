@@ -1,7 +1,7 @@
-import threading
 import os
-import tkinter as tk
-from assets.func.uteis.popUp import popUp_bar, popUp
+import threading
+
+from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import config_webdriver, check_login
 
 class WhatsAppAPI:
@@ -24,7 +24,7 @@ class WhatsAppAPI:
 whatsapp_api = WhatsAppAPI()
 
 def start_whatsapp(client):
-    """ Inicia o WhatsApp e exibe um pop-up de carregamento. """    
+ 
     #print(f'cliente: {client}')
     def login_whatsapp():
         global existe_login        
@@ -35,47 +35,42 @@ def start_whatsapp(client):
         
         # verifica se a pasta de login existe
         if existe_login:
+            print("tem pasta")
             
-            config_webdriver(True, client)
+            config_webdriver(False, client) #headless true
             whatsapp_api.api_logada = check_login(True)            
             
             # se nao estiver logado abre a janela visivel
             if not whatsapp_api.api_logada:                
-                
-                config_webdriver(False, client)
-                popUp('Após conectar o WhatsApp, pressione OK')         
-                       
-                config_webdriver(True, client)        
+                print("tem pasta mas ta deslogado")
+                config_webdriver(False, client) #headless false
+                popUp('Após conectar o WhatsApp, pressione OK') 
+                config_webdriver(True, client) #headless true       
                 whatsapp_api.api_logada = check_login(True)            
                     
                 # quando estiver logado fecha a janela e abre janela invisivel
-                if whatsapp_api.api_logada:
-                    
-                    config_webdriver(True, client)
-                    whatsapp_api.api_logada = check_login(True)
-                    
-                    # confira janela aberta e finaliza
-                    if whatsapp_api.api_logada:
+                if whatsapp_api.api_logada:                    
                         
-                        popUp("WhatsApp iniciado")                
-                        return True
-                    else:
-                        
-                        popUp("Erro ao logar WhatsApp")                
-                        return False
+                    popUp("WhatsApp iniciado")                
+                    return True
+                else:                    
+                    popUp("Erro ao logar WhatsApp")                
+                    return False
         # se nao tiver a pasta de login cria e abre a janela visivel para ler qr code            
         else:
-            config_webdriver(False, client) 
-            popUp('Após conectar o WhatsApp, pressione OK')         
-                       
-            config_webdriver(True, client)        
+            config_webdriver(False, client)  #headless false
+            popUp('Após conectar o WhatsApp, pressione OK')  
+            config_webdriver(True, client)      #headless true  
             whatsapp_api.api_logada = check_login(True)            
 
             if whatsapp_api.api_logada:
                 
                 popUp("WhatsApp iniciado")
                 return True
-            
+            else:                    
+                    popUp("Erro ao logar WhatsApp")                
+                    return False
         
         
     threading.Thread(target=login_whatsapp, daemon=True).start()
+

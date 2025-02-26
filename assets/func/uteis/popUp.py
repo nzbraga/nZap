@@ -1,7 +1,11 @@
+import time
+import threading
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
 
-def popUp(message):
+
+def popUp(message, title="Atencao"):
    
     # Cria a janela principal
     popUp = tk.Tk()
@@ -25,42 +29,31 @@ def popUp(message):
     popUp.withdraw()  # Esconde a janela principal (nao sera mostrada)
     
     # Exibe a caixa de mensagem com a mensagem desejada
-    messagebox.showinfo("Atencao", message)
+    messagebox.showinfo(title, message)
 
 
-def popUp_bar(message):
-    popUp = tk.Toplevel()
-    popUp.title("Aguarde...")
-    popUp.attributes("-topmost", True)
 
-    largura_janela = 300
-    altura_janela = 100
-    largura_tela = popUp.winfo_screenwidth()
-    altura_tela = popUp.winfo_screenheight()
-    pos_x = (largura_tela - largura_janela) // 2
-    pos_y = (altura_tela - altura_janela) // 2
+def carregar():
+    """Simula uma tarefa longa em uma thread separada."""
+    time.sleep(5)  # Simula um processo demorado (5 segundos)
+    loading_window.after(0, loading_window.destroy)  # Fecha o pop-up na thread principal
 
-    popUp.geometry(f"{largura_janela}x{altura_janela}+{pos_x}+{pos_y}")
-    popUp.resizable(False, False)
+def show_loading():
+    global loading_window
+    loading_window = tk.Toplevel(root)
+    loading_window.title("Carregando...")
+    loading_window.geometry("250x100")
+    loading_window.resizable(False, False)
+    loading_window.grab_set()  # Bloqueia interação com a janela principal
 
-    label_texto = tk.Label(popUp, text=message, wraplength=280)
-    label_texto.pack(pady=10)
+    tk.Label(loading_window, text="Aguarde...", font=("Arial", 12)).pack(pady=10)
 
-    spinner = tk.Label(popUp, text=".", font=("Arial", 30))
-    spinner.pack(pady=10)
+    progress = ttk.Progressbar(loading_window, mode="indeterminate", length=200)
+    progress.pack(pady=5)
+    progress.start()
 
-    def animar_pontos():
-        estados = [".", "..", "...", ""]  # Alterna entre os pontos
-        idx = 0
+    # Inicia a tarefa longa em uma thread separada
+    thread = threading.Thread(target=carregar, daemon=True)
+    thread.start()
 
-        def mudar_estado():
-            nonlocal idx
-            spinner.config(text=estados[idx])
-            idx = (idx + 1) % len(estados)
-            popUp.after(500, mudar_estado)  # Muda a cada 500ms
 
-        mudar_estado()  # Inicia a animação
-
-    animar_pontos()
-
-    return popUp

@@ -1,4 +1,5 @@
 import time
+import subprocess
 from pathlib import Path
 
 from selenium import webdriver
@@ -11,75 +12,98 @@ from assets.func.sessao_whatsapp.uteis.definir_pasta import definir_pasta
 from assets.func.uteis.popUp import popUp
 
 driver = None
+options = None
 
 base_dir = Path.home() / "nZap"
-base_dir.mkdir(parents=True, exist_ok=True) 
+base_dir.mkdir(parents=True, exist_ok=True)
 
 sucesso_arquivo = base_dir / "sucesso.txt"
 erro_arquivo = base_dir / "erro.txt"
 
 
-def config_webdriver(headless, client):
-    global driver
+def encerrar_chrome_existente():
+    """Encerra processos do Chrome no Windows."""
+    subprocess.run('taskkill /F /IM chrome.exe /T', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    if driver is not None:
-        driver.quit()
-    
+
+def config_webdriver(headless, client):
+    global driver, options
+
+    encerrar_chrome_existente()
+
+    print(f'driver: {driver}')
+
     options = webdriver.ChromeOptions()
     options.page_load_strategy = 'eager'
     if headless:
-        options.add_argument("--headless=new")  # Usa um modo mais estavel do headless
-    options.add_argument("--disable-gpu")  # Corrige problemas graficos em headless
+        options.add_argument("--headless=new")  # Usa um modo mais estável do headless
+    options.add_argument("--disable-gpu")  # Corrige problemas gráficos em headless
     options.add_argument("--no-sandbox")  # Evita problemas de permissões
+    options.add_argument("--no-first-run")
+    options.add_argument("--disable-infobars")
     options.add_argument("--disable-dev-shm-usage")  # Evita uso excessivo de memória compartilhada
     options.add_argument(f"user-data-dir={definir_pasta(client)}")
 
     driver = webdriver.Chrome(options=options)
     driver.get("https://web.whatsapp.com")
 
-    
+
+def desconectar_whatsapp():
+    global driver
+
+    elemento = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, '//span[@data-icon="settings-outline"]'))
+    )
+
+    if elemento:
+        print("Elemento encontrado:", elemento)
+        elemento.click()
+        desconectar = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, '//span[@data-icon="exit"]'))
+        )
+        desconectar.click()
+        confirme_desconectar = WebDriverWait(driver, 30).until(
+            EC.presence_of_element_located((By.XPATH, '//div[contains(@class, "x1c4vz4f") and contains(text(), "Desconectar")]'))
+        )
+        confirme_desconectar.click()
+    else:
+        print("Elemento NÃO encontrado:", elemento)
+
 
 def check_login(existe_login=False):
     global driver
-    if existe_login:
-        try:       
+    try:
+        if existe_login:
+            print('checando login com pasta')
             logado = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
+                EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
             )
-            if logado:
-                return True
-            else:
-                print("erro ao checar login")
-        except:
+            return bool(logado)
+        else:
+            print('checando QR sem pasta')
             qr_code = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
+                EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
             )
-            print("Elemento encontrado:", qr_code)
+            print("QR Code encontrado:", qr_code)
             return False
-    else:
+    except:
+        print('checando login sem pasta')
         try:
-             # Aguarda até que o elemento <canvas> com o atributo 'aria-label' correto esteja presente
-            qr_code = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
-            )
-            print("Elemento encontrado:", qr_code)
-            return False
-        except:
             logado = WebDriverWait(driver, 30).until(
-            EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))            
+                EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
             )
-            if logado:
-                return True
-            else:
-                print("erro ao checar login")
+            return bool(logado)
+        except:
+            print("Erro ao checar login")
+            return False
 
 
 def enviar_mensagem(numero, mensagem):
     global driver
     from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import whatsapp_api
-    
-    if whatsapp_api.api_logada:   
-        try: 
+
+    if whatsapp_api.api_logada:
+        try:
             # Busca pelo contato ou número
             search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
             search_box.click()
@@ -92,7 +116,7 @@ def enviar_mensagem(numero, mensagem):
             msg_box.click()
             msg_box.send_keys(mensagem + Keys.ENTER)
             time.sleep(5)
-            
+
             with sucesso_arquivo.open("a", encoding="utf-8") as f:
                 f.write(f"Sucesso: {numero}\n")
         except:
@@ -100,4 +124,4 @@ def enviar_mensagem(numero, mensagem):
                 f.write(f"Erro: {numero}\n")
             print("Erro ao enviar mensagem")
     else:
-        raise popUp("Whatsapp nao esta Conectado!")
+        raise popUp("Whatsapp não está Conectado!")

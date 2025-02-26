@@ -1,12 +1,13 @@
 import tkinter as tk
 from assets.func.sessao.sessao import sessao_id, sessao_nome
 from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp, whatsapp_api
+from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import desconectar_whatsapp
 
 from assets.func.uteis.popUp import popUp
 
 
 
-id_usuario = sessao_id()
+
 
 def atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar):
     """ Atualiza os elementos da interface com base no estado da API """
@@ -22,7 +23,7 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
         botao_conectar.pack(pady=5)
 
 def criar_tela_inicial(raiz_principal):
-    usuario = sessao_nome().upper()
+    usuario = sessao_nome()
     frame_inicial = tk.Frame(raiz_principal)
     
     tk.Label(frame_inicial, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)
@@ -35,9 +36,9 @@ def criar_tela_inicial(raiz_principal):
     info_label.pack(pady=5)
 
     botao_conectar = tk.Button(frame_inicial, text="Conectar", font=("Arial", 14), bg='green', 
-                               command=lambda: start_whatsapp(id_usuario))
+                               command=lambda: start_whatsapp(sessao_id()))
     botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 10), bg='orange', 
-                                  command=lambda: [(setattr(whatsapp_api, 'api_logada', not whatsapp_api.api_logada)),popUp('Encere a sessão pelo seu Telefone!')])
+                                  command=lambda: [(setattr(whatsapp_api, 'api_logada', not whatsapp_api.api_logada)),desconectar_whatsapp()])
 
     # 🔥 Atualiza a interface uma vez ao iniciar
     atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar)

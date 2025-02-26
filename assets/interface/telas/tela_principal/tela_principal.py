@@ -9,16 +9,20 @@ from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 def mostrar_tela(frame):
     """Mostra a tela desejada, verificando se a janela principal ainda existe."""
     global raiz_principal
-    if raiz_principal and raiz_principal.winfo_exists():
-        frame.update_idletasks()
-        largura = frame.winfo_reqwidth()
-        altura = frame.winfo_reqheight()
-        raiz_principal.geometry(f"{largura}x{altura}")
-        frame.tkraise()
-    else:
-        print("Tentativa de acessar uma janela destruída.")
-        iniciar_tela_principal()
-        frame.tkraise()
+    try:
+        if raiz_principal and raiz_principal.winfo_exists():
+            frame.update_idletasks()
+            largura = frame.winfo_reqwidth()
+            altura = frame.winfo_reqheight()
+            raiz_principal.geometry(f"{largura}x{altura}")
+            frame.tkraise()
+        else:
+            print("Tentativa de acessar uma janela destruída.")
+            iniciar_tela_principal()
+            frame.tkraise()
+    except:
+            iniciar_tela_principal()
+            frame.tkraise()
 
 def iniciar_tela_principal():
     """Recria a janela principal caso ela tenha sido fechada ou destruída."""
