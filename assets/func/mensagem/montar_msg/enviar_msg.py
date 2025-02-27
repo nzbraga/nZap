@@ -5,38 +5,18 @@ from tkinter import messagebox
 
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
-
-
-def formatar_valor(contato, chave):
-    valor = contato.get(chave)  # Obtém o valor de forma segura
-
-    if isinstance(valor, str):
-        return valor.upper()  # Retorna string com a primeira letra maiúscula
-    elif isinstance(valor, datetime):
-        return valor.strftime("%d/%m")  # Retorna data formatada como dia/mês
-    
-    return valor
-
-def substituir_variaveis(mensagem, contato):
-  
-    def substituir(match):
-        chave = match.group(1)
-        if chave not in contato:
-            raise popUp(f"Palavra chave: '{chave}' não encontrada!")
-            #raise ValueError(f"Erro: chave '{chave}' não encontrada para o contato {contato.get('nome', 'Desconhecido')}.")
-        return formatar_valor(contato, chave)
-    
-    try:
-        return re.sub(r"@(\w+)", substituir, mensagem)
-    except ValueError:
-        return None  # Retorna None para indicar erro
+from assets.func.mensagem.montar_msg.formatar_mensagem import substituir_variaveis, formatar_valor
 
 limitador = 0
 
-def agendar_msg(contatos, mensagem, frequencia,  destinatario= 'contato', limite=5):
+def enviar_msg(contatos, mensagem, frequencia="hoje",  destinatario= 'contato', limite=5):
     global limitador
-
+    #print(f'contatosssss: {contatos}')
+   
     data_atual = datetime.now().strftime("%d/%m")
+
+    if frequencia == 'hoje':
+        frequencia = data_atual
 
     if not contatos:
         popUp("Nenhum contato selecionado.")
@@ -53,20 +33,18 @@ def agendar_msg(contatos, mensagem, frequencia,  destinatario= 'contato', limite
         if mensagem_personalizada is None:
             popUp(f"Erro ao processar mensagem para {contato.get('nome', 'Desconhecido')}.")
             return  # Interrompe a execução se houver erro
-        
+        print(f'contato: {contato.get(destinatario)}')
         if not contato.get(destinatario):  # Verifica se a chave não existe ou está vazia
             popUp(f"Contato não encontrado.\nConfirme se o campo '{destinatario}' existe no arquivo Excel.")
         
         mensagem_completa = f"{mensagem_personalizada}"
-        print(f"contato: {contato[destinatario]}\nmensagem: {mensagem_completa}\n frequencia: {frequencia}")
         
         if frequencia == 'Aniversario':
             
-            if formatar_valor(contato,'aniversario') == data_atual:
-
-                enviar_mensagem(contato[destinatario], mensagem_completa)
-                print('pausa de 3s')
-                time.sleep(3)
+            if formatar_valor(contato,'aniversario') == data_atual:            
+                
+                enviar_mensagem(contato[destinatario], mensagem_completa)                    
+                time.sleep(2)
                 
                 limitador += 1
                 if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação

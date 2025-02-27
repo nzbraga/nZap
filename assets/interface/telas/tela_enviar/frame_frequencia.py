@@ -5,20 +5,26 @@ from tkinter import ttk
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.interface.telas.tela_enviar.uteis.ano_bissexto import ano_bissexto
 
-from assets.func.mensagem.montar_msg.agendar_msg import agendar_msg
+from assets.func.mensagem.definir_origem.definir_origem import definir_origem
+from assets.func.mensagem.montar_msg.enviar_msg import enviar_msg
+from assets.func.uteis.popUp import popUp
+
+
 
 lista_paginas = []
 frequencia_envio = None
 
-def tela_frequencia(origem, mensagem):
+def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinataio):
+    
     global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias,lista_paginas
         
-    raiz_frequancia = tk.Tk()
-    raiz_frequancia.title("Frequência de Envio")
-    raiz_frequancia.geometry("400x400")
     
-    frame_frequencia = tk.Frame(raiz_frequancia)  # Criando o frame principal
+    frame_frequencia = tk.Frame(raiz_principal)  # Criando o frame principal
     frame_frequencia.pack(pady=20)
+
+    janela_principal = raiz_principal.winfo_toplevel()
+    janela_principal.geometry(f"{janela_principal.winfo_reqwidth()}x{janela_principal.winfo_reqheight()}")
+
 
 
     def atualizar_frequencia(event):
@@ -43,14 +49,13 @@ def tela_frequencia(origem, mensagem):
             combo_30_dias.pack_forget()
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-
     
             botao_agendar.pack_forget()
-           
 
+            janela_principal.update_idletasks()
+            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
         
-        
-        
+          
         elif selecao in ["Semanal", "Quinzanal"]:
             frequencia_envio = selecao
             frame_semanas.pack(pady=5)
@@ -65,13 +70,11 @@ def tela_frequencia(origem, mensagem):
             combo_30_dias.pack_forget()
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-
     
             botao_agendar.pack_forget()
 
-           
-
-        
+            janela_principal.update_idletasks()
+            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
         
 
         elif selecao == "Anual":
@@ -88,19 +91,17 @@ def tela_frequencia(origem, mensagem):
             combo_30_dias.pack_forget()            
             combo_29_dias.pack_forget()
             combo_28_dias.pack_forget()
-
     
             botao_agendar.pack_forget()
 
-            
-
-        
+            janela_principal.update_idletasks()
+            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
         
 
         elif selecao in ["Aniversario", "Vencimento", "Diario"]:
             frequencia_envio = selecao
-            botao_agendar.pack(pady=10) 
-    
+            botao_agendar.pack(side=tk.LEFT, pady=10) 
+            botao_enviar.pack(pady=10)
 
             frame_meses.pack_forget()
             combo_meses.pack_forget()
@@ -116,10 +117,14 @@ def tela_frequencia(origem, mensagem):
 
             frame_ajuda.pack_forget()
 
-            
+            janela_principal.update_idletasks()
+            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
+        ## usar calendario pra escolher data msg unica   
         elif selecao ==  "Unica":
             frequencia_envio = selecao
-            botao_agendar.pack_forget()
+            botao_agendar.pack(pady=10)
+            botao_enviar.pack(pady=10)
 
             frame_dias.pack_forget()
             combo_31_dias.pack_forget()
@@ -140,6 +145,10 @@ def tela_frequencia(origem, mensagem):
             combo_28_dias.pack_forget()
 
             frame_ajuda.pack_forget()
+
+            janela_principal.update_idletasks()
+            janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")
+        
           
     def atualizar_meses(event):
         
@@ -268,9 +277,28 @@ def tela_frequencia(origem, mensagem):
     botao_agendar = tk.Button(
     frame_frequencia,
     text="Agendar",
-    command=lambda: agendar_msg(origem, mensagem, frequencia_envio)
+    command=lambda: #agendar_msg(origem, mensagem, frequencia_envio)
+    popUp('Criar agendamento')
         
     )
     botao_agendar.pack_forget()
+
+    
+
+    botao_enviar = tk.Button(
+    frame_frequencia,
+    text="Enviar",
+    command=lambda: enviar_msg(
+        definir_origem(excel.get(),
+                       pagina.current(),        
+                       agenda.get()),
+        mensagem.get('1.0', tk.END).strip(),
+        frequencia_envio,
+        destinataio.get('1.0', tk.END).strip()
+        ),
+                    #print(f"origem: {definir_origem(excel.get(), agenda.get(), pagina.current())}\nfrequencia_envio: {frequencia_envio}")]
+        
+    )
+    botao_enviar.pack_forget()
 
     return frame_frequencia

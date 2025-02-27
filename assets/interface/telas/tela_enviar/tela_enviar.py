@@ -6,9 +6,9 @@ from tkinter import ttk
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo, arquivo_selecionado
 from assets.func.mensagem.listar_mensagens.listar_mensagens import listar_mensagens
-from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 from assets.func.mensagem.definir_origem.definir_origem import definir_origem
 from assets.func.mensagem.agendamento.agendamento import agendar_mensagem
+#from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 
 from assets.interface.telas.tela_enviar.frame_frequencia import tela_frequencia
 
@@ -21,6 +21,7 @@ from assets.func.sessao.sessao import sessao_id
 usuario_id = sessao_id()
 lista_paginas = []
 lista_mensagens = []
+
 
 def atualizar_lista_mensagens():
     """Atualiza a lista de mensagens disponíveis no Combobox."""
@@ -47,22 +48,29 @@ def tela_enviar(raiz_principal):
     def alternar_excel():
         global lista_paginas, arquivo_selecionado  
         enviar_agenda.set(False) 
-
+        
         if not arquivo_selecionado:
             selecionar_arquivo()
 
+
         if enviar_excel.get():  
-            escolher_pagina_planilha.pack(pady=5)
-            #botao_abrir_excel.pack(side=tk.LEFT)            
-            frame_destinatario.pack(pady=5)
             lista_paginas = listar_paginas()
 
-            if lista_paginas:  
+            if lista_paginas == []:
+                enviar_excel.set(False) 
+                return
+
+            else:
+            
+                escolher_pagina_planilha.pack(pady=5)
+                #botao_abrir_excel.pack(side=tk.LEFT)            
+                frame_destinatario.pack(pady=5)
+
+                
+
                 escolher_pagina_planilha['values'] = lista_paginas
                 escolher_pagina_planilha.current(0)
-            else:
-                print("Nenhuma planilha foi selecionada ou erro ao carregar páginas.")
-        
+         
         janela_principal.update_idletasks()
         janela_principal.geometry(f"{raiz_principal.winfo_reqwidth()}x{raiz_principal.winfo_reqheight()}")           
         
@@ -136,6 +144,11 @@ def tela_enviar(raiz_principal):
     frame_botao = tk.Frame(enviar_raiz)
     frame_botao.pack(pady=15)
 
+    frame_frequencia = tk.Frame(tela_frequencia(enviar_raiz, enviar_excel, escolher_pagina_planilha, enviar_agenda, entrada_mensagem, entrada_destinatario))
+    frame_frequencia.pack(pady=5)
+
+    """
+
     botao_agendar = tk.Button(
     frame_botao,
     text="Agendar",
@@ -147,22 +160,23 @@ def tela_enviar(raiz_principal):
                 ),
                 entrada_mensagem.get('1.0', tk.END)
 
-    )
-        )
+    ))
     botao_agendar.pack(side=tk.LEFT)
 
     botao_enviar = tk.Button(
         frame_botao,
         text="Enviar",
-        command=lambda: montar_msg( 
+        command=lambda: tela_frequencia(
             definir_origem(
                 enviar_excel.get(),
                 escolher_pagina_planilha.current(),
                 enviar_agenda.get()
                 ),
-                entrada_mensagem.get('1.0', tk.END)            
-        ))
+                entrada_mensagem.get('1.0', tk.END)
+
+    ))
     botao_enviar.pack(padx=15)
     
+    """
     
     return enviar_raiz

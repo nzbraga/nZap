@@ -17,7 +17,7 @@ class WhatsAppAPI:
     def api_logada(self, novo_valor):
         if self._api_logada != novo_valor:
             self._api_logada = novo_valor
-            ##print(f"API mudou para: {'Conectado' if novo_valor else 'Desconectado'}")
+            
             if self.atualizar_interface_callback:
                 self.atualizar_interface_callback()  # Atualiza a UI
 
@@ -25,24 +25,24 @@ whatsapp_api = WhatsAppAPI()
 
 def start_whatsapp(client):
  
-    #print(f'cliente: {client}')
+    
     def login_whatsapp():
         global existe_login        
 
         caminho = f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{client}"
-        #print(f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{client}")
+        
         existe_login = os.path.isdir(caminho)
         
         # verifica se a pasta de login existe
         if existe_login:
-            print("tem pasta")
+            
             
             config_webdriver(False, client) #headless true
             whatsapp_api.api_logada = check_login(True)            
             
             # se nao estiver logado abre a janela visivel
             if not whatsapp_api.api_logada:                
-                print("tem pasta mas ta deslogado")
+                
                 config_webdriver(False, client) #headless false
                 popUp('Após conectar o WhatsApp, pressione OK') 
                 config_webdriver(True, client) #headless true       

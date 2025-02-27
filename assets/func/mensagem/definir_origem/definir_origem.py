@@ -11,13 +11,16 @@ dados_contatos = []
 base_dir = Path.home() / "nZap" / "contatos"
 base_dir.mkdir(parents=True, exist_ok=True)  # Cria a pasta se não existir
 
-def definir_origem(excel, pagina_excel, agenda):
-    print(f'excel: {excel}\npagina_excel: {pagina_excel}\nagenda: {agenda}')
+def definir_origem(excel, pagina_excel, agenda):    
     global dados_contatos
+
+    #print(f'origem: {excel}, {pagina_excel}, {agenda}')
     
     if excel:
         try:
+            #print(f'pagina: {pagina_excel}')
             sheet = info_planilha(pagina_excel)
+            #print(f'sheet: {sheet}')
             if not sheet:
                 return []
         except Exception:
@@ -31,20 +34,21 @@ def definir_origem(excel, pagina_excel, agenda):
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 row_dict = dict(zip(header, row))
-                
+                print(f'row: {row_dict}')
+                """
                 if row_dict.get("nome") is None or row_dict["nome"] == "":
                     break
+                """
 
-                dados_contatos.append(row_dict)
+                dados_contatos.append(row_dict)                
         except Exception:
             popUp("Erro ao processar os dados da planilha")
             return []
-
+        print(f'contatos: {dados_contatos}')
         return dados_contatos
 
     elif agenda:
-        caminho_agenda = base_dir / f".{usuario_id}.json"
-        print(f'caminho agenda: {caminho_agenda}')
+        caminho_agenda = base_dir / f".{usuario_id}.json"        
         try:
             with caminho_agenda.open("r", encoding="utf-8") as f:
                 contatos = json.load(f)
@@ -54,3 +58,5 @@ def definir_origem(excel, pagina_excel, agenda):
         except FileNotFoundError:
             popUp("Nenhum contato encontrado.")
             return []
+
+    dados_contatos = []

@@ -14,11 +14,10 @@ def selecionar_arquivo():
     arquivo_selecionado = filedialog.askopenfilename(title="Escolha o arquivo da planilha", filetypes=[("Arquivos Excel", "*.xlsx")])
 
     if not arquivo_selecionado:
-        print("Nenhum arquivo selecionado")
-        popUp("Erro: Nenhuma planilha foi selecionada.")  # Mostra uma mensagem na interface
+        #print("Nenhum arquivo selecionado")
+        popUp("Nenhuma planilha foi selecionada.")  # Mostra uma mensagem na interface
         return None  # Retorna None para indicar erro
 
-    return arquivo_selecionado
 
 def info_planilha(index_pagina):
     """Carrega a página da planilha com base no índice informado."""
@@ -29,8 +28,8 @@ def info_planilha(index_pagina):
             return None
 
     if index_pagina == -1:
-        print("Nenhuma página selecionada")
-        popUp("Erro: Nenhuma página foi selecionada.")
+        #print("Nenhuma página selecionada")
+        popUp("Nenhuma página foi selecionada.")
         return None
     
     try:
@@ -39,7 +38,7 @@ def info_planilha(index_pagina):
         pagina = planilha[nome_pagina]
         return pagina
     except Exception as e:
-        print(f"Erro ao carregar a planilha: {e}")
+        #print(f"Erro ao carregar a planilha: {e}")
         popUp("Erro ao carregar a planilha. Verifique o arquivo.")
         return None
 
@@ -50,16 +49,16 @@ def listar_paginas():
     if arquivo_selecionado is None:
         selecionar_arquivo()
             
-
     try:
         planilha = openpyxl.load_workbook(arquivo_selecionado, read_only=True)
         nomes_paginas = planilha.sheetnames
         planilha.close()
         return nomes_paginas
     except FileNotFoundError:
-        print("Erro: Arquivo não encontrado.")
-        popUp("Erro: Arquivo não encontrado.")
+        #print("Erro: Arquivo não encontrado.")
+        popUp("Arquivo não encontrado.")
         return []
     except Exception as e:
-        print(f"Erro inesperado: {e}")        
+        #print(f"Erro inesperado: {e}")        
+        #popUp("Erro inesperado.")
         return []

@@ -3,11 +3,12 @@ import tkinter as tk
 from pathlib import Path
 
 from assets.func.sessao.sessao import sessao_id, sessao_nome
+from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import encerrar_chrome_existente
 
 id_usuario = sessao_id()
 
 def manusear_deslogar(raiz):
-    raiz.destroy()
+    encerrar_chrome_existente()
     #script_dir = os.path.dirname(os.path.abspath(__file__))  # Garante que estamos no diretório correto
     base_dir = Path.home() / "nZap"
     sessao_dir = base_dir / "sessao" / ".sessao.json"
@@ -20,6 +21,7 @@ def manusear_deslogar(raiz):
     
     from assets.interface.telas.tela_login.tela_login import tela_login
     tela_login()
+    raiz.destroy()
 
 def criar_tela_perfil(raiz_principal):
     usuario = sessao_nome() 
