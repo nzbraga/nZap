@@ -1,7 +1,7 @@
 import tkinter as tk
 from assets.func.sessao.sessao import sessao_id, sessao_nome
 from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp, whatsapp_api
-from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import desconectar_whatsapp
+from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import desconectar_whatsapp, obter_dados_usuario
 
 from assets.func.uteis.popUp import popUp
 
@@ -12,7 +12,9 @@ from assets.func.uteis.popUp import popUp
 def atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar):
     """ Atualiza os elementos da interface com base no estado da API """
     if whatsapp_api.api_logada:
-        status_label.config(text="WhatsApp Conectado!", fg="green")
+        nome_logado = obter_dados_usuario()
+        
+        status_label.config(text=f"WhatsApp Conectado!\nConectado como: {nome_logado}", fg="green")
         info_label.config(text="Pronto para enviar mensagens!\nClique em desconectar para sair.")
         botao_conectar.pack_forget()
         botao_desconectar.pack(pady=5)

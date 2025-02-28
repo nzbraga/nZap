@@ -21,17 +21,35 @@ sucesso_arquivo = base_dir / "sucesso.txt"
 erro_arquivo = base_dir / "erro.txt"
 
 
+
 def encerrar_chrome_existente():
-    """Encerra processos do Chrome no Windows."""
-    subprocess.run('taskkill /F /IM chrome.exe /T', shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    
+    try:
+        # Obtém a lista de processos do Chrome com seus comandos
+        output = subprocess.check_output(
+            'wmic process where "name=\'chrome.exe\'" get ProcessId,CommandLine',
+            shell=True,
+            text=True
+        )
+
+        # Percorre cada linha da saída
+        for line in output.splitlines():
+            if '--remote-debugging-port' in line:  # Identifica o Chrome de automação
+                pid = ''.join(filter(str.isdigit, line))  # Extrai o PID
+                if pid:
+                    subprocess.run(f'taskkill /PID {pid} /F', shell=True)  # Mata apenas esse processo
+    except subprocess.CalledProcessError:
+        pass
+
 
 
 def config_webdriver(headless, client):
     global driver, options
 
-    encerrar_chrome_existente()
+    if driver is not None:
+        driver.quit
 
-    print(f'driver: {driver}')
+    #print(f'driver: {driver}')
 
     options = webdriver.ChromeOptions()
     options.page_load_strategy = 'eager'
@@ -56,7 +74,7 @@ def desconectar_whatsapp():
     )
 
     if elemento:
-        print("Elemento encontrado:", elemento)
+        #print("Elemento encontrado:", elemento)
         elemento.click()
         desconectar = WebDriverWait(driver, 30).until(
             EC.presence_of_element_located((By.XPATH, '//span[@data-icon="exit"]'))
@@ -74,28 +92,57 @@ def check_login(existe_login=False):
     global driver
     try:
         if existe_login:
-            print('checando login com pasta')
+            #print('checando login com pasta')
             logado = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
             )
             return bool(logado)
         else:
-            print('checando QR sem pasta')
+            #print('checando QR sem pasta')
             qr_code = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, "//canvas[@aria-label='Scan this QR code to link a device!']"))
             )
-            print("QR Code encontrado:", qr_code)
+            #print("QR Code encontrado:", qr_code)
             return False
+        
     except:
-        print('checando login sem pasta')
+        #print('checando login sem pasta')
         try:
             logado = WebDriverWait(driver, 30).until(
                 EC.presence_of_element_located((By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]'))
             )
             return bool(logado)
         except:
-            print("Erro ao checar login")
+            #print("Erro ao checar login")
             return False
+
+
+def obter_dados_usuario():
+    global driver
+    print("Obter dados usuario")
+    botao_perfil = WebDriverWait(driver, 30).until(
+    EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="Perfil"]'))
+    )
+    # Clicar no botão
+    botao_perfil.click()
+
+    nome_perfil = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, '//div[@class="_alcd"]//span[@dir="auto"]'))
+    )
+
+    # Pegar o texto do elemento
+    nome = nome_perfil.text
+    
+    conversas_button = WebDriverWait(driver, 30).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@data-icon="chats-outline"]'))
+    )
+
+    # Clicar ou fazer outra ação
+    conversas_button.click()
+    
+    
+
+    return nome    
 
 
 def enviar_mensagem(numero, mensagem):
