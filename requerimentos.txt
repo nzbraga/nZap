@@ -1,0 +1,6 @@
+watchdog
+selenium
+openpyxl
+pandas
+psutil
+source
