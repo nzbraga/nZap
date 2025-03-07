@@ -32,20 +32,24 @@ def definir_origem(excel, pagina_excel, agenda):
             header = [cell.value for cell in sheet[1]]  
             dados_contatos = []
 
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                row_dict = dict(zip(header, row))
-                print(f'row: {row_dict}')
-                """
-                if row_dict.get("nome") is None or row_dict["nome"] == "":
-                    break
-                """
 
-                dados_contatos.append(row_dict)                
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                row_dict = {key: value for key, value in zip(header, row) if key is not None}  # Remove colunas sem nome
+                
+                
+                if all(value is None or value == "" for value in row_dict.values()):
+                    break
+
+                dados_contatos.append(row_dict)
+
+            #print(f'contatos: {dados_contatos}')
+            return dados_contatos              
+        
+        
         except Exception:
             popUp("Erro ao processar os dados da planilha")
             return []
-        print(f'contatos: {dados_contatos}')
-        return dados_contatos
+      
 
     elif agenda:
         caminho_agenda = base_dir / f".{usuario_id}.json"        

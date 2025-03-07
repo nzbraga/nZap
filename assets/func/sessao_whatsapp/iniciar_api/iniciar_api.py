@@ -1,5 +1,6 @@
 import os
 import threading
+from pathlib import Path
 
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import config_webdriver, check_login
@@ -29,8 +30,8 @@ def start_whatsapp(client):
     def login_whatsapp():
         global existe_login        
 
-        caminho = f"C:/Users/Jato Gravações/.whatsapp_automation_profile_{client}"
-        
+        caminho = Path.home() / f".whatsapp_automation_profile_{client}"
+
         existe_login = os.path.isdir(caminho)
         
         # verifica se a pasta de login existe
@@ -44,7 +45,7 @@ def start_whatsapp(client):
             if not whatsapp_api.api_logada:                
                 
                 config_webdriver(False, client) #headless false
-                popUp('Após conectar o WhatsApp, pressione OK') 
+                #popUp('Após conectar o WhatsApp, pressione OK') 
                 config_webdriver(True, client) #headless true       
                 whatsapp_api.api_logada = check_login(True)            
                     

@@ -14,7 +14,7 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
     if whatsapp_api.api_logada:
         nome_logado = obter_dados_usuario()
         
-        status_label.config(text=f"WhatsApp Conectado!\nConectado como: {nome_logado}", fg="green")
+        status_label.config(text=f"WhatsApp Conectado!\nConectado como:\n{nome_logado}", fg="green")
         info_label.config(text="Pronto para enviar mensagens!\nClique em desconectar para sair.")
         botao_conectar.pack_forget()
         botao_desconectar.pack(pady=5)

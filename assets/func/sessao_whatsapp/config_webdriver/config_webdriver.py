@@ -41,8 +41,6 @@ def encerrar_chrome_existente():
     except subprocess.CalledProcessError:
         pass
 
-
-
 def config_webdriver(headless, client):
     global driver, options
 
@@ -65,7 +63,6 @@ def config_webdriver(headless, client):
     driver = webdriver.Chrome(options=options)
     driver.get("https://web.whatsapp.com")
 
-
 def desconectar_whatsapp():
     global driver
 
@@ -86,7 +83,6 @@ def desconectar_whatsapp():
         confirme_desconectar.click()
     else:
         print("Elemento NÃO encontrado:", elemento)
-
 
 def check_login(existe_login=False):
     global driver
@@ -116,23 +112,23 @@ def check_login(existe_login=False):
             #print("Erro ao checar login")
             return False
 
-
 def obter_dados_usuario():
     global driver
-    print("Obter dados usuario")
+    
     botao_perfil = WebDriverWait(driver, 30).until(
     EC.element_to_be_clickable((By.XPATH, '//button[@aria-label="Perfil"]'))
     )
     # Clicar no botão
     botao_perfil.click()
 
+    #CAMPO NOME
+    time.sleep(3)
     nome_perfil = WebDriverWait(driver, 30).until(
-        EC.presence_of_element_located((By.XPATH, '//div[@class="_alcd"]//span[@dir="auto"]'))
+        EC.presence_of_element_located((By.XPATH, '//div[contains(@class, "xs83m0k x1g77sc7 xeuugli x2lwn1j xozqiw3 x1oa3qoh x12fk4p8 x1iyjqo2 x1t1x2f9 x6ikm8r x10wlt62 x37zpob xg83lxy")]//div//div'))
     )
 
-    # Pegar o texto do elemento
     nome = nome_perfil.text
-    
+
     conversas_button = WebDriverWait(driver, 30).until(
     EC.presence_of_element_located((By.XPATH, '//*[@data-icon="chats-outline"]'))
     )
@@ -140,17 +136,20 @@ def obter_dados_usuario():
     # Clicar ou fazer outra ação
     conversas_button.click()
     
-    
-
     return nome    
 
 
 def enviar_mensagem(numero, mensagem):
     global driver
+    
     from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import whatsapp_api
 
     if whatsapp_api.api_logada:
         try:
+
+            print(f"Enviando mensagem para: {numero}")
+
+            
             # Busca pelo contato ou número
             search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
             search_box.click()
@@ -162,13 +161,19 @@ def enviar_mensagem(numero, mensagem):
             msg_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]')
             msg_box.click()
             msg_box.send_keys(mensagem + Keys.ENTER)
-            time.sleep(5)
+            time.sleep(3)
 
+            """
+            
             with sucesso_arquivo.open("a", encoding="utf-8") as f:
                 f.write(f"Sucesso: {numero}\n")
+            """
         except:
+            """
             with erro_arquivo.open("a", encoding="utf-8") as f:
                 f.write(f"Erro: {numero}\n")
+            """
             print("Erro ao enviar mensagem")
     else:
         raise popUp("Whatsapp não está Conectado!")
+

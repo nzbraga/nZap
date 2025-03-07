@@ -28,22 +28,33 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  destinatario= 'contato', 
   
       
     for contato in contatos:
+
+        #print(f'Chaves disponíveis: {contato.keys()}')
+        #print(f'Chaves disponíveis: >>> {contato.get(destinatario)}')
+        """
+        if not contato.get(destinatario):  # Verifica se a chave nao existe ou esta vazia
+            popUp(f"Contato nao encontrado para: {contato.get('nome')}.\nConfirme se o campo '{destinatario}' existe no arquivo Excel.")
+            continue
+        """
+        
         mensagem_personalizada = substituir_variaveis(mensagem, contato)
            
         if mensagem_personalizada is None:
             popUp(f"Erro ao processar mensagem para {contato.get('nome', 'Desconhecido')}.")
             return  # Interrompe a execução se houver erro
-        print(f'contato: {contato.get(destinatario)}')
-        if not contato.get(destinatario):  # Verifica se a chave não existe ou está vazia
-            popUp(f"Contato não encontrado.\nConfirme se o campo '{destinatario}' existe no arquivo Excel.")
+        
         
         mensagem_completa = f"{mensagem_personalizada}"
         
         if frequencia == 'Aniversario':
             
-            if formatar_valor(contato,'aniversario') == data_atual:            
+            contato_destinatario = contato.get(destinatario)
+
+            if formatar_valor(contato,'aniversario') == data_atual:  
+                          
+                print(f'enviar msg >> contato: {contato.get(destinatario)}')
                 
-                enviar_mensagem(contato[destinatario], mensagem_completa)                    
+                enviar_mensagem(contato_destinatario, mensagem_completa)                    
                 time.sleep(2)
                 
                 limitador += 1
