@@ -5,7 +5,6 @@ from pathlib import Path
 import traceback
 
 from assets.func.mensagem.montar_msg.enviar_msg import enviar_msg
-from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
 from assets.func.sessao.sessao import sessao_id
 
 base_dir = Path.home() / "nZap"
@@ -24,13 +23,13 @@ def checar_agendamentos(arquivo):
                 time.sleep(3600)
                 continue
 
-            print("Verificando se o arquivo existe...")
+            print("Agendamoento: Verificando se o arquivo existe...")
             if not arquivo.exists():
                 print("Arquivo não encontrado.")
                 time.sleep(30)
                 continue
 
-            print("Arquivo encontrado! Lendo conteúdo...")
+            print("Agendamoento: Arquivo encontrado! Lendo conteúdo...")
 
             with open(arquivo, 'r', encoding='utf-8') as f:
                 dados = json.load(f)
@@ -39,29 +38,57 @@ def checar_agendamentos(arquivo):
 
             for item in dados:
 
+
                 # Extração de dados
                 contato = item["contato"]
                 mensagem = item["mensagem"]
                 frequencia = item["frequencia"]
                 enviado = item["enviado"]
+                """
+                filtrar as condicionais de envio aqui !!!
+                """               
+                if frequencia in ["vencimento", "mensal"] and enviado == False:
 
-                # Verificando se o aniversário é hoje e se a mensagem já foi enviada
-                if not enviado:
-                    #print(f"Enviando mensagem para {contato['nome']} ({contato['destinatario']}): {mensagem}")
-                    enviar_msg([contato], mensagem, frequencia)
-                    
-                    # Atualizando o status de enviado
-                    item["enviado"] = True
+                    data_atual = datetime.now().strftime("%d")   
+
+                    #print(f"contato vencimento: {contato.get(frequencia, 'Chave não encontrada')}\ndata atual: {data_atual}")   
+                    if contato.get(frequencia) == data_atual: 
+                        #print(f"enviando vencimento dia: {contato.get(frequencia, 'Chave não encontrada')}")
+                        enviar_msg([contato], mensagem)
+
+                        item["enviado"] = True
+
+                elif frequencia == "aniversario" and enviado == False:
+
+                    data_atual = datetime.now().strftime("%d/%m")   
+
+                    #print(f"contato aniversario: {contato.get(frequencia, 'Chave não encontrada')}\ndata atual: {data_atual}")   
+                    if contato.get(frequencia) == data_atual: 
+                        #print(f"enviando aniversario dia: {contato.get(frequencia, 'Chave não encontrada')}")
+                        enviar_msg([contato], mensagem)
+
+                        item["enviado"] = True
+                
+                elif frequencia == 'semanal' and enviado == False:
+                    data_atual = datetime.today().weekday()
+                    print(f"dia da semana: {data_atual}")
+                    """
+                    if contato.get(frequencia) == data_atual:  
+                         enviar_msg([contato], mensagem)
+
+                         item["enviado"] = True
+                    """
 
             # Salvando o JSON atualizado
-            print("Salvando o JSON atualizado...")
+            print("Agendamoento: Salvando o JSON atualizado...")
             with open(arquivo, 'w', encoding='utf-8') as f:
                 json.dump(dados, f, indent=4, ensure_ascii=False)
 
-            print("Processo concluído.")
+            print("Agendamoento: Processo concluído.")
 
         except Exception as e:
-            print("Erro ao ler ou atualizar o arquivo JSON:")
+            print("Agendamoento: Erro ao ler ou atualizar o arquivo JSON:")
             traceback.print_exc()
 
-        time.sleep(3600)  # Espera 1 hora antes de verificar novamente
+        #time.sleep(3600)  # Espera 1 hora antes de verificar novamente
+        time.sleep(30)  

@@ -17,6 +17,8 @@ def agendar_msg(contatos, mensagem, frequencia="hoje", chave_destinatario='conta
     # Verifica se o diretório agendado existe, se não, cria
     agendado_dir.mkdir(parents=True, exist_ok=True)
 
+    #print(f'contatos>>>>: {contatos}')  
+
     # Cria uma lista para armazenar as mensagens agendadas
     mensagens_agendadas = []
 

@@ -12,53 +12,61 @@ agendado_dir = base_dir / "agendados"
 ARQUIVO_AGENDADO = agendado_dir / f".{usuario_id}.json"
 
 def resetar_agendamentos(arquivo):
-    time.sleep(86400)  # Aguarda 1 minuto antes de repetir
-    while True:        
-        try:
-            print("\nVerificando se o arquivo existe...")
+    print('resetar_enviados ativado')
+    
+    def resetar():
+        print('resetar_agendamentos ativado')
+        time.sleep(86400)  # Aguarda 1 dia antes de começar
 
-            # Verifica se o arquivo existe
-            if not arquivo.exists():
-                print("Arquivo JSON não encontrado.")
-                time.sleep(60)
-                continue
+        while True:        
+            try:
+                print("\nVerificando se o arquivo existe...")
 
-            print("Arquivo encontrado! Lendo conteúdo...")
-
-            # Lê o arquivo JSON
-            with open(arquivo, 'r', encoding='utf-8') as f:
-                try:
-                    dados = json.load(f)
-                except json.JSONDecodeError as e:
-                    print(f"Erro ao decodificar JSON: {e}")
+                if not arquivo.exists():
+                    print("Arquivo JSON não encontrado.")
                     time.sleep(60)
                     continue
 
-            print(f"Conteúdo do JSON carregado: {dados}")
+                print("Arquivo encontrado! Lendo conteúdo...")
 
-            # Garante que os dados são uma lista
-            if not isinstance(dados, list):
-                print("Erro: JSON deve conter uma lista de objetos.")
-                time.sleep(60)
-                continue
+                with open(arquivo, 'r', encoding='utf-8') as f:
+                    try:
+                        dados = json.load(f)
+                    except json.JSONDecodeError as e:
+                        print(f"Erro ao decodificar JSON: {e}")
+                        time.sleep(60)
+                        continue
 
-            print("Resetando 'enviado' para False...")
+                print(f"Conteúdo do JSON carregado: {dados}")
 
-            # Reseta o campo "enviado" para False
-            for item in dados:
-                print(f"Processando item: {item}")  # Log do item atual
-                if isinstance(item, dict) and "enviado" in item:
-                    item["enviado"] = False  
+                if not isinstance(dados, list):
+                    print("Erro: JSON deve conter uma lista de objetos.")
+                    time.sleep(60)
+                    continue
 
-            print("Salvando o JSON atualizado...")
+                print("Resetando 'enviado' para False...")
 
-            # Escreve de volta no JSON
-            with open(arquivo, 'w', encoding='utf-8') as f:
-                json.dump(dados, f, indent=4, ensure_ascii=False)
+                for item in dados:
+                    print(f"Processando item: {item}")
+                    if isinstance(item, dict) and "enviado" in item:
+                        item["enviado"] = False  
 
-            print("Todos os agendamentos foram resetados!")
+                print("Salvando o JSON atualizado...")
 
-        except Exception as e:
-            print(f"Erro inesperado: {e}")
+                with open(arquivo, 'w', encoding='utf-8') as f:
+                    json.dump(dados, f, indent=4, ensure_ascii=False)
 
+                print("Todos os agendamentos foram resetados!")
+
+            except Exception as e:
+                print(f"Erro inesperado: {e}")
+
+            time.sleep(86400)  # Espera mais um dia antes de rodar novamente
+
+    thread = threading.Thread(target=resetar, daemon=True)
+    thread.start()
+
+# Exemplo de chamada da função sem bloquear o código principal
+resetar_agendamentos(ARQUIVO_AGENDADO)
+    
 

@@ -11,12 +11,13 @@ limitador = 0
 
 def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='contato', limite=5):
     global limitador
-    print(f'contatosssss: {contatos}')
+    #print(f'contatosssss: {contatos}')
    
     data_atual = datetime.now().strftime("%d/%m")
+    data_envio = None
 
     if frequencia == 'hoje':
-        frequencia = data_atual
+        data_envio = data_atual
 
     if not contatos:
         popUp("Nenhum contato selecionado.")
@@ -43,20 +44,20 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
             return  # Interrompe a execução se houver erro
         
         
-        mensagem_completa = f"{mensagem_personalizada}"
-        
-        if frequencia == 'Aniversario':
-            
-            if formatar_valor(contato,'aniversario') == data_atual:  
+        mensagem_completa = f"{mensagem_personalizada}"       
                           
-                print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
-                
-                enviar_mensagem(contato.get(chave_destinatario), mensagem_completa)                    
-                time.sleep(2)
-                
-                limitador += 1
-                if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação
-                    resposta = messagebox.askyesno("Confirmação", f"{limite} mensagens enviadas, deseja continuar?")
-                    if not resposta:
-                        print("Usuário optou por parar o envio.")
-                        return
+        print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
+        print(f'data de envio: {data_envio}\n data atual: {data_atual}')
+
+        if data_envio == data_atual:
+            enviar_mensagem(contato.get(chave_destinatario), mensagem_completa)
+            
+        time.sleep(2)
+        
+        limitador += 1
+        if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação
+            resposta = messagebox.askyesno("Confirmação", f"{limite} mensagens enviadas, deseja continuar?")
+            if not resposta:
+                print("Usuário optou por parar o envio.")
+                return
+

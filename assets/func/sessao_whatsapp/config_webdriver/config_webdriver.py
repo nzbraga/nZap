@@ -147,8 +147,7 @@ def enviar_mensagem(numero, mensagem):
     if whatsapp_api.api_logada:
         try:
 
-            print(f"Enviando mensagem para: {numero}")
-
+            #print(f"enviar_mensagem >>> numero: {numero}")
             
             # Busca pelo contato ou número
             search_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="3"]')
@@ -163,8 +162,8 @@ def enviar_mensagem(numero, mensagem):
             msg_box.send_keys(mensagem + Keys.ENTER)
             time.sleep(3)
 
-            """
             
+            """
             with sucesso_arquivo.open("a", encoding="utf-8") as f:
                 f.write(f"Sucesso: {numero}\n")
             """

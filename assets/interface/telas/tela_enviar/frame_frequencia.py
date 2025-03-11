@@ -281,7 +281,7 @@ def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinatai
                        pagina.current(),        
                        agenda.get()),
         mensagem.get('1.0', tk.END).strip(),
-        frequencia_envio,
+        frequencia_envio.lower(),
         destinataio.get('1.0', tk.END).strip()
         ),
         
@@ -298,7 +298,7 @@ def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinatai
                        pagina.current(),        
                        agenda.get()),
         mensagem.get('1.0', tk.END).strip(),
-        frequencia_envio,
+        frequencia_envio.lower(),
         destinataio.get('1.0', tk.END).strip()
         ),
                     #print(f"origem: {definir_origem(excel.get(), agenda.get(), pagina.current())}\nfrequencia_envio: {frequencia_envio}")]

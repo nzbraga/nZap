@@ -4,11 +4,12 @@ from assets.interface.telas.tela_login.tela_login import tela_login
 def main():
     #limpar_data()
 
-    """
-    Inicializa o programa, chamando a fun o 'mostrar_tela' que 
-    renderiza a tela principal do aplicativo.
-    """
+
+    #Inicializa o programa, chamando a fun o 'mostrar_tela' que 
+    #renderiza a tela principal do aplicativo.
+    
     tela_login()
 
 if __name__ == "__main__":
     main()
+

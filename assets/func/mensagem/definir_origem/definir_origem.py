@@ -42,7 +42,7 @@ def definir_origem(excel, pagina_excel, agenda):
 
                 dados_contatos.append(row_dict)
 
-            #print(f'contatos: {dados_contatos}')
+            print(f'contatos:-------------------------------------------- {dados_contatos}')
             return dados_contatos              
         
         

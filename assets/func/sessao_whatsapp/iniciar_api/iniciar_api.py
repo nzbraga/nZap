@@ -38,7 +38,7 @@ def start_whatsapp(client):
         if existe_login:
             
             
-            config_webdriver(False, client) #headless true
+            config_webdriver(True, client) #headless true
             whatsapp_api.api_logada = check_login(True)            
             
             # se nao estiver logado abre a janela visivel
