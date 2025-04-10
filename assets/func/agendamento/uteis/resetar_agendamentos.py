@@ -12,7 +12,8 @@ agendado_dir = base_dir / "agendados"
 ARQUIVO_AGENDADO = agendado_dir / f".{usuario_id}.json"
 
 def resetar_agendamentos(arquivo):
-    print('resetar_enviados ativado')
+    
+    
     
     def resetar():
         print('resetar_agendamentos ativado')
@@ -65,8 +66,5 @@ def resetar_agendamentos(arquivo):
 
     thread = threading.Thread(target=resetar, daemon=True)
     thread.start()
-
-# Exemplo de chamada da função sem bloquear o código principal
-resetar_agendamentos(ARQUIVO_AGENDADO)
     
 

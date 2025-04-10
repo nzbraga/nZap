@@ -4,3 +4,6 @@ openpyxl
 pandas
 psutil
 source
+pystray
+nuitka
+pyinstaller

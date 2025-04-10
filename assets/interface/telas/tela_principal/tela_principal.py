@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import Menu
-import pystray
 from pystray import MenuItem as item, Icon
 from PIL import Image, ImageDraw
 from assets.interface.telas.tela_perfil.tela_perfil import criar_tela_perfil
@@ -104,6 +103,7 @@ menu_bandeja = (
     item("Abrir Janela", restaurar_janela),
     item("Sair", sair_do_programa)
 )
+
 
 # Iniciar o programa
 iniciar_tela_principal()

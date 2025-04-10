@@ -46,8 +46,8 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
         
         mensagem_completa = f"{mensagem_personalizada}"       
                           
-        print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
-        print(f'data de envio: {data_envio}\n data atual: {data_atual}')
+        #print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
+        #print(f'data de envio: {data_envio}\n data atual: {data_atual}')
 
         if data_envio == data_atual:
             enviar_mensagem(contato.get(chave_destinatario), mensagem_completa)

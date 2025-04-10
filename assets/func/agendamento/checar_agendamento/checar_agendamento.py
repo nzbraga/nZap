@@ -60,11 +60,11 @@ def checar_agendamentos(arquivo):
 
                 elif frequencia == "aniversario" and enviado == False:
 
-                    data_atual = datetime.now().strftime("%d/%m")   
+                    data_atual = datetime.now().strftime("%d-%m")   
 
                     #print(f"contato aniversario: {contato.get(frequencia, 'Chave não encontrada')}\ndata atual: {data_atual}")   
                     if contato.get(frequencia) == data_atual: 
-                        #print(f"enviando aniversario dia: {contato.get(frequencia, 'Chave não encontrada')}")
+                        print(f"enviando aniversario dia: {contato.get(frequencia, 'Chave não encontrada')}")
                         enviar_msg([contato], mensagem)
 
                         item["enviado"] = True
@@ -90,5 +90,5 @@ def checar_agendamentos(arquivo):
             print("Agendamoento: Erro ao ler ou atualizar o arquivo JSON:")
             traceback.print_exc()
 
-        #time.sleep(3600)  # Espera 1 hora antes de verificar novamente
-        time.sleep(30)  
+        time.sleep(3600)  # Espera 1 hora antes de verificar novamente
+        #time.sleep(30)  
