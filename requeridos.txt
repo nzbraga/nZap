@@ -1,0 +1,9 @@
+watchdog
+selenium
+openpyxl
+pandas
+psutil
+source
+pystray
+nuitka
+pyinstaller
