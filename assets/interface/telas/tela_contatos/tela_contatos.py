@@ -1,3 +1,5 @@
+"""
+
 import os
 import sys
 import json
@@ -243,3 +245,5 @@ def tela_contatos(raiz_principal):
     atualizar_lista()
     tree.pack(pady=10)
     return tela_contato
+
+    """

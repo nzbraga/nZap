@@ -35,7 +35,8 @@ def tela_login():
     login_raiz = config_page_tk(
         "Login", "300", "280", 'login_raiz')
     
-    checar_login(login_raiz) 
+    login_raiz.after(10, lambda: checar_login(login_raiz))
+ 
 
     tk.Label(login_raiz, text="Usuario:").pack(pady=(20,5))
     usuario_entrada = tk.Entry(login_raiz)
