@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
-from assets.func.mensagem.montar_msg.formatar_mensagem import substituir_variaveis, formatar_valor
+from assets.func.mensagem.montar_msg.formatar_mensagem import substituir_variaveis
 
 limitador = 0
 
@@ -50,14 +50,15 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
         #print(f'data de envio: {data_envio}\n data atual: {data_atual}')
 
         if data_envio == data_atual:
-            enviar_mensagem(contato.get(chave_destinatario), mensagem_completa)
+            enviar_mensagem(contato.get('nome'), contato.get(chave_destinatario), mensagem_completa)
             
-        time.sleep(2)
-        
+        time.sleep(1)
+        '''
         limitador += 1
         if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação
             resposta = messagebox.askyesno("Confirmação", f"{limite} mensagens enviadas, deseja continuar?")
             if not resposta:
                 print("Usuário optou por parar o envio.")
                 return
+        '''
 

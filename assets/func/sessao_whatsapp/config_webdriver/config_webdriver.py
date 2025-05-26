@@ -9,6 +9,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from assets.func.sessao_whatsapp.uteis.definir_pasta import definir_pasta
+from assets.func.mensagem.buscar_destinatario.buscar_destinatario import buscar_destinatario
+from assets.func.mensagem.enviar_texto.enviar_texto import enviar_texto
 from assets.func.uteis.popUp import popUp
 
 driver = None
@@ -135,7 +137,7 @@ def obter_dados_usuario():
     
     return nome    
 
-def enviar_mensagem(numero, mensagem):
+def enviar_mensagem(nome, numero, mensagem):
     global driver
     
     from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import whatsapp_api
@@ -144,50 +146,54 @@ def enviar_mensagem(numero, mensagem):
         try:
 
             #print(f"enviar_mensagem >>> numero: {numero}")
-            
-            # Busca pelo contato ou número
-            search_box = driver.find_element(By.XPATH, '//*[@id="side"]/div[1]/div/div[2]/div/div/div[1]')
-            search_box.click()     
-            search_box.send_keys(Keys.CONTROL + "a")
-            search_box.send_keys(Keys.BACKSPACE)
-
-            search_box.send_keys(str(numero) + Keys.ENTER)
+            buscar_destinatario(numero, driver)
             time.sleep(2)  # Aguarda a tela do contato carregar
 
             try:
+                enviar_texto(mensagem, driver)
                 # Digita e envia a mensagem
-                msg_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]')
-                msg_box.click()
-                msg_box.send_keys(mensagem + Keys.ENTER)
-                time.sleep(3)   
-            except:
-                #print("Erro ao enviar mensagem\n erro: NÃO ENCONTRADO")
-                search_box = driver.find_element(By.XPATH, '//*[@id="side"]/div[1]/div/div[2]/div/div/div[1]')
-                search_box.click()     
-                search_box.send_keys(Keys.CONTROL + "a")
-                search_box.send_keys(Keys.BACKSPACE)
 
-                search_box.send_keys(str('2137055362') + Keys.ENTER)
+                time.sleep(2)   
+                buscar_destinatario('21997633265', driver)
                 time.sleep(2)  # Aguarda a tela do contato carregar
+                enviar_texto(f"Enviada com Sucesso para: {nome} - {numero}", driver)
 
-                msg_box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]')
-                msg_box.click()
-                msg_box.send_keys(Keys.CONTROL + "a")
-                msg_box.send_keys(Keys.BACKSPACE)
-                msg_box.send_keys(f"Numero nao encontrado {numero}" + Keys.ENTER)
-                time.sleep(3)  
-            #search_box.clear()
+                #atualizar pagina aqui
+                time.sleep(2)  # Aguarda a tela do contato carregar
+                driver.refresh()
+                time.sleep(5)  # Aguarda a tela do contato carregar
+
+            except:
+                buscar_destinatario('21997633265', driver)
+     
+                time.sleep(2)  # Aguarda a tela do contato carregar
+                # Digita e envia a mensagem
+                enviar_texto(f"Numero nao encontrado: {nome} - {numero}", driver)
+                #atualizar pagina aqui
+                time.sleep(2)  # Aguarda a tela do contato carregar
+                driver.refresh()
+                time.sleep(5)  # Aguarda a tela do contato carregar
+
+   
+          
                 
-            """
-            with sucesso_arquivo.open("a", encoding="utf-8") as f:
-                f.write(f"Sucesso: {numero}\n")
-            """
+
         except Exception as e:
-            """
-            with erro_arquivo.open("a", encoding="utf-8") as f:
-                f.write(f"Erro: {numero}\n")
-            """
             print("Erro ao enviar mensagem\n erro:", e)
+            mensagem_erro ="Erro ao enviar mensagem\n erro:", e
+
+            buscar_destinatario('21997633265', driver)
+    
+            time.sleep(2)  # Aguarda a tela do contato carregar
+            # Digita e envia a mensagem
+            enviar_texto(mensagem_erro, driver)
+
+            # voltar pra conversas
+
+
+
+
+ 
     else:
         raise popUp("Whatsapp não está Conectado!")
 

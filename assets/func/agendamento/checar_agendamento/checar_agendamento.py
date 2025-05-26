@@ -29,7 +29,7 @@ def checar_agendamentos(arquivo):
                 time.sleep(30)
                 continue
 
-            print("Agendamoento: Arquivo encontrado! Lendo conteúdo...")
+            print("Agendamento: Arquivo encontrado! Lendo conteúdo...")
 
             with open(arquivo, 'r', encoding='utf-8') as f:
                 dados = json.load(f)
