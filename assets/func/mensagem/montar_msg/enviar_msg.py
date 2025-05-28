@@ -6,6 +6,7 @@ from tkinter import messagebox
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
 from assets.func.mensagem.montar_msg.formatar_mensagem import substituir_variaveis
+from assets.func.mensagem.saudacao.saudacao import definir_saudacao
 
 limitador = 0
 
@@ -38,13 +39,14 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
             continue
         
         mensagem_personalizada = substituir_variaveis(mensagem, contato)
+        
            
         if mensagem_personalizada is None:
             popUp(f"Erro ao processar mensagem para {contato.get('nome', 'Desconhecido')}.")
             return  # Interrompe a execução se houver erro
         
         
-        mensagem_completa = f"{mensagem_personalizada}"       
+        mensagem_completa = f"{definir_saudacao(contato.get('nome'))}{mensagem_personalizada}"       
                           
         #print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
         #print(f'data de envio: {data_envio}\n data atual: {data_atual}')

@@ -142,41 +142,52 @@ def enviar_mensagem(nome, numero, mensagem):
     
     from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import whatsapp_api
 
+    if nome == "Agendamento: Processo concluído.":
+        if whatsapp_api.api_logada:
+            buscar_destinatario('21997633265', driver)
+            time.sleep(2)  # Aguarda a tela do contato carregar
+            enviar_texto(mensagem, driver)
+        else:
+            pass
+
     if whatsapp_api.api_logada:
         try:
 
-            #print(f"enviar_mensagem >>> numero: {numero}")
-            buscar_destinatario(numero, driver)
-            time.sleep(2)  # Aguarda a tela do contato carregar
+            if nome == "Agendamento: Processo concluído.":
+                pass
+            else:
 
-            try:
-                enviar_texto(mensagem, driver)
-                # Digita e envia a mensagem
-
-                time.sleep(2)   
-                buscar_destinatario('21997633265', driver)
+                #print(f"enviar_mensagem >>> numero: {numero}")
+                buscar_destinatario(numero, driver)
                 time.sleep(2)  # Aguarda a tela do contato carregar
-                enviar_texto(f"Enviada com Sucesso para: {nome} - {numero}", driver)
 
-                #atualizar pagina aqui
-                time.sleep(2)  # Aguarda a tela do contato carregar
-                driver.refresh()
-                time.sleep(5)  # Aguarda a tela do contato carregar
+                try:
+                    enviar_texto(mensagem, driver)
+                    # Digita e envia a mensagem
+                    
+                    buscar_destinatario('21997633265', driver)
+                    time.sleep(2)  # Aguarda a tela do contato carregar
+                    enviar_texto(f"Enviada com Sucesso para: {nome} - {numero}", driver)
 
-            except:
-                buscar_destinatario('21997633265', driver)
-     
-                time.sleep(2)  # Aguarda a tela do contato carregar
-                # Digita e envia a mensagem
-                enviar_texto(f"Numero nao encontrado: {nome} - {numero}", driver)
-                #atualizar pagina aqui
-                time.sleep(2)  # Aguarda a tela do contato carregar
-                driver.refresh()
-                time.sleep(5)  # Aguarda a tela do contato carregar
+                    #atualizar pagina aqui
+                    time.sleep(2)  # Aguarda a tela do contato carregar
+                    driver.refresh()
+                    time.sleep(5)  # Aguarda a tela do contato carregar
 
-   
-          
-                
+                except:
+                    buscar_destinatario('21997633265', driver)
+        
+                    time.sleep(2)  # Aguarda a tela do contato carregar
+                    # Digita e envia a mensagem
+                    enviar_texto(f"Numero nao encontrado: {nome} - {numero}", driver)
+                    #atualizar pagina aqui
+                    time.sleep(2)  # Aguarda a tela do contato carregar
+                    driver.refresh()
+                    time.sleep(5)  # Aguarda a tela do contato carregar
+
+
+            
+                    
 
         except Exception as e:
             print("Erro ao enviar mensagem\n erro:", e)
@@ -190,10 +201,10 @@ def enviar_mensagem(nome, numero, mensagem):
 
             # voltar pra conversas
 
-
-
-
- 
     else:
         raise popUp("Whatsapp não está Conectado!")
+
+
+
+
 

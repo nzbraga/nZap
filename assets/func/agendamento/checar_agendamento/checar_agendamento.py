@@ -5,6 +5,7 @@ from pathlib import Path
 import traceback
 
 from assets.func.mensagem.montar_msg.enviar_msg import enviar_msg
+from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
 from assets.func.sessao.sessao import sessao_id
 
 base_dir = Path.home() / "nZap"
@@ -34,14 +35,17 @@ def checar_agendamentos(arquivo):
             with open(arquivo, 'r', encoding='utf-8') as f:
                 dados = json.load(f)
 
+
             #print(f"Conteúdo do JSON carregado: {dados}")
 
             for item in dados:
 
 
                 # Extração de dados
-                contato = item["contato"]
-                mensagem = item["mensagem"]
+                contato = item["contato"]     
+                mensagem = item["mensagem"].replace("/n", "\n").replace("\\n", "\n")
+
+     
                 frequencia = item["frequencia"]
                 enviado = item["enviado"]
                 """
@@ -84,11 +88,15 @@ def checar_agendamentos(arquivo):
             with open(arquivo, 'w', encoding='utf-8') as f:
                 json.dump(dados, f, indent=4, ensure_ascii=False)
 
-            print("Agendamoento: Processo concluído.")
+           
+            print("Agendamento: Processo concluído.")
+            enviar_mensagem("Agendamento: Processo concluído.", "21997633265", "Verificação de mensagem agendadas: Processo concluído.")
 
         except Exception as e:
             print("Agendamoento: Erro ao ler ou atualizar o arquivo JSON:")
             traceback.print_exc()
 
+
         time.sleep(3600)  # Espera 1 hora antes de verificar novamente
         #time.sleep(30)  
+    
