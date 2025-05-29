@@ -5,6 +5,7 @@ from pathlib import Path
 from tkinter import ttk, messagebox
 
 from assets.func.sessao.sessao import sessao_id
+from assets.interface.telas.tela_enviar.tela_enviar import atualizar_lista_mensagens
 
 usuario_id = sessao_id()
 
@@ -56,6 +57,7 @@ def tela_mensagem(raiz_principal):
             if titulo and mensagem:
                 mensagens[titulo] = mensagem
                 salvar_mensagens_async(caminho_json, mensagens, callback=atualizar_lista)
+                atualizar_lista_mensagens()
                 janela_nova.destroy()
 
         janela_nova = tk.Toplevel(raiz_principal)
@@ -102,6 +104,7 @@ def tela_mensagem(raiz_principal):
                 mensagens.pop(titulo_atual, None)
                 mensagens[novo_titulo] = nova_mensagem
                 salvar_mensagens_async(caminho_json, mensagens, callback=atualizar_lista)
+                atualizar_lista_mensagens()
                 janela_edicao.destroy()
 
         janela_edicao = tk.Toplevel(raiz_principal)
@@ -114,6 +117,8 @@ def tela_mensagem(raiz_principal):
         tk.Label(frame_titulo, text="Título:", font=("Arial", 12)).pack(anchor="w")
         entry_titulo = tk.Entry(frame_titulo, font=("Arial", 12), width=50)
         entry_titulo.pack()
+        entry_titulo.insert(0, titulo_atual)  # <- Aqui preenche o campo com o título atual
+
 
         # Mensagem
         frame_mensagem = tk.Frame(janela_edicao, padx=10, pady=5)
@@ -121,6 +126,8 @@ def tela_mensagem(raiz_principal):
         tk.Label(frame_mensagem, text="Mensagem:", font=("Arial", 12)).pack(anchor="w")
         text_mensagem = tk.Text(frame_mensagem, font=("Arial", 12), width=50, height=10)
         text_mensagem.pack()
+        text_mensagem.insert("1.0", mensagem_atual)  # <- Aqui preenche o campo com a mensagem atual
+
 
         btn_frame = tk.Frame(janela_edicao)
         btn_frame.pack(pady=10)
@@ -143,7 +150,7 @@ def tela_mensagem(raiz_principal):
         if messagebox.askyesno("Confirmação", "Tem certeza que deseja excluir esta mensagem?"):
             mensagens.pop(titulo_atual, None)
             salvar_mensagens_async(caminho_json, mensagens, callback=atualizar_lista)
-
+            atualizar_lista_mensagens()
     btn_frame = tk.Frame(mensagem_raiz)
     btn_frame.pack(pady=5)
 

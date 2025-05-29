@@ -4,14 +4,13 @@ from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import obter_
 from assets.func.agendamento.checar_agendamento.checar_agendamento import checar_agendamentos, ARQUIVO_AGENDADO
 from assets.func.agendamento.uteis.resetar_agendamentos import resetar_agendamentos
 
-def atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar):
+def atualizar_interface(status_label, info_label, botao_desconectar):
     """ Atualiza os elementos da interface com base no estado da API """
     if whatsapp_api.api_logada:
         nome_logado = obter_dados_usuario()
 
         status_label.config(text=f"WhatsApp Conectado como:\n{nome_logado}", fg="green")
-        info_label.config(text="Pronto para enviar mensagens!\nClique em desconectar para sair.")
-        botao_conectar.pack_forget()
+        info_label.pack_forget()      
         botao_desconectar.pack(pady=5)
 
         # Inicia a thread de checagem de agendamentos após conectar ao WhatsApp
@@ -24,7 +23,7 @@ def atualizar_interface(status_label, info_label, botao_conectar, botao_desconec
 
 
     else:
-        status_label.config(text="WhatsApp Desconectado!", fg="red")
+        status_label.config(text="WhatsApp Desconectado! \n Aguarde...", fg="red")
         info_label.config(text="Conecte ao WhatsApp\npara enviar e agendar mensagens.")
         botao_desconectar.pack_forget()
-        botao_conectar.pack(pady=5)
+     

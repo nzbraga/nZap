@@ -5,6 +5,7 @@ from pystray import MenuItem as item, Icon
 from PIL import Image, ImageDraw
 from assets.interface.telas.tela_perfil.tela_perfil import criar_tela_perfil
 from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
+from assets.interface.telas.tela_config.tela_config import criar_tela_config
 from assets.interface.telas.tela_enviar.tela_enviar import tela_enviar
 from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import encerrar_chrome_existente
@@ -56,8 +57,9 @@ def iniciar_tela_principal():
     frame1 = criar_tela_inicial(raiz_principal)
     frame3 = tela_enviar(raiz_principal)
     frame4 = tela_mensagem(raiz_principal)
+    frame5 = criar_tela_config(raiz_principal)
 
-    for frame in (frame0, frame1, frame3, frame4):
+    for frame in (frame0, frame1, frame3, frame4, frame5):
         frame.grid(row=0, column=0, sticky="nsew")
 
     # Criar Menu
@@ -68,6 +70,7 @@ def iniciar_tela_principal():
     menu_bar.add_command(label="Conectar", command=lambda: mostrar_tela(frame1))
     menu_bar.add_command(label="Enviar", command=lambda: mostrar_tela(frame3))
     menu_bar.add_command(label="Mensagens", command=lambda: mostrar_tela(frame4))
+    menu_bar.add_command(label="Config", command=lambda: mostrar_tela(frame5))
 
     # Mostrar frame inicial
     mostrar_tela(frame0)

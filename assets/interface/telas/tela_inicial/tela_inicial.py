@@ -17,6 +17,7 @@ def criar_tela_inicial(raiz_principal):
     
     tk.Label(frame_inicial, text=f"{usuario}, bem-vindo ao nZap!", font=("Arial", 14)).pack(pady=5)
 
+    tk.Label(frame_inicial, text=f"Conectar com navegador:", font=("Arial", 14)).pack(pady=5)
     frame_botoes = tk.Frame(frame_inicial)
     frame_botoes.pack(pady=5)
 
@@ -28,20 +29,22 @@ def criar_tela_inicial(raiz_principal):
 
     status_label = tk.Label(frame_inicial, font=("Arial", 14))
     status_label.pack(pady=(10, 5))
-
+    
     info_label = tk.Label(frame_inicial, font=("Arial", 14))
     info_label.pack(pady=5)
+    
 
-    botao_conectar = tk.Button(frame_inicial, text="Conectar", font=("Arial", 14), bg='green', 
-                               command=lambda: start_whatsapp(sessao_id()))
     botao_desconectar = tk.Button(frame_inicial, text="Desconectar", font=("Arial", 10), bg='orange', 
                                   command=lambda: [(setattr(whatsapp_api, 'api_logada', not whatsapp_api.api_logada)),desconectar_whatsapp()])
+    
 
     # 🔥 Atualiza a interface uma vez ao iniciar
-    atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar)
+    atualizar_interface(status_label, info_label,  botao_desconectar)
 
     # 🔥 Registra a função de atualização automática
-    whatsapp_api.atualizar_interface_callback = lambda: atualizar_interface(status_label, info_label, botao_conectar, botao_desconectar)
+    whatsapp_api.atualizar_interface_callback = lambda: atualizar_interface(status_label, info_label, botao_desconectar)
+
+    
 
     raiz_principal.update_idletasks()  
     raiz_principal.geometry("")  

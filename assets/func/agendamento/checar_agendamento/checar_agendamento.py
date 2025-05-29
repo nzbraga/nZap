@@ -97,6 +97,6 @@ def checar_agendamentos(arquivo):
             traceback.print_exc()
 
 
-        time.sleep(3600)  # Espera 1 hora antes de verificar novamente
+        time.sleep(21600)  # Espera 6 hora antes de verificar novamente
         #time.sleep(30)  
     

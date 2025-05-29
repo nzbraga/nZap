@@ -35,11 +35,11 @@ def criar_tela_perfil(raiz_principal):
 
         # 🔥 Criar os widgets ANTES de chamá-los
         status_label = tk.Label(frame_perfil, font=("Arial", 14))
-        status_label.pack(pady=(10, 5))
+        status_label.pack(pady=5)
 
         tk.Label(frame_perfil, text="Clique em deslogar\npara encerrar sua sessão", font=("Arial", 10)).pack(pady=0)
         tk.Button(frame_perfil, text="Deslogar", font=("Arial", 10), bg='red', 
-                command=lambda: manusear_deslogar(raiz_principal)).pack(pady=(10,5))
+                command=lambda: manusear_deslogar(raiz_principal)).pack(pady=0)
         
         info_label = tk.Label(frame_perfil, font=("Arial", 14))
         info_label.pack(pady=5)
