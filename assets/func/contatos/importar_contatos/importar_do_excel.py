@@ -38,7 +38,10 @@ def importar_excel():
 
     # Converter nomes para maiúsculas
     info_excel["nome"] = info_excel["nome"].str.upper()
-
+    info_excel["aniversario"] = info_excel["aniversario"].replace("\\", "-").replace("/", "-")
+    
+    if info_excel["telefone"] == "Telefone" or info_excel["telefone"] == "telefone":
+        info_excel["telefone"] = "contato"
     # Verifica duplicatas
     novos_contatos, contatos_existentes = checar_duplicatas_excel_para_json("telefone", caminho_json, info_excel)
     #print(f'novos_contatos: {novos_contatos}\n contatos_existentes: {contatos_existentes}')

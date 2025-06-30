@@ -59,7 +59,8 @@ def iniciar_tela_principal():
     frame4 = tela_mensagem(raiz_principal)
     frame5 = criar_tela_config(raiz_principal)
 
-    for frame in (frame0, frame1, frame3, frame4, frame5):
+    for frame in (frame0, frame1, frame3, frame4 , frame5
+                  ):
         frame.grid(row=0, column=0, sticky="nsew")
 
     # Criar Menu

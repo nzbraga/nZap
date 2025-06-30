@@ -27,13 +27,13 @@ def definir_saudacao(name='"Nome_do_Contato"'):
     first_name = name.strip().split()[0] if name.strip() else ''
     hour, minute = pegar_hora()
     if hour >= 6 and hour <12:
-        greeting = f'Bom dia {first_name},'
+        greeting = f'Bom dia {first_name},\n'
         return  greeting
     elif hour >= 12 and hour < 18:
-        greeting = f'Boa tarde {first_name},'
+        greeting = f'Boa tarde {first_name},\n'
         return  greeting
     elif hour >= 18 and hour < 22:
-        greeting = f'Boa noite {first_name},'
+        greeting = f'Boa noite {first_name},\n'
         return  greeting
 
 

@@ -7,10 +7,7 @@ from assets.func.login.uteis.alternar_senha import alternar_senha
 from assets.interface.uteis.config_tela import config_page_tk
 from assets.func.sessao.sessao import sessao_id
 from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import start_whatsapp
-
 from assets.func.uteis.popUp import popUp
-
-
 
 def manusear_criar_usuario(raiz):   
     raiz.withdraw()
@@ -27,8 +24,8 @@ def checar_login(raiz):
     if sessao_id():   
         start_whatsapp(sessao_id())       
         raiz.destroy()
-        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame0
-        mostrar_tela(frame0)
+        from assets.interface.telas.tela_principal.tela_principal import mostrar_tela, frame1
+        mostrar_tela(frame1)
 
 def tela_login():
     

@@ -1,6 +1,7 @@
 import time
 import psutil   
 from pathlib import Path
+import re
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -15,6 +16,8 @@ from assets.func.uteis.popUp import popUp
 
 driver = None
 options = None
+nome = None
+remetente = None
 
 base_dir = Path.home() / "nZap"
 base_dir.mkdir(parents=True, exist_ok=True)
@@ -44,7 +47,6 @@ def config_webdriver(headless, client):
 
     encerrar_chrome_existente(client)
    
-
     options = webdriver.ChromeOptions()
     options.page_load_strategy = 'eager'
     if headless:
@@ -124,18 +126,28 @@ def obter_dados_usuario():
         EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[3]/div/div[2]/div[1]/span/div/div/span/div/div/div[2]/div[1]/div[1]/div[2]'))
     )
     
+    numero_perfil = WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[3]/div/div[2]/div[1]/span/div/div/span/div/div/div[2]/div[1]/div[2]/div[2]/div/div[1]'))
+    )
+    
 
     nome = nome_perfil.text
+    # Remove tudo que não for dígito
+    numero = re.sub(r'\D', '', numero_perfil.text) 
+    #remove o +55 caso esteja no início:
+    numero = re.sub(r'^55', '', numero)
+    #print(f'nome: {nome}, numero: {numero}')
     
     # voltar pra conversas
     conversas_button = WebDriverWait(driver, 30).until(
-    EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[3]/div/header/div/div[1]/div/div[1]/button/div/div/div/span'))
+        EC.presence_of_element_located((By.XPATH, '//*[@id="app"]/div/div[3]/div/header/div/div[1]/div/div[1]/button/div/div/div/span'))
     )
+
 
     # Clicar ou fazer outra ação
     conversas_button.click()
     
-    return nome    
+    return nome,numero    
 
 def enviar_mensagem(nome, numero, mensagem):
     global driver
