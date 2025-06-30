@@ -52,7 +52,7 @@ def iniciar_tela_principal():
     raiz_principal.grid_columnconfigure(0, weight=1)
     raiz_principal.minsize(500, 250)
 
-    global frame0, frame1, frame3, frame4  # Manter os frames como variáveis globais
+    global frame0, frame1, frame3, frame4, frame5  # Manter os frames como variáveis globais
     frame0 = criar_tela_perfil(raiz_principal)
     frame1 = criar_tela_inicial(raiz_principal)
     frame3 = tela_enviar(raiz_principal)
@@ -74,7 +74,7 @@ def iniciar_tela_principal():
     menu_bar.add_command(label="Config", command=lambda: mostrar_tela(frame5))
 
     # Mostrar frame inicial
-    mostrar_tela(frame0)
+    mostrar_tela(frame1)
 
     # Modificar o comportamento do botão de fechar
     raiz_principal.protocol("WM_DELETE_WINDOW", minimizar_para_bandeja)
