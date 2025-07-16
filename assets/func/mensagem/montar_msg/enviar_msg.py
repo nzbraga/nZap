@@ -1,24 +1,20 @@
 import re
 import time
 from datetime import datetime
-from tkinter import messagebox
 
 from assets.func.uteis.popUp import popUp
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import enviar_mensagem
 from assets.func.mensagem.montar_msg.formatar_mensagem import substituir_variaveis
 from assets.func.mensagem.saudacao.saudacao import definir_saudacao
 
-limitador = 0
 
-def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='contato', limite=5):
-    global limitador
+def enviar_msg(contatos, mensagem, frequencia="hoje"):
     #print(f'contatosssss: {contatos}')
    
-    data_atual = datetime.now().strftime("%d/%m")
+    data_atual = datetime.now().strftime("%d-%m")
     data_envio = None
 
-    if frequencia == 'hoje':
-        data_envio = data_atual
+
 
     if not contatos:
         popUp("Nenhum contato selecionado.")
@@ -31,13 +27,9 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
       
     for contato in contatos:
 
-        #print(f'Chaves disponíveis: {contato.keys()}')
+        print(f'Chaves --- disponíveis: {contato[frequencia]}')
         #print(f'Chaves disponíveis: >>> {contato.get(chave_destinatario)}')
-        
-        if not contato.get(chave_destinatario):  # Verifica se a chave nao existe ou esta vazia
-            popUp(f"Contato nao encontrado para: {contato.get('nome')}.\nConfirme se o campo '{chave_destinatario}' existe no arquivo Excel.")
-            continue
-        
+                     
         mensagem_personalizada = substituir_variaveis(mensagem, contato)
         
            
@@ -48,19 +40,17 @@ def enviar_msg(contatos, mensagem, frequencia="hoje",  chave_destinatario='conta
         
         mensagem_completa = f"{definir_saudacao(contato.get('nome'))}{mensagem_personalizada}"       
                           
-        #print(f'enviar msg >> contato: {contato.get(chave_destinatario)}')
-        #print(f'data de envio: {data_envio}\n data atual: {data_atual}')
+
+        if frequencia == 'hoje':
+            data_envio = data_atual
+        else:
+            data_envio = contato[frequencia]
+    
+        print(f'data de envio: {data_envio}\n data atual: {data_atual}')
 
         if data_envio == data_atual:
-            enviar_mensagem(contato.get('nome'), contato.get(chave_destinatario), mensagem_completa)
+            #print(f'enviar msg >> contato: {contato}\n mensagem: {mensagem_completa}')
+            enviar_mensagem(contato['nome'], contato['contato'], mensagem_completa)
             
         time.sleep(1)
-        '''
-        limitador += 1
-        if limitador % limite == 0:  # A cada 'limite' mensagens enviadas, pede confirmação
-            resposta = messagebox.askyesno("Confirmação", f"{limite} mensagens enviadas, deseja continuar?")
-            if not resposta:
-                print("Usuário optou por parar o envio.")
-                return
-        '''
-
+      

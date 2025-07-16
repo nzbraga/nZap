@@ -15,7 +15,7 @@ from assets.func.uteis.popUp import popUp
 lista_paginas = []
 frequencia_envio = None
 
-def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinataio):
+def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem):
     
     global combo_frequencia, combo_meses, combo_semanas, combo_31_dias, combo_30_dias, combo_29_dias, combo_28_dias,lista_paginas
         
@@ -281,8 +281,7 @@ def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinatai
                        pagina.current(),        
                        agenda.get()),
         mensagem.get('1.0', tk.END).strip(),
-        frequencia_envio.lower(),
-        destinataio.get('1.0', tk.END).strip()
+        frequencia_envio.lower()        
         ),
         
     )
@@ -298,8 +297,7 @@ def tela_frequencia(raiz_principal, excel, pagina, agenda,  mensagem, destinatai
                        pagina.current(),        
                        agenda.get()),
         mensagem.get('1.0', tk.END).strip(),
-        frequencia_envio.lower(),
-        destinataio.get('1.0', tk.END).strip()
+        frequencia_envio.lower()      
         ),
                     #print(f"origem: {definir_origem(excel.get(), agenda.get(), pagina.current())}\nfrequencia_envio: {frequencia_envio}")]
         

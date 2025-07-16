@@ -8,6 +8,7 @@ from assets.interface.telas.tela_inicial.tela_inicial import criar_tela_inicial
 from assets.interface.telas.tela_config.tela_config import criar_tela_config
 from assets.interface.telas.tela_enviar.tela_enviar import tela_enviar
 from assets.interface.telas.tela_mensagem.tela_mensagem import tela_mensagem
+from assets.interface.telas.tela_agendadas.tela_agendadas import criar_tela_agendadas
 from assets.func.sessao_whatsapp.config_webdriver.config_webdriver import encerrar_chrome_existente
 from assets.func.sessao.sessao import sessao_id
 # Variáveis globais
@@ -58,8 +59,9 @@ def iniciar_tela_principal():
     frame3 = tela_enviar(raiz_principal)
     frame4 = tela_mensagem(raiz_principal)
     frame5 = criar_tela_config(raiz_principal)
+    frame6 = criar_tela_agendadas(raiz_principal)
 
-    for frame in (frame0, frame1, frame3, frame4 , frame5
+    for frame in (frame0, frame1, frame3, frame4 , frame5, frame6
                   ):
         frame.grid(row=0, column=0, sticky="nsew")
 
@@ -72,6 +74,7 @@ def iniciar_tela_principal():
     menu_bar.add_command(label="Enviar", command=lambda: mostrar_tela(frame3))
     menu_bar.add_command(label="Mensagens", command=lambda: mostrar_tela(frame4))
     menu_bar.add_command(label="Config", command=lambda: mostrar_tela(frame5))
+    menu_bar.add_command(label="Agendadas", command=lambda: mostrar_tela(frame6))
 
     # Mostrar frame inicial
     mostrar_tela(frame1)

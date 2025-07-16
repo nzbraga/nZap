@@ -6,9 +6,6 @@ from tkinter import ttk
 from assets.interface.telas.tela_enviar.uteis.opcoes_frequencia import *
 from assets.func.planilha.info_planilha.info_planilha import listar_paginas, selecionar_arquivo, arquivo_selecionado
 from assets.func.mensagem.listar_mensagens.listar_mensagens import listar_mensagens
-from assets.func.mensagem.definir_origem.definir_origem import definir_origem
-from assets.func.mensagem.agendamento.agendamento import agendar_mensagem
-#from assets.func.mensagem.montar_msg.montar_msg import montar_msg
 
 from assets.interface.telas.tela_enviar.frame_frequencia import tela_frequencia
 
@@ -103,14 +100,7 @@ def tela_enviar(raiz_principal):
 
     frame_destinatario = tk.Frame(frame_escolher_pagina)
     frame_destinatario.pack_forget()
-
-    tk.Label(frame_destinatario, text="Escolher campo\ncom contato do usuario").pack(pady=5)
-
-    entrada_destinatario = tk.Text(frame_destinatario, width=15, height=1)
-    entrada_destinatario.insert('1.0' , 'contato')
-    entrada_destinatario.pack(pady=5)
-
-    
+     
     enviar_excel = tk.BooleanVar()
     check_excel = tk.Checkbutton(frame_checkbuttons, text="enviar Excel", variable=enviar_excel, command=alternar_excel)
     check_excel.pack(side=tk.LEFT)
@@ -144,7 +134,7 @@ def tela_enviar(raiz_principal):
     frame_botao = tk.Frame(enviar_raiz)
     frame_botao.pack(pady=15)
 
-    frame_frequencia = tk.Frame(tela_frequencia(enviar_raiz, enviar_excel, escolher_pagina_planilha, enviar_agenda, entrada_mensagem, entrada_destinatario))
+    frame_frequencia = tk.Frame(tela_frequencia(enviar_raiz, enviar_excel, escolher_pagina_planilha, enviar_agenda, entrada_mensagem))
     frame_frequencia.pack(pady=5)
 
     """

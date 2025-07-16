@@ -11,7 +11,8 @@ def criar_config(id, remetente_logado=str(remetente), primeira_hora=8, ultima_ho
             "remetente": remetente_logado,
             "primeira_hora": primeira_hora,
             "ultima_hora": ultima_hora,
-            "intervalo_envio": intervalo_envio
+            "intervalo_envio": intervalo_envio,
+            "confirmar_msg": False
         }
         print(f'Configuração: {config}')
         file_path = base_dir / f"{id}.json"  # sem ponto, por segurança

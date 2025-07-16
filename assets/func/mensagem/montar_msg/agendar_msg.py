@@ -1,6 +1,10 @@
 import json
 from pathlib import Path
+import time
 from assets.func.sessao.sessao import sessao_id
+
+from assets.func.agendamento.checar_agendamento.checar_agendamento import iniciar_checar_agendamentos, ARQUIVO_AGENDADO
+from assets.func.uteis.popUp import popUp
 
 
 limitador = 0
@@ -13,11 +17,9 @@ usuario_id = sessao_id()
 ARQUIVO_AGENDADO = agendado_dir / f".{usuario_id}.json"
 
 
-def agendar_msg(contatos, mensagem, frequencia="hoje", chave_destinatario='contato'):
+def agendar_msg(contatos, mensagem, frequencia="hoje"):
     # Verifica se o diretório agendado existe, se não, cria
     agendado_dir.mkdir(parents=True, exist_ok=True)
-
-    #print(f'contatos>>>>: {contatos}')  
 
     # Cria uma lista para armazenar as mensagens agendadas
     mensagens_agendadas = []
@@ -39,6 +41,10 @@ def agendar_msg(contatos, mensagem, frequencia="hoje", chave_destinatario='conta
         # Adiciona a mensagem formatada à lista
         mensagens_agendadas.append(mensagem_dados)
     print('Agendado')
+    popUp('Agendado com sucesso')
+    time.sleep(2)
+    
+
     # Salva as mensagens agendadas no arquivo JSON
     if ARQUIVO_AGENDADO.exists():
         # Se o arquivo já existir, carrega os dados existentes e adiciona as novas mensagens
@@ -53,3 +59,4 @@ def agendar_msg(contatos, mensagem, frequencia="hoje", chave_destinatario='conta
         with open(ARQUIVO_AGENDADO, 'w', encoding='utf-8') as file:
             json.dump(mensagens_agendadas, file, ensure_ascii=False, indent=4)
 
+    iniciar_checar_agendamentos()

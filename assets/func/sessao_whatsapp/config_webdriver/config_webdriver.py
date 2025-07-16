@@ -12,12 +12,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from assets.func.sessao_whatsapp.uteis.definir_pasta import definir_pasta
 from assets.func.mensagem.buscar_destinatario.buscar_destinatario import buscar_destinatario
 from assets.func.mensagem.enviar_texto.enviar_texto import enviar_texto
+from assets.func.sessao.sessao import sessao_id
 from assets.func.uteis.popUp import popUp
 
 driver = None
 options = None
 nome = None
 remetente = None
+usuario_id = sessao_id()
 
 base_dir = Path.home() / "nZap"
 base_dir.mkdir(parents=True, exist_ok=True)
@@ -33,7 +35,7 @@ def encerrar_chrome_existente(client):
             if proc.info['name'] == 'chrome' or proc.info['name'] == 'chrome.exe':
                 cmdline = " ".join(proc.info['cmdline'])
                 if '--user-data-dir=' in cmdline and str(caminho_perfil) in cmdline:
-                    print(f"Encerrando processo Chrome PID {proc.pid} com perfil: {caminho_perfil}")
+                    #print(f"Encerrando processo Chrome PID {proc.pid} com perfil: {caminho_perfil}")
                     proc.terminate()
                     proc.wait(timeout=5)
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
@@ -150,15 +152,23 @@ def obter_dados_usuario():
     return nome,numero    
 
 def enviar_mensagem(nome, numero, mensagem):
-    global driver
+    global driver, remetente
+
+    from assets.func.config.abrir_config import abrir_config
+    
+    config = abrir_config(usuario_id)
+    confirmar_msg = config.get("confirmar_msg")
+    remetente = config.get("remetente")
+ 
     
     from assets.func.sessao_whatsapp.iniciar_api.iniciar_api import whatsapp_api
 
     if nome == "Agendamento: Processo concluído.":
         if whatsapp_api.api_logada:
-            buscar_destinatario('21997633265', driver)
-            time.sleep(2)  # Aguarda a tela do contato carregar
-            enviar_texto(mensagem, driver)
+            if confirmar_msg:
+                buscar_destinatario(remetente, driver)
+                time.sleep(2)  # Aguarda a tela do contato carregar
+                enviar_texto(mensagem, driver)
         else:
             pass
 
@@ -176,10 +186,10 @@ def enviar_mensagem(nome, numero, mensagem):
                 try:
                     enviar_texto(mensagem, driver)
                     # Digita e envia a mensagem
-                    
-                    buscar_destinatario('21997633265', driver)
-                    time.sleep(2)  # Aguarda a tela do contato carregar
-                    enviar_texto(f"Enviada com Sucesso para: {nome} - {numero}", driver)
+                    if confirmar_msg:    
+                        buscar_destinatario(remetente, driver)
+                        time.sleep(2)  # Aguarda a tela do contato carregar
+                        enviar_texto(f"Enviada com Sucesso para: {nome} - {numero}", driver)
 
                     #atualizar pagina aqui
                     time.sleep(2)  # Aguarda a tela do contato carregar
@@ -187,11 +197,12 @@ def enviar_mensagem(nome, numero, mensagem):
                     time.sleep(5)  # Aguarda a tela do contato carregar
 
                 except:
-                    buscar_destinatario('21997633265', driver)
-        
-                    time.sleep(2)  # Aguarda a tela do contato carregar
-                    # Digita e envia a mensagem
-                    enviar_texto(f"Numero nao encontrado: {nome} - {numero}", driver)
+                    if confirmar_msg:
+                        buscar_destinatario(remetente, driver)
+            
+                        time.sleep(2)  # Aguarda a tela do contato carregar
+                        # Digita e envia a mensagem
+                        enviar_texto(f"Numero nao encontrado: {nome} - {numero}", driver)
                     #atualizar pagina aqui
                     time.sleep(2)  # Aguarda a tela do contato carregar
                     driver.refresh()
@@ -202,14 +213,15 @@ def enviar_mensagem(nome, numero, mensagem):
                     
 
         except Exception as e:
-            print("Erro ao enviar mensagem\n erro:", e)
-            mensagem_erro ="Erro ao enviar mensagem\n erro:", e
+            if confirmar_msg:
+                print("Erro ao enviar mensagem\n erro:", e)
+                mensagem_erro ="Erro ao enviar mensagem\n erro:", e
 
-            buscar_destinatario('21997633265', driver)
-    
-            time.sleep(2)  # Aguarda a tela do contato carregar
-            # Digita e envia a mensagem
-            enviar_texto(mensagem_erro, driver)
+                buscar_destinatario(remetente, driver)
+        
+                time.sleep(2)  # Aguarda a tela do contato carregar
+                # Digita e envia a mensagem
+                enviar_texto(mensagem_erro, driver)
 
             # voltar pra conversas
 

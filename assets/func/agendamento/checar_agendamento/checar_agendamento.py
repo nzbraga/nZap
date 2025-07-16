@@ -45,7 +45,7 @@ def checar_agendamentos(arquivo, stop_event):
 
             for item in dados:
                 if stop_event.is_set():
-                    return  # Encerra rapidamente se for pedido
+                    return  
 
                 contato = item["contato"]
                 mensagem = item["mensagem"].replace("/n", "\n").replace("\\n", "\n")
